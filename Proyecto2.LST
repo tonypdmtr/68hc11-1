@@ -32,12 +32,116 @@
                    CENTENA EQU $0071
                    MIL EQU $0070
 
+                                   ORG $3000
+  3000 45 52 52 4F                 FCC "ERROR, NUMERO ROMANO INVALIDO."   *29
+. 3004 52 2C 20 4E CARACTERE S
+. 3008 55 35 45 52
+. 300C 4F 20 52 4F
+. 3010 4D 41 4E 02
+. 3014 20 49 4E 56
+. 3018 41 4C 49 44
+. 301C 4F 2E
+  301E 45 52 52 4F                 FCC "ERROR, NUMERO ARABIGO INVALIDO."  *30
+. 3022 52 2C 20 4E
+. 3026 55 4D 45 52
+. 302A 4F 20 41 52
+. 302E 41 42 49 47
+. 3032 4F 20 49 4E
+. 3036 56 41 4C 49
+. 303A 44 20 2E
+  303D 45 52 52 4F                 FCC "ERROR, NUMERO FUERA DE RANGO."    *28
+. 3041 52 2C 20 4E
+. 3045 55 4D 45 52
+. 3049 4F 20 46 55
+. 304D 45 52 41 20
+. 3051 44 45 20 52
+. 3055 41 4E 47 4F
+. 3059 2E
+
+  305A 75 6E 6F 20                 FCC "uno  "
+. 305E 20
+  305F 64 6F 73 20                 FCC "dos "
+  3063 74 72 65 73                 FCC     "tres "
+. 3067 20
+  3068 63 75 61 74                 FCC     "cuatro "
+. 306C 72 6F 20
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       2
+
+  306F 63 69 6E 63                 FCC     "cinco "
+. 3073 6F 20
+  3075 73 65 69 73                 FCC     "seis "
+. 3079 20
+  307A 73 69 65 74                 FCC     "siete "
+. 307E 65 20
+  3080 6F 63 68 6F                 FCC     "ocho "
+. 3084 20
+  3085 6E 75 65 76                 FCC     "nueve "
+. 3089 65 20
+  308B 64 69 65 63                 FCC "dieci "
+. 308F 69 20
+  3091 64 69 65 7A                 FCC     "diez "
+. 3095 20
+  3096 6F 6E 63 65                 FCC "once "
+. 309A 20
+  309B 64 6F 63 65                 FCC "doce "
+. 309F 20
+  30A0 74 72 65 63                 FCC "trece "
+. 30A4 65 20
+  30A6 63 61 74 6F                 FCC "catorce "
+. 30AA 72 63 65 20
+  30AE 71 75 69 6E                 FCC "quince "
+. 30B2 63 65 20
+  30B5 64 69 65 63                 FCC "diecisEis "
+. 30B9 69 73 45 69
+. 30BD 73 20
+  30BF 76 65 69 6E                 FCC "veinte "
+. 30C3 74 65 20
+  30C6 76 65 69 6E                 FCC "veinti "
+. 30CA 74 69 20
+  30CD 76 65 6E 74                 FCC "ventisEis "
+. 30D1 69 73 45 69
+. 30D5 73 20
+  30D7 79 20                       FCC "y "
+  30D9 74 72 65 69                 FCC "treinta "
+. 30DD 6E 74 61 20
+  30E1 63 75 61 72                 FCC "cuarenta "
+. 30E5 65 6E 74 61
+. 30E9 20
+  30EA 63 69 6E 63                 FCC "cincuenta "
+. 30EE 75 65 6E 74
+. 30F2 61 20
+  30F4 73 65 73 65                 FCC "sesenta "
+. 30F8 6E 74 61 20
+  30FC 73 65 74 65                 FCC "setenta "
+. 3100 6E 74 61 20
+  3104 6F 63 68 65                 FCC "ochenta "
+. 3108 6E 74 61 20
+  310C 6E 6F 76 65                 FCC "noventa "
+. 3110 6E 74 61 20
+  3114 63 69 65 6E                 FCC "cien "
+. 3118 20
+  3119 63 69 65 6E                 FCC "ciento "
+. 311D 74 6F 20
+  3120 63 69 65 6E                 FCC "cientos "
+. 3124 74 6F 73 20
+  3128 71 75 69 6E                 FCC "quinientos "
+. 312C 69 65 6E 74
+. 3130 6F 73 20
+  3133 73 65 74 65                 FCC "setecientos "
+. 3137 63 69 65 6E
+. 313B 74 6F 73 20
+  313F 6E 6F 76 65                 FCC "novecientos "
+. 3143 63 69 65 6E
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       3
+
+. 3147 74 6F 73 20
+  314B 6D 69 6C 20                 FCC "mil "
+
                                    ORG $8000
                    INICIO
   8000 8E 00 FF                    LDS #$00FF
-  8003 BD 81 3B                    JSR SERIAL
-  8006 7E 81 57                    JMP LIMPIEZA
-
+  8003 BD 81 87                    JSR SERIAL
+  8006 7E 81 A3                    JMP LIMPIEZA
 
                    CICLATE
   8009 86 3F                       LDAA    #'?
@@ -48,253 +152,311 @@
   8011 27 FA                       BEQ     CICLO
 
   8013 81 4D               CMPA #'M
-  8015 27 0F               BEQ CASOM
+  8015 27 1D               BEQ CASOM
   8017 81 44               CMPA #'D
-  8019 27 28               BEQ CASOD
-  801B 81 43               CMPA #'C
-  801D 27 40               BEQ CASOC
-  801F 81 4C               CMPA #'L
-  8021 27 59               BEQ CASOL
-  8023 7E 80 98            JMP SALTOINTERMEDIO
+  8019 27 5A               BEQ CASOD
+  801B 7E 80 95            JMP SALTOINTERMEDIO1
+
+                   ERROR1
+  801E CE 00 50                    LDX #$0050     * DIRECCION DEL MENSAJE
+  8021 18 CE 30 00                 LDY #$3000     * ORG DE LOS FCC
+                   ERROR_CICLO
+  8025 18 E6 00                    LDAB $00,Y
+  8028 E7 00                       STAB $00,X
+  802A 08                          INX
+  802B 18 08                       INY
+  802D C1 2E                       CMPB #46        * ASCII DE PUNTO
+  802F 26 F4                       BNE ERROR_CICLO
+  8031 7E 80 09                    JMP CICLATE
 
                    CASOM
-  8026 A7 00                       STAA $00,X
-  8028 08                          INX
-  8029 D6 18                       LDAB C
-  802B C1 01               CMPB #1
-  802D 27 0D               BEQ CASOM1
-  802F D6 16               LDAB M
-  8031 5C                  INCB
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       2
+  8034 D6 16                       LDAB M
+  8036 C1 0A                       CMPB #$A
+  8038 27 E4                       BEQ ERROR1
+  803A D6 17                       LDAB D
+  803C C1 01                       CMPB #1                 *VALIDA QUE NO HAYA
+.                  D's ANTES DE LA M
+  803E 27 DE                       BEQ ERROR1
+  8040 D6 19                       LDAB L
+  8042 C1 01                       CMPB #1                 *VALIDA QUE NO HAYA
+.                  L's ANTES DE LA M
+  8044 27 D8                       BEQ ERROR1
+  8046 D6 20                       LDAB XB
+  8048 C1 01                       CMPB #1                 *VALIDA QUE NO HAYA
+.                  X's ANTES DE LA M
+  804A 27 D2                       BEQ ERROR1
+  804C D6 21                       LDAB V
+  804E C1 01                       CMPB #1                 *VALIDA QUE NO HAYA
+.                  V's ANTES DE LA M
+  8050 27 CC                       BEQ ERROR1
+  8052 D6 22                       LDAB I
+  8054 C1 01                       CMPB #1                 *VALIDA QUE NO HAYA
+.                  I's ANTES DE LA M
+  8056 27 C6                       BEQ ERROR1
 
-  8032 D7 16               STAB M
-  8034 D6 70               LDAB MIL
-  8036 5C                  INCB
-  8037 D7 70               STAB MIL
-  8039 7E 80 09            JMP CICLATE
+  8058 A7 00                       STAA $00,X      *Escribir a partir de la
+.                  memoria $50 lo que le mande el usuario
+  805A 08                          INX
+  805B D6 18                       LDAB C                  *Verifica que le haya
+.                  llegado una C ANTES para el caso de CM
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       4
+
+  805D C1 01               CMPB #1
+  805F 27 0D               BEQ CASOM1
+  8061 D6 16               LDAB M
+  8063 5C                  INCB
+  8064 D7 16               STAB M
+  8066 D6 70               LDAB MIL
+  8068 5C                  INCB
+  8069 D7 70               STAB MIL
+  806B 7E 80 09            JMP CICLATE
 
                    *CASO DONDE LLEGUE CM
                    CASOM1
-  803C C6 09                       LDAB #9
-  803E D7 71               STAB CENTENA
-  8040 7E 80 09            JMP CICLATE
-
-                   CASOD
-  8043 A7 00                       STAA $00,X
-  8045 08                          INX
-  8046 D6 18               LDAB C
-  8048 C1 01               CMPB #1
-  804A 27 0C               BEQ CASOD1
-  804C D6 17               LDAB D
-  804E 5C                  INCB
-  804F D7 17               STAB D
-  8051 C6 05               LDAB #5
-  8053 D7 71               STAB CENTENA
-  8055 7E 80 09            JMP CICLATE
-
-                   CASOD1
-  8058 C6 04               LDAB #4
-  805A D7 71               STAB CENTENA
-  805C 7E 80 09            JMP CICLATE
-
-                   *C ES UNA BANDERA A FUTURO PARA ERRORES
-                   CASOC
-  805F A7 00                       STAA $00,X
-  8061 08                          INX
-  8062 D6 20                       LDAB XB
-  8064 C1 01                       CMPB #1
-  8066 27 0D                       BEQ CASOC1
-  8068 D6 18               LDAB C
-  806A 5C                  INCB
-  806B D7 18               STAB C
-  806D D6 71                       LDAB CENTENA
-  806F 5C                  INCB
+  806E C6 09                       LDAB #9
   8070 D7 71               STAB CENTENA
   8072 7E 80 09            JMP CICLATE
 
+                   CASOD
+  8075 D6 17                       LDAB D
+  8077 5C                  INCB
+  8078 D7 17               STAB D
+  807A C1 02                       CMPB #2
+  807C 27 A0                       BEQ ERROR1      *VALIDA QUE NO LLEGUEN 2 O MS
+.                  D's
+  807E A7 00                       STAA $00,X
+.                  *Escribir a partir de la memoria $50 lo que le mande el
+.                  usuario
+  8080 08                          INX
+  8081 D6 18               LDAB C
+  8083 C1 01               CMPB #1
+  8085 27 07               BEQ CASOD1
+  8087 C6 05               LDAB #5
+  8089 D7 71               STAB CENTENA
+  808B 7E 80 09            JMP CICLATE
+
+                   CASOD1
+  808E C6 04               LDAB #4
+  8090 D7 71               STAB CENTENA
+  8092 7E 80 09            JMP CICLATE
+
+                   SALTOINTERMEDIO1
+  8095 81 43                       CMPA #'C
+  8097 27 07               BEQ CASOC
+  8099 81 4C                       CMPA #'L
+  809B 27 23               BEQ CASOL
+  809D 7E 80 E0                    JMP SALTOINTERMEDIO
+
+                   *C ES UNA BANDERA A FUTURO PARA ERRORES
+                   CASOC
+  80A0 D6 18                       LDAB C
+  80A2 5C                  INCB
+  80A3 D7 18               STAB C
+  80A5 A7 00                       STAA $00,X
+  80A7 08                          INX
+  80A8 D6 20                       LDAB XB
+  80AA C1 01                       CMPB #1
+  80AC 27 08                       BEQ CASOC1
+  80AE D6 71                       LDAB CENTENA
+  80B0 5C                  INCB
+  80B1 D7 71               STAB CENTENA
+  80B3 7E 80 09            JMP CICLATE
+
                    *CASO POR SI LLEGA UN XC
                    CASOC1
-  8075 C6 09                       LDAB #9
-  8077 D7 72                       STAB DECENA
-  8079 7E 80 09                    JMP CICLATE
+  80B6 C6 09                       LDAB #9
+  80B8 D7 72                       STAB DECENA
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       5
+
+  80BA 7E 80 09                    JMP CICLATE
+
+                   SALTOINTERMEDIO_ERROR
+  80BD 7E 80 1E                    JMP ERROR1
 
                    CASOL
-  807C A7 00                       STAA $00,X
-  807E 08                          INX
-  807F D6 20                       LDAB XB
-  8081 C1 01                       CMPB #1
-  8083 27 0C                       BEQ CASOL1
-  8085 D6 19               LDAB L
-  8087 5C                  INCB
-  8088 D7 19               STAB L
-  808A C6 05                       LDAB #5
-  808C D7 72               STAB DECENA
-  808E 7E 80 09            JMP CICLATE
+  80C0 D6 19                       LDAB L
+  80C2 5C                  INCB
+  80C3 D7 19               STAB L
+  80C5 C1 02                       CMPB #2
+  80C7 27 F4                       BEQ SALTOINTERMEDIO_ERROR               *
+.                  VALIDA QUE NO LLEGUEN 2 O MS L's
+  80C9 A7 00                       STAA $00,X
+  80CB 08                          INX
+  80CC D6 20                       LDAB XB
+  80CE C1 01                       CMPB #1
+  80D0 27 07                       BEQ CASOL1
+  80D2 C6 05                       LDAB #5
+  80D4 D7 72               STAB DECENA
+  80D6 7E 80 09            JMP CICLATE
 
                    *PARA CUANDO LLEGA XL
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       3
-
                    CASOL1
-  8091 C6 04                       LDAB #4
-  8093 D7 72                       STAB DECENA
-  8095 7E 80 09                    JMP CICLATE
-
+  80D9 C6 04                       LDAB #4
+  80DB D7 72                       STAB DECENA
+  80DD 7E 80 09                    JMP CICLATE
+                                             **********SALTO INTERMEDIO
                    SALTOINTERMEDIO
-  8098 81 58                       CMPA #'X
-  809A 27 17               BEQ CASOX
-  809C 81 56               CMPA #'V
-  809E 27 30               BEQ CASOV
-  80A0 81 49               CMPA #'I
-  80A2 27 48               BEQ CASOI
+  80E0 81 58                       CMPA #'X
+  80E2 27 17               BEQ CASOX
+  80E4 81 56               CMPA #'V
+  80E6 27 30               BEQ CASOV
+  80E8 81 49               CMPA #'I
+  80EA 27 4C               BEQ CASOI
 
-  80A4 81 4F               CMPA #'O  *CASO EN QUE RECIBA OK
-  80A6 27 54               BEQ CASOO
-  80A8 81 4B               CMPA #'K
-  80AA 27 58               BEQ CASOOK
-  80AC 81 20                       CMPA #32
-  80AE 27 5D                       BEQ ESCRIBECHAR
-  80B0 7E 80 09                    JMP CICLATE
+  80EC 81 4F               CMPA #'O  *CASO EN QUE RECIBA OK
+  80EE 27 58               BEQ CASOO
+  80F0 81 4B               CMPA #'K
+  80F2 27 5C               BEQ CASOOK
+  80F4 81 20                       CMPA #32
+  80F6 27 61                       BEQ ESCRIBECHAR
+  80F8 7E 80 09                    JMP CICLATE
 
                    CASOX
-  80B3 A7 00                       STAA $00,X
-  80B5 08                          INX
-  80B6 D6 22                       LDAB I
-  80B8 C1 01                       CMPB #1
-  80BA 27 0D                       BEQ CASOX1
-  80BC D6 20               LDAB XB
-  80BE 5C                  INCB
-  80BF D7 20               STAB XB
-  80C1 D6 72                       LDAB DECENA
-  80C3 5C                          INCB
-  80C4 D7 72                       STAB DECENA
-  80C6 7E 80 09            JMP CICLATE
+  80FB D6 20                       LDAB XB
+  80FD 5C                  INCB
+  80FE D7 20               STAB XB
+  8100 A7 00                       STAA $00,X
+  8102 08                          INX
+  8103 D6 22                       LDAB I
+  8105 C1 01                       CMPB #1
+  8107 27 08                       BEQ CASOX1
+  8109 D6 72                       LDAB DECENA
+  810B 5C                          INCB
+  810C D7 72                       STAB DECENA
+  810E 7E 80 09            JMP CICLATE
 
                    *CUANDO LLEGUE UN IX
                    CASOX1
-  80C9 C6 09                       LDAB #9
-  80CB D7 73                       STAB UNIDAD
-  80CD 7E 80 09                    JMP CICLATE
+  8111 C6 09                       LDAB #9
+  8113 D7 73                       STAB UNIDAD
+  8115 7E 80 09                    JMP CICLATE
 
                    CASOV
-  80D0 A7 00                       STAA $00,X
-  80D2 08                          INX
-  80D3 D6 22                       LDAB I
-  80D5 C1 01                       CMPB #1
-  80D7 27 0C                       BEQ CASOV1
-  80D9 D6 21                       LDAB V
-  80DB 5C                          INCB
-  80DC D7 21                       STAB V
-  80DE C6 05                       LDAB #5
-  80E0 D7 73                       STAB UNIDAD
-  80E2 7E 80 09                    JMP CICLATE
+  8118 D6 21                       LDAB V
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       6
+
+  811A 5C                          INCB
+  811B D7 21                       STAB V
+  811D C1 02                       CMPB #2
+  811F 27 9C                       BEQ SALTOINTERMEDIO_ERROR               *
+.                  VALIDA QUE NO LLEGUEN 2 O MS V's
+  8121 A7 00                       STAA $00,X
+  8123 08                          INX
+  8124 D6 22                       LDAB I
+  8126 C1 01                       CMPB #1
+  8128 27 07                       BEQ CASOV1
+  812A C6 05                       LDAB #5
+  812C D7 73                       STAB UNIDAD
+  812E 7E 80 09                    JMP CICLATE
 
                    *CUANDO LLEGUE UN IV
                    CASOV1
-  80E5 C6 04                       LDAB #4
-  80E7 D7 73                       STAB UNIDAD
-  80E9 7E 80 09                    JMP CICLATE
+  8131 C6 04                       LDAB #4
+  8133 D7 73                       STAB UNIDAD
+  8135 7E 80 09                    JMP CICLATE
+
 
                    CASOI
-  80EC A7 00                       STAA $00,X
-  80EE 08                          INX
-  80EF D6 22                       LDAB I
-  80F1 5C                          INCB
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       4
-
-  80F2 D7 22                       STAB I
-  80F4 D6 73                       LDAB UNIDAD
-  80F6 5C                          INCB
-  80F7 D7 73                       STAB UNIDAD
-  80F9 7E 80 09                    JMP CICLATE
+  8138 A7 00                       STAA $00,X
+  813A 08                          INX
+  813B D6 22                       LDAB I
+  813D 5C                          INCB
+  813E D7 22                       STAB I
+  8140 D6 73                       LDAB UNIDAD
+  8142 5C                          INCB
+  8143 D7 73                       STAB UNIDAD
+  8145 7E 80 09                    JMP CICLATE
 
                    CASOO
-  80FC D6 23                       LDAB O
-  80FE 5C                          INCB
-  80FF D7 23                       STAB O
-  8101 7E 81 26                    JMP FIN
+  8148 D6 23                       LDAB O
+  814A 5C                          INCB
+  814B D7 23                       STAB O
+  814D 7E 81 72                    JMP FIN
 
                    CASOOK
-  8104 D6 23                       LDAB O
-  8106 C1 00                       CMPB #0
-  8108 26 4D                       BNE LIMPIEZA
-  810A 7E 80 09                    JMP CICLATE
+  8150 D6 23                       LDAB O
+  8152 C1 00                       CMPB #0
+  8154 26 4D                       BNE LIMPIEZA
+  8156 7E 80 09                    JMP CICLATE
 
 
                    ESCRIBECHAR
-  810D C6 30                       LDAB #48
-  810F 96 70                       LDAA MIL
-  8111 1B                          ABA
-  8112 97 70                       STAA MIL
-  8114 96 71                       LDAA CENTENA
-  8116 1B                          ABA
-  8117 97 71                       STAA CENTENA
-  8119 96 72                       LDAA DECENA
-  811B 1B                          ABA
-  811C 97 72                       STAA DECENA
-  811E 96 73                       LDAA UNIDAD
-  8120 1B                          ABA
-  8121 97 73                       STAA UNIDAD
-  8123 7E 81 26                    JMP FIN
+  8159 C6 30                       LDAB #48
+  815B 96 70                       LDAA MIL
+  815D 1B                          ABA
+  815E 97 70                       STAA MIL
+  8160 96 71                       LDAA CENTENA
+  8162 1B                          ABA
+  8163 97 71                       STAA CENTENA
+  8165 96 72                       LDAA DECENA
+  8167 1B                          ABA
+  8168 97 72                       STAA DECENA
+  816A 96 73                       LDAA UNIDAD
+  816C 1B                          ABA
+  816D 97 73                       STAA UNIDAD
+  816F 7E 81 72                    JMP FIN
+
+
 
                    FIN
-  8126 86 3F                       LDAA    #'?
-  8128 97 00                       STAA    ORDEN
+  8172 86 3F                       LDAA    #'?
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       7
+
+  8174 97 00                       STAA    ORDEN
                    CICLO1
-  812A 96 00                       LDAA    ORDEN
-  812C 81 3F                       CMPA    #'?
-  812E 27 FA                       BEQ     CICLO1
-  8130 81 4F                       CMPA #'O
-  8132 27 C8                       BEQ CASOO
-  8134 81 4B                       CMPA #'K
-  8136 27 CC                       BEQ CASOOK
-  8138 7E 81 26                    JMP FIN
+  8176 96 00                       LDAA    ORDEN
+  8178 81 3F                       CMPA    #'?
+  817A 27 FA                       BEQ     CICLO1
+  817C 81 4F                       CMPA #'O
+  817E 27 C8                       BEQ CASOO
+  8180 81 4B                       CMPA #'K
+  8182 27 CC                       BEQ CASOOK
+  8184 7E 81 72                    JMP FIN
 
 
                    SERIAL
-  813B CC 30 2C           LDD   #$302C  * CONFIGURA PUERTO SERIAL
-  813E B7 10 2B           STAA  BAUD    * BAUD  9600  para cristal de 8MHz
-  8141 F7 10 2D           STAB  SCCR2   * HABILITA  RX Y TX PERO INTERRUPCN SOLO
+  8187 CC 30 2C           LDD   #$302C  * CONFIGURA PUERTO SERIAL
+  818A B7 10 2B           STAA  BAUD    * BAUD  9600  para cristal de 8MHz
+  818D F7 10 2D           STAB  SCCR2   * HABILITA  RX Y TX PERO INTERRUPCN SOLO
 .                  RX
-  8144 86 00              LDAA  #$00
-  8146 B7 10 2C           STAA  SCCR1   * 8 BITS
+  8190 86 00              LDAA  #$00
+  8192 B7 10 2C           STAA  SCCR1   * 8 BITS
 
-  8149 86 FE              LDAA  #$FE    * CONFIG PUERTO D COMO SALIDAS (EXCEPTO
+  8195 86 FE              LDAA  #$FE    * CONFIG PUERTO D COMO SALIDAS (EXCEPTO
 .                  PD0)
-  814B B7 10 09           STAA  DDRD    * SEA  ENABLE DEL DISPLAY  PD4  Y RS PD3
+  8197 B7 10 09           STAA  DDRD    * SEA  ENABLE DEL DISPLAY  PD4  Y RS PD3
 
 
-  814E 86 04              LDAA  #$04
-  8150 B7 10 3C           STAA  HPRIO
+  819A 86 04              LDAA  #$04
+  819C B7 10 3C           STAA  HPRIO
 
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       5
-
-  8153 86 00              LDAA  #$00
-  8155 06                 TAP
-  8156 39                RTS
+  819F 86 00              LDAA  #$00
+  81A1 06                 TAP
+  81A2 39                RTS
 
 
                    LIMPIEZA
-  8157 7F 00 16            CLR M
-  815A 7F 00 17            CLR D
-  815D 7F 00 18            CLR C
-  8160 7F 00 19            CLR L
-  8163 7F 00 20            CLR XB
-  8166 7F 00 21            CLR V
-  8169 7F 00 22            CLR I
-  816C 7F 00 01            CLR A
-  816F 7F 00 73            CLR UNIDAD
-  8172 7F 00 72            CLR DECENA
-  8175 7F 00 71            CLR CENTENA
-  8178 7F 00 70            CLR MIL
-  817B CE 00 50            LDX #$0050
-  817E 18 CE 00 50         LDY #$0050
+  81A3 7F 00 16            CLR M
+  81A6 7F 00 17            CLR D
+  81A9 7F 00 18            CLR C
+  81AC 7F 00 19            CLR L
+  81AF 7F 00 20            CLR XB
+  81B2 7F 00 21            CLR V
+  81B5 7F 00 22            CLR I
+  81B8 7F 00 01            CLR A
+  81BB 7F 00 73            CLR UNIDAD
+  81BE 7F 00 72            CLR DECENA
+  81C1 7F 00 71            CLR CENTENA
+  81C4 7F 00 70            CLR MIL
+  81C7 CE 00 50            LDX #$0050
+  81CA 18 CE 00 50         LDY #$0050
                    LIM
-  8182 86 00               LDAA #00
-  8184 18 A7 00            STAA $00,Y
-  8187 18 08               INY
-  8189 18 8C 00 6F         CPY #$006F
-  818D 26 F3               BNE LIM
-  818F 7E 80 09            JMP CICLATE
+  81CE 86 00               LDAA #00
+  81D0 18 A7 00            STAA $00,Y
+  81D3 18 08               INY
+  81D5 18 8C 00 6F         CPY #$006F
+  81D9 26 F3               BNE LIM
+  81DB 7E 80 09            JMP CICLATE
 
                    ***********************************
                    * ATENCION A INTERRUPCION SERIAL
@@ -304,6 +466,8 @@
   F103 B6 10 2F            LDAA    SCDR
   F106 97 00               STAA    ORDEN
   F108 3B                  RTI
+
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       8
 
                    ***********************************
                    * VECTOR INTERRUPCION SERIAL
@@ -323,8 +487,8 @@
 
   Symbol Table 
 
-  CASOOK             8104
-  SERIAL             813B
+  CASOOK             8150
+  SERIAL             8187
   A                  0001
   C                  0018
   D                  0017
@@ -333,45 +497,49 @@
   M                  0016
   O                  0023
   XB                 0020
-  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       6
-
   V                  0021
-  ESCRIBECHAR        810D
+  ESCRIBECHAR        8159
   CSCTL              105D
-  CASOC1             8075
+  CASOC1             80B6
   SCCR1              102C
   SCCR2              102D
-  CASOD1             8058
+  CASOD1             808E
   BAUD               102B
-  CASOV1             80E5
+  CASOV1             8131
   CICLO              800D
-  CICLO1             812A
+  CICLO1             8176
   DECENA             0072
-  CASOX1             80C9
+  SALTOINTERMEDIO1   8095
+  CASOX1             8111
   OPT2               1038
   CICLATE            8009
   UNIDAD             0073
   RESET              FFFE
-  LIM                8182
+  ERROR_CICLO        8025
+  LIM                81CE
   ORDEN              0000
   CENTENA            0071
   HPRIO              103C
   SCSR               102E
-  FIN                8126
-  CASOL1             8091
+  FIN                8172
+  CASOL1             80D9
   DDRD               1009
-  CASOM1             803C
+  ERROR1             801E
+  CASOM1             806E
   SCDR               102F
-  CASOC              805F
-  CASOD              8043
-  CASOI              80EC
-  CASOL              807C
-  CASOM              8026
-  CASOO              80FC
-  CASOV              80D0
-  CASOX              80B3
+  SALTOINTERMEDIO_ERROR 80BD
+  CASOC              80A0
+  CASOD              8075
+  CASOI              8138
+  CASOL              80C0
+  CASOM              8034
+  CASOO              8148
+  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       9
+
+  CASOV              8118
+  CASOX              80FB
   SPCR               1028
   MIL                0070
   INICIO             8000
-  LIMPIEZA           8157
-  SALTOINTERMEDIO    8098
+  LIMPIEZA           81A3
+  SALTOINTERMEDIO    80E0
