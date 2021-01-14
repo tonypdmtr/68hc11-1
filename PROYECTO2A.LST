@@ -1,0 +1,312 @@
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       1
+
+                   * PROYECTO 2
+
+                   *DECLARACION CONSTANTES
+
+                   SCDR   EQU   $102F
+                   SCCR2  EQU   $102D
+                   SCSR   EQU   $102E
+                   SCCR1  EQU   $102C
+                   BAUD   EQU   $102B
+                   HPRIO  EQU   $103C
+                   SPCR   EQU   $1028
+                   CSCTL  EQU   $105D
+                   OPT2   EQU   $1038
+                   DDRD   EQU   $1009
+
+                   *DECLARACION DE VARIABLES
+                   *9999 =MMMMMMMMMCMXCIX
+                   *9888 = MMMMMMMMMDCCCLXXXVIII
+                   ORDEN EQU $0000
+                   U1    EQU $0001
+                   U2    EQU $0002
+                   U3    EQU $0003
+                   U4    EQU $0100
+                   U5    EQU $0005
+                   U6    EQU $0006
+                   U7    EQU $0007
+                   U8    EQU $0008
+                   U9    EQU $0009
+                   U10   EQU $0010
+                   U11   EQU $0011
+                   U12   EQU $0012
+                   U13   EQU $0013
+                   U14   EQU $0014
+                   U15   EQU $0015
+                   M   EQU $0016
+                   D   EQU $0017
+                   C   EQU $0018
+                   L   EQU $0019
+                   X   EQU $0020
+                   V   EQU $0021
+                   I   EQU $0022
+                   UNIDAD EQU $0023
+                   DECENA EQU $0024
+                   CENTENA EQU $0025
+                   MIL EQU $0026
+
+
+                     ORG $8000
+                   INICIO
+  8000 8E 00 FF          LDS #$00FF
+  8003 BD 80 6F          JSR SERIAL
+  8006 BD 80 8B          JSR LIMPIEZA
+
+
+                   CICLATE
+  8009 86 3F                 LDAA  #'?
+  800B 97 00                 STAA  ORDEN
+                   CICLO
+  800D 96 00                 LDAA  ORDEN
+  800F 81 3F                 CMPA  #'?
+  8011 27 FA                 BEQ   CICLO
+                          *HOLA PERROS
+                          *AL GUPY LE AGRADA EN GRAN MANERA EL PILIN C:
+
+  8013 CC 00 00              LDD #$0000        *Inicializa los acumuladores A y
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       2
+
+.                  B en cerp
+  8016 C3 03 E8          ADDD #1000        *Guarda 1000 en el acumulador A y B
+  8019 DD 26             STD MIL
+
+  801B CE 10 2E          LDX       #SCSR
+  801E B6 10 2E              LDAA  SCSR
+  8021 86 31                 LDAA  #'1000
+  8023 B7 10 2F              STAA  SCDR
+                   PONEX
+  8026 1F 00 80 FC           BRCLR $00,X,#$80 PONEX
+  802A 7E 80 09          JMP CICLATE
+
+                   CASOM
+  802D D6 16             LDAB M
+  802F 5C                INCB
+  8030 D7 16             STAB M
+  8032 D6 26             LDAB MIL
+  8034 5C                INCB
+  8035 D7 26             STAB MIL
+  8037 7E 80 09          JMP CICLATE
+
+                   CASOD
+  803A D6 18             LDAB C
+
+  803C D6 17             LDAB D
+  803E 5C                INCB
+  803F D7 17             STAB D
+  8041 7E 80 09          JMP CICLATE
+
+                   CASOC
+  8044 D6 18             LDAB C
+  8046 5C                INCB
+  8047 D7 18             STAB C
+  8049 7E 80 09          JMP CICLATE
+
+                   CASOL
+  804C D6 19             LDAB L
+  804E 5C                INCB
+  804F D7 19             STAB L
+  8051 7E 80 09          JMP CICLATE
+
+                   CASOX
+  8054 D6 20             LDAB X
+  8056 5C                INCB
+  8057 D7 20             STAB X
+  8059 7E 80 09          JMP CICLATE
+
+                   CASOV
+  805C D6 21             LDAB V
+  805E 5C                INCB
+  805F D7 21             STAB V
+  8061 7E 80 09          JMP CICLATE
+
+                   CASOI
+  8064 D6 22             LDAB I
+  8066 5C                INCB
+  8067 D7 22             STAB I
+  8069 7E 80 09          JMP CICLATE
+
+                   FIN
+  806C 7E 80 6C          JMP FIN
+
+                   SERIAL
+
+  806F CC 30 2C           LDD   #$302C  * CONFIGURA PUERTO SERIAL
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       3
+
+  8072 B7 10 2B           STAA  BAUD    * BAUD  9600  para cristal de 8MHz
+  8075 F7 10 2D           STAB  SCCR2   * HABILITA  RX Y TX PERO INTERRUPCN SOLO
+.                  RX
+  8078 86 00              LDAA  #$00
+  807A B7 10 2C           STAA  SCCR1   * 8 BITS
+
+  807D 86 FE              LDAA  #$FE    * CONFIG PUERTO D COMO SALIDAS (EXCEPTO
+.                  PD0)
+  807F B7 10 09           STAA  DDRD    * SEA  ENABLE DEL DISPLAY  PD4  Y RS PD3
+
+
+  8082 86 04              LDAA  #$04
+  8084 B7 10 3C           STAA  HPRIO
+
+  8087 86 00              LDAA  #$00
+  8089 06                 TAP
+  808A 39                RTS
+
+
+                   LIMPIEZA
+  808B 7F 00 01          CLR U1
+  808E 7F 00 02          CLR U2
+  8091 7F 00 03          CLR U3
+  8094 7F 01 00          CLR U4
+  8097 7F 00 05          CLR U5
+  809A 7F 00 06          CLR U6
+  809D 7F 00 07          CLR U7
+  80A0 7F 00 08          CLR U8
+  80A3 7F 00 09          CLR U9
+  80A6 7F 00 10          CLR U10
+  80A9 7F 00 11          CLR U11
+  80AC 7F 00 12          CLR U12
+  80AF 7F 00 13          CLR U13
+  80B2 7F 00 14          CLR U14
+  80B5 7F 00 15          CLR U15
+  80B8 7F 00 16          CLR M
+  80BB 7F 00 17          CLR D
+  80BE 7F 00 18          CLR C
+  80C1 7F 00 19          CLR L
+  80C4 7F 00 20          CLR X
+  80C7 7F 00 21          CLR V
+  80CA 7F 00 22          CLR I
+  80CD 7F 00 23          CLR UNIDAD
+  80D0 7F 00 24          CLR DECENA
+  80D3 7F 00 25          CLR CENTENA
+  80D6 7F 00 26          CLR MIL
+  80D9 39              RTS
+
+                   ***********************************
+                   * ATENCION A INTERRUPCION SERIAL
+                   ***********************************
+                          ORG  $F100
+
+  F100 B6 10 2E           LDAA SCSR
+  F103 B6 10 2F           LDAA SCDR
+  F106 97 00              STAA ORDEN
+
+  F108 3B                 RTI
+
+                   ***********************************
+                   * VECTOR INTERRUPCION SERIAL
+                   ***********************************
+                          ORG   $FFD6
+  FFD6 F1 00              FCB   $F1,$00
+
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       4
+
+
+                   ***********************************
+                   *RESET
+  FFD8 39              RTS
+
+                   ***********************************
+                   * ATENCION A INTERRUPCION SERIAL
+                   ***********************************
+                          ORG  $F100
+
+  F100 B6 10 2E           LDAA SCSR
+  F103 B6 10 2F           LDAA SCDR
+  F106 97 00              STAA ORDEN
+
+  F108 3B                 RTI
+
+                   ***********************************
+                   * VECTOR INTERRUPCION SERIAL
+                   ***********************************
+                          ORG   $FFD6
+  FFD6 F1 00              FCB   $F1,$00
+
+
+                   ***********************************
+                   *RESET
+  FFD8 39              RTS
+
+                   ***********************************
+                   * ATENCION A INTERRUPCION SERIAL
+                   ***********************************
+                          ORG  $F100
+
+  F100 B6 10 2E           LDAA SCSR
+  F103 B6 10 2F           LDAA SCDR
+  F106 97 00              STAA ORDEN
+
+  F108 3B                 RTI
+
+                   ***********************************
+                   * VECTOR INTERRUPCION SERIAL
+                   ***********************************
+                          ORG   $FFD6
+  FFD6 F1 00              FCB   $F1,$00
+
+
+                   ***********************************
+                   *RESET
+                   ***********************************
+                          ORG    $FFFE
+  FFFE 80 00       RESET  FCB    $80,$00
+                   ***********************************
+                          END   $8000
+
+  Symbol Table 
+
+  U2                 0002
+  U3                 0003
+  U4                 0100
+  U5                 0005
+  U6                 0006
+  U7                 0007
+  U8                 0008
+  U9                 0009
+  U10                0010
+  U11                0011
+  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       5
+
+  U12                0012
+  U13                0013
+  SERIAL             806F
+  U14                0014
+  U15                0015
+  C                  0018
+  D                  0017
+  I                  0022
+  L                  0019
+  M                  0016
+  V                  0021
+  X                  0020
+  CSCTL              105D
+  SCCR1              102C
+  SCCR2              102D
+  BAUD               102B
+  CICLO              800D
+  DECENA             0024
+  OPT2               1038
+  CICLATE            8009
+  UNIDAD             0023
+  RESET              FFFE
+  ORDEN              0000
+  CENTENA            0025
+  HPRIO              103C
+  PONEX              8026
+  SCSR               102E
+  FIN                806C
+  DDRD               1009
+  SCDR               102F
+  CASOC              8044
+  CASOD              803A
+  CASOI              8064
+  CASOL              804C
+  CASOM              802D
+  CASOV              805C
+  CASOX              8054
+  SPCR               1028
+  MIL                0026
+  INICIO             8000
+  LIMPIEZA           808B
+  U1                 0001
