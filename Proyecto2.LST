@@ -1,4 +1,4 @@
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       1
+  ADDR B1 B2 B3 B4 E:\Repositorios\68hc11-1\Proyecto2.asc           PAGE       1
 
                    * PROYECTO 2
 
@@ -27,15 +27,17 @@
                    I   EQU $0022  *BANDERA DE LETRA I
                    O   EQU $0023  *BANDERA DEL OK
                    A       EQU $0001  *BANDERA FIN DE CADENA
-                   BERROR EQU $0002
-                   UNIDAD EQU $0053
-                   DECENA EQU $0052
-                   CENTENA EQU $0051
-                   MIL EQU $0050
+                   BERROR EQU $0002   * BANDERA DE ERROR
+                   UNIDAD EQU $0053   * DIRECCION PARA ESCRIBIR UNIDADES
+                   DECENA EQU $0052   * DIRECCION PARA ESCRIBIR DECENAS
+                   CENTENA EQU $0051  * DIRECCION PARA ESCRIBIR CENTENA
+                   MIL EQU $0050      * DIRECCION PARA ESCRIBIR UNIDADES DE
+.                  MILLAR
 
+                       ** ESPACIO PARA LAS CADENAS A MOSTRAR
                                    ORG $3000
   3000 45 52 52 4F                 FCC "ERROR, NUMERO ROMANO INVALIDO."   *29
-. 3004 52 2C 20 4E CARACTERE S
+. 3004 52 2C 20 4E CARACTERES
 . 3008 55 35 45 52
 . 300C 4F 20 52 4F
 . 3010 4D 41 4E 32
@@ -49,7 +51,7 @@
 . 302E 41 42 49 47
 . 3032 4F 20 49 4E
 . 3036 56 41 4C 49
-. 303A 44 44 2E
+. 303A 44 00 2E
   303D 45 52 52 4F                 FCC "ERROR, NUMERO FUERA DE RANGO."    *28
 . 3041 52 2C 20 4E
 . 3045 55 4D 45 52
@@ -63,10 +65,10 @@
 . 305E 20
   305F 64 6F 73 20                 FCC "dos "
   3063 74 72 65 73                 FCC     "tres "
+  ADDR B1 B2 B3 B4 E:\Repositorios\68hc11-1\Proyecto2.asc           PAGE       2
+
 . 3067 20
   3068 63 75 61 74                 FCC     "cuatro "
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       2
-
 . 306C 72 6F 20
   306F 63 69 6E 63                 FCC     "cinco "
 . 3073 6F 20
@@ -130,18 +132,19 @@
 . 3130 6F 73 20
   3133 73 65 74 65                 FCC "setecientos "
 . 3137 63 69 65 6E
+  ADDR B1 B2 B3 B4 E:\Repositorios\68hc11-1\Proyecto2.asc           PAGE       3
+
 . 313B 74 6F 73 20
   313F 6E 6F 76 65                 FCC "novecientos "
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       3
-
 . 3143 63 69 65 6E
 . 3147 74 6F 73 20
   314B 6D 69 6C 20                 FCC "mil "
 
                                    ORG $8000
                    INICIO
-  8000 8E 00 FF                    LDS #$00FF
-  8003 BD 81 EB                    JSR SERIAL
+  8000 8E 00 FF                    LDS #$00FF *Configuracion del puerto serial
+  8003 BD 81 EB                    JSR SERIAL * SUBRUTINA PARA CONFIG EL PUERTO
+.                  SERIAL
   8006 7E 82 07                    JMP LIMPIEZA
 
                    CICLATE
@@ -196,11 +199,11 @@
   8057 D6 21                       LDAB V
   8059 C1 00                       CMPB #0                 *VALIDA QUE NO HAYA
 .                  V's ANTES DE LA M
+  ADDR B1 B2 B3 B4 E:\Repositorios\68hc11-1\Proyecto2.asc           PAGE       4
+
   805B 26 C1                       BNE ERROR1
   805D D6 22                       LDAB I
   805F C1 00                       CMPB #0                 *VALIDA QUE NO HAYA
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       4
-
 .                  I's ANTES DE LA M
   8061 26 BB                       BNE ERROR1
 
@@ -263,11 +266,11 @@
   80B0 D6 20                       LDAB XB
 .                  *VERIFICA QUE LLEGUE UN XC
   80B2 C1 00                       CMPB #0
+  ADDR B1 B2 B3 B4 E:\Repositorios\68hc11-1\Proyecto2.asc           PAGE       5
+
   80B4 26 32                       BNE CASOC1
   80B6 D6 18                       LDAB C
   80B8 C1 04                       CMPB #4
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       5
-
   80BA 22 3E                       BHI SALTOINTERMEDIO_ERROR
   80BC D6 19                       LDAB L
   80BE C1 00                       CMPB #0                 *VALIDA QUE NO HAYA
@@ -330,11 +333,11 @@
   8108 08                          INX
   8109 D6 20                       LDAB XB
   810B C1 01                       CMPB #1
+  ADDR B1 B2 B3 B4 E:\Repositorios\68hc11-1\Proyecto2.asc           PAGE       6
+
   810D 27 07                       BEQ CASOL1
   810F C6 05                       LDAB #5
   8111 D7 52               STAB DECENA
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       6
-
   8113 7E 80 09            JMP CICLATE
 
                    *PARA CUANDO LLEGA XL
@@ -397,11 +400,11 @@
   8169 7E 80 09                    JMP CICLATE
 
                    CASOV
+  ADDR B1 B2 B3 B4 E:\Repositorios\68hc11-1\Proyecto2.asc           PAGE       7
+
   816C D6 21                       LDAB V
   816E 5C                          INCB
   816F D7 21                       STAB V
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       7
-
   8171 C1 02                       CMPB #2
   8173 27 85                       BEQ SALTOINTERMEDIO_ERROR               *
 .                  VALIDA QUE NO LLEGUEN 2 O MS V's
@@ -464,11 +467,11 @@
   81BF 96 50                       LDAA MIL
   81C1 1B                          ABA
   81C2 97 50                       STAA MIL
+  ADDR B1 B2 B3 B4 E:\Repositorios\68hc11-1\Proyecto2.asc           PAGE       8
+
   81C4 96 51                       LDAA CENTENA
   81C6 1B                          ABA
   81C7 97 51                       STAA CENTENA
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       8
-
   81C9 96 52                       LDAA DECENA
   81CB 1B                          ABA
   81CC 97 52                       STAA DECENA
@@ -492,7 +495,7 @@
   81E6 27 C3                       BEQ CASOOK
   81E8 7E 81 D6                    JMP FIN
 
-
+                   *Configuracion del puerto serial
                    SERIAL
   81EB CC 30 2C           LDD   #$302C  * CONFIGURA PUERTO SERIAL
   81EE B7 10 2B           STAA  BAUD    * BAUD  9600  para cristal de 8MHz
@@ -531,11 +534,11 @@
   822E CE 00 70            LDX #$0070
   8231 18 CE 00 70         LDY #$0070
                    LIM
+  ADDR B1 B2 B3 B4 E:\Repositorios\68hc11-1\Proyecto2.asc           PAGE       9
+
   8235 86 00               LDAA #00
   8237 18 A7 00            STAA $00,Y
   823A 18 08               INY
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       9
-
   823C 18 8C 00 8F         CPY #$008F
   8240 26 F3               BNE LIM
   8242 18 CE 00 50         LDY #$0050
@@ -598,11 +601,11 @@
   CICLO1             81DA
   DECENA             0052
   SALTOINTERMEDIO1   80A5
+  Symbol Table     E:\Repositorios\68hc11-1\Proyecto2.asc           PAGE      10
+
   SALTOINTERMEDIO2   818C
   CASOX1             815A
   OPT2               1038
-  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      10
-
   CICLATE            8009
   UNIDAD             0053
   RESET              FFFE
