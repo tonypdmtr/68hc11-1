@@ -25,40 +25,40 @@
                    BANDERA_TIPO_TRADUCCION EQU $0024
 
                    NUMCARAC                                EQU $0010
-                   BANDERA_ERROR                   EQU $0011     * BANDERA DE
-.                  ERROR PARA NUMEROS DECIMALES
-                   BANDERA_TRADUCCION              EQU $0012     * BANDERA PARA
-.                  IDENTIFICAR LA TRADUCCION
+                   BANDERA_ERROR                   EQU $0011
+.                  * BANDERA DE ERROR PARA NUMEROS DECIMALES
+                   BANDERA_TRADUCCION              EQU $0012
+.                  * BANDERA PARA IDENTIFICAR LA TRADUCCION
                    CONTADOR                                EQU $0028
                    CONTADOR_EXT                    EQU $0010
 
                    ORDEN                                   EQU $0000
-                   BANDERAM                                EQU $0016     *
-.                  BANDERA DE LETRAS M (MIL)
-                   BANDERAD                                EQU $0017     *
-.                  BANDERA DE LETRAS D (QUININETOS)
-                   BANDERAC                                EQU $0018     *
-.                  BANDERA DE LETRAS C (CIEN)
-                   BANDERAL                                EQU $0019     *
-.                  BANDERA DE LETRAS L (CINCUENTA)
-                   BANDERAX                                EQU $0020     *
-.                  BANDERA DE LETRAS X (DIEZ)
-                   BANDERAV                                EQU $0021     *
-.                  BANDERA DE LETRAS V (CINCO)
-                   BANDERAI                                EQU $0022     *
-.                  BANDERA DE LETRAS I (UNO)
-                   BANDERAOK                       EQU $0023     * BANDERA DEL
-.                  OK
-                   BANDERAERROR                    EQU $0002     * BANDERA DE
-.                  ERROR
-                   UNIDAD                                  EQU $0053     *
-.                  DIRECCION PARA ESCRIBIR UNIDADES
-                   DECENA                                  EQU $0052     *
-.                  DIRECCION PARA ESCRIBIR DECENAS
-                   CENTENA                                 EQU $0051     *
-.                  DIRECCION PARA ESCRIBIR CENTENAS
-                   MIL                                     EQU $0050     *
-.                  DIRECCION PARA ESCRIBIR UNIDADES DE MIL
+                   BANDERAM                                EQU $0016
+.                  * BANDERA DE LETRAS M (MIL)
+                   BANDERAD                                EQU $0017
+.                  * BANDERA DE LETRAS D (QUININETOS)
+                   BANDERAC                                EQU $0018
+.                  * BANDERA DE LETRAS C (CIEN)
+                   BANDERAL                                EQU $0019
+.                  * BANDERA DE LETRAS L (CINCUENTA)
+                   BANDERAX                                EQU $0020
+.                  * BANDERA DE LETRAS X (DIEZ)
+                   BANDERAV                                EQU $0021
+.                  * BANDERA DE LETRAS V (CINCO)
+                   BANDERAI                                EQU $0022
+.                  * BANDERA DE LETRAS I (UNO)
+                   BANDERAOK                       EQU $0023
+.                  * BANDERA DEL OK
+                   BANDERAERROR                    EQU $0002
+.                  * BANDERA DE ERROR
+                   UNIDAD                                  EQU $0053
+.                  * DIRECCION PARA ESCRIBIR UNIDADES
+                   DECENA                                  EQU $0052
+.                  * DIRECCION PARA ESCRIBIR DECENAS
+                   CENTENA                                 EQU $0051
+.                  * DIRECCION PARA ESCRIBIR CENTENAS
+                   MIL                                     EQU $0050
+.                  * DIRECCION PARA ESCRIBIR UNIDADES DE MIL
 
 
                                            ORG $3000
@@ -227,29 +227,30 @@
   31F8 49 58 20    NUEVE_R                         FCC "IX "
 
 
-                                   ORG $8000
+                           ORG $8000
+
                    INICIO
-  8000 8E 00 FF                    LDS #$00FF                    * Configuracion
-.                  del puerto serial
-  8003 BD 84 66                    JSR SERIAL                    * SUBRUTINA
-.                  PARA CONFIG EL PUERTO SERIAL
-  8006 BD 84 D2                    JSR LIMPIEZA
-  8009 BD 82 8D                    JSR INICIALIZAR
-  800C 7E 81 EF                    JMP CICLATE1
+  8000 8E 00 FF            LDS #$00FF
+.                  * Configuracion del puerto serial
+  8003 BD 84 66            JSR SERIAL
+.                  * SUBRUTINA PARA CONFIG EL PUERTO SERIAL
+  8006 BD 84 D2            JSR LIMPIEZA
+  8009 BD 82 8D            JSR INICIALIZAR
+  800C 7E 81 EF            JMP CICLATE1
 
 
                    CICLATE
-  800F 86 3F                       LDAA    #'?
-  8011 97 00                       STAA    ORDEN
+  800F 86 3F               LDAA    #'?
+  8011 97 00               STAA    ORDEN
                    CUENTA
   8013 96 00               LDAA    ORDEN
   8015 81 3F               CMPA    #'?
   8017 27 FA               BEQ     CUENTA
 
                    ENTRADA_ROMANO
-  8019 D6 10                       LDAB NUMCARAC
-  801B C1 00                       CMPB #0
-  801D 26 0B                       BNE ERROR1
+  8019 D6 10               LDAB NUMCARAC
+  801B C1 00               CMPB #0
+  801D 26 0B               BNE ERROR1
   801F 81 4D               CMPA #'M
   8021 27 0D               BEQ CASOM
   8023 81 44               CMPA #'D
@@ -257,28 +258,29 @@
   8027 7E 80 8F            JMP SALTOINTERMEDIO1
 
                    ERROR1
-  802A BD 84 82                    JSR ERROR_ESCRITURA
-  802D 7E 81 DA                    JMP FIN
+  802A BD 84 82            JSR ERROR_ESCRITURA
+  802D 7E 81 DA            JMP FIN
 
                    CASOM
-  8030 D6 18                       LDAB BANDERAC                   * PARA EL
-.                  CASO CM REVISA QUE LLEGUE C ANTES
+  8030 D6 18               LDAB BANDERAC
+.                  * PARA EL CASO CM REVISA QUE LLEGUE C ANTES
   8032 C1 00               CMPB #0
   8034 26 19               BNE CASOCM
-
   ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       5
 
 
-  8036 D6 16                       LDAB BANDERAM
-  8038 C1 08                       CMPB #8                 * REVISA QUE NO SEAN
-.                  MAS DE 9 M's
-  803A 22 EE                       BHI ERROR1
 
-  803C BD 84 A1                    JSR D_ERROR
+  8036 D6 16               LDAB BANDERAM
+  8038 C1 08               CMPB #8
+.                  * REVISA QUE NO SEAN  MAS DE 9 M's
+  803A 22 EE               BHI ERROR1
 
-  803F A7 00                       STAA $00,X              * LO QUE MANDA EL
-.                  USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION $70
-  8041 08                          INX
+  803C BD 84 A1            JSR D_ERROR
+
+  803F A7 00               STAA $00,X
+.                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
+.                  $70
+  8041 08                  INX
   8042 D6 16               LDAB BANDERAM
   8044 5C                  INCB
   8045 D7 16               STAB BANDERAM
@@ -289,30 +291,35 @@
 
                    *CASO DONDE LLEGUE CM
                    CASOCM
-  804F C1 01                       CMPB #1                 * REVISA SI HAY UNA
-.                  SEGUNDA C
-  8051 22 D7                       BHI ERROR1
-  8053 CB 05                       ADDB #5
-  8055 D7 18                       STAB BANDERAC           * CARGA 5 EN C
-  8057 C6 09                       LDAB #9
-  8059 D7 51               STAB CENTENA            * CARGA 9 EN CENTENA
-  805B A7 00                       STAA $00,X              * LO QUE MANDA EL
-.                  USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION $70
-  805D 08                          INX                     * AUMENTA EN 1 X
+  804F C1 01               CMPB #1
+.                  * REVISA SI HAY UNA SEGUNDA C
+  8051 22 D7               BHI ERROR1
+  8053 CB 05               ADDB #5
+  8055 D7 18               STAB BANDERAC
+.                  * CARGA 5 EN C
+  8057 C6 09               LDAB #9
+  8059 D7 51               STAB CENTENA
+.                  * CARGA 9 EN CENTENA
+  805B A7 00               STAA $00,X
+.                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
+.                  $70
+  805D 08                  INX
+.                  * AUMENTA EN 1 X
   805E 7E 80 0F            JMP CICLATE
 
                    CASOD
 
-  8061 BD 84 B1                    JSR L_ERROR
-  8064 D6 17                       LDAB BANDERAD
+  8061 BD 84 B1            JSR L_ERROR
+  8064 D6 17               LDAB BANDERAD
   8066 5C                  INCB
   8067 D7 17               STAB BANDERAD
-  8069 C1 02                       CMPB #2
-  806B 27 BD                       BEQ ERROR1                               *
-.                  VALIDA QUE NO LLEGUE MAS DE UNA D
-  806D A7 00                       STAA $00,X               * LO QUE MANDA EL
-.                  USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION $70
-  806F 08                          INX
+  8069 C1 02               CMPB #2
+  806B 27 BD               BEQ ERROR1
+.                  * VALIDA QUE NO LLEGUE MAS DE UNA D
+  806D A7 00               STAA $00,X
+.                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
+.                  $70
+  806F 08                  INX
   8070 D6 18               LDAB BANDERAC
   8072 C1 00               CMPB #0
   8074 26 07               BNE CASOCD
@@ -320,279 +327,293 @@
   8078 D7 51               STAB CENTENA
   807A 7E 80 0F            JMP CICLATE
                    CASOCD
-                                                    * CASO CUATROCIENTOS (CD)
-  807D C1 01                       CMPB #1
-  807F 22 4E                       BHI ERROR_1
-  8081 CB 05                       ADDB #5
-  8083 D7 18                       STAB BANDERAC            * CARGA 5 EN C
-  8085 C6 04                       LDAB #4
-  8087 D7 51               STAB CENTENA             * CARGA 4 EN CENTENA
-  8089 A7 00                       STAA $00,X               * LO QUE MANDA EL
-.                  USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION $70
-  808B 08                          INX                      * AUMENTA EN 1 X
+
+.                  * CASO CUATROCIENTOS (CD)
+  807D C1 01               CMPB #1
+  807F 22 4E               BHI ERROR_1
+  8081 CB 05               ADDB #5
+  8083 D7 18               STAB BANDERAC
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       6
+
+.                  * CARGA 5 EN C
+  8085 C6 04               LDAB #4
+  8087 D7 51               STAB CENTENA
+.                  * CARGA 4 EN CENTENA
+  8089 A7 00               STAA $00,X
+.                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
+.                  $70
+  808B 08                  INX
+.                  * AUMENTA EN 1 X
   808C 7E 80 0F            JMP CICLATE
 
 
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       6
-
                    SALTOINTERMEDIO1
-  808F 81 43                       CMPA #'C
+  808F 81 43               CMPA #'C
   8091 27 07               BEQ CASOC
-  8093 81 4C                       CMPA #'L
+  8093 81 4C               CMPA #'L
   8095 27 3E               BEQ CASOL
-  8097 7E 81 03                    JMP SALTOINTERMEDIO
+  8097 7E 81 03            JMP SALTOINTERMEDIO
 
 
                    CASOC
-                                                    * BANDERA A FUTURO PARA
-.                  IDENTIFICAR LOS ERRORES
-  809A D6 20                       LDAB BANDERAX                    * IDENTIFICA
-.                  SI LLEGA UN NOVENTA  (XC)
-  809C C1 00                       CMPB #0
-  809E 26 1D                       BNE CASOXC
-  80A0 D6 18                       LDAB BANDERAC
-  80A2 C1 04                       CMPB #4
-  80A4 22 29                       BHI ERROR_1
 
-  80A6 BD 84 B1                    JSR L_ERROR
+.                  * BANDERA A FUTURO PARA IDENTIFICAR LOS ERRORES
+  809A D6 20               LDAB BANDERAX
+.                  * IDENTIFICA SI LLEGA UN NOVENTA  (XC)
+  809C C1 00               CMPB #0
+  809E 26 1D               BNE CASOXC
+  80A0 D6 18               LDAB BANDERAC
+  80A2 C1 04               CMPB #4
+  80A4 22 29               BHI ERROR_1
 
-  80A9 D6 18                       LDAB BANDERAC
+  80A6 BD 84 B1            JSR L_ERROR
+
+  80A9 D6 18               LDAB BANDERAC
   80AB 5C                  INCB
   80AC D7 18               STAB BANDERAC
-  80AE C1 04                       CMPB #4
-  80B0 27 1D                       BEQ ERROR_1                        * VALIDA
-.                  QUE NO LLEGUEN MAS DE 4 C'S
-  80B2 A7 00                       STAA $00,X                                 *
-.                  LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
+  80AE C1 04               CMPB #4
+  80B0 27 1D               BEQ ERROR_1
+.                  * VALIDA QUE NO LLEGUEN MAS DE 4 C'S
+  80B2 A7 00               STAA $00,X
+.                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
 .                  $70
-  80B4 08                          INX
-  80B5 D6 51                       LDAB CENTENA
+  80B4 08                  INX
+  80B5 D6 51               LDAB CENTENA
   80B7 5C                  INCB
   80B8 D7 51               STAB CENTENA
   80BA 7E 80 0F            JMP CICLATE
 
                    *CASO POR SI LLEGA UN XC
                    CASOXC
-  80BD C1 01                       CMPB #1
-  80BF 22 0E                       BHI ERROR_1                 * ERROR CUANDO
-.                  HAY MS DE UNA C
-  80C1 CB 05                       ADDB #5                     * SE USA CON EL
-.                  ERROR XCX
-  80C3 D7 20                       STAB BANDERAX
-  80C5 C6 09                       LDAB #9
-  80C7 D7 52                       STAB DECENA
-  80C9 A7 00                       STAA $00,X                  * LO QUE MANDA EL
-.                  USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION $70
-  80CB 08                          INX
-  80CC 7E 80 0F                    JMP CICLATE
-
-                   ERROR_1
-  80CF BD 84 82                    JSR ERROR_ESCRITURA
-  80D2 7E 81 DA                    JMP FIN
-
-                   CASOL
-  80D5 D6 20                       LDAB BANDERAX
-  80D7 C1 00                       CMPB #0
-  80D9 26 16                       BNE CASOXL
-  80DB BD 84 C1                    JSR V_ERROR
-  80DE D6 19                       LDAB BANDERAL
-  80E0 5C                  INCB
-  80E1 D7 19               STAB BANDERAL
-  80E3 C1 02                       CMPB #2
-  80E5 27 E8                       BEQ ERROR_1                          *
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       7
-
-.                  VERIFICA  QUE NO LLEGUE MAS DE UNA L
-  80E7 A7 00                       STAA $00,X
+  80BD C1 01               CMPB #1
+  80BF 22 0E               BHI ERROR_1
+.                  * ERROR CUANDO HAY MS DE UNA C
+  80C1 CB 05               ADDB #5
+.                  * SE USA CON EL ERROR XCX
+  80C3 D7 20               STAB BANDERAX
+  80C5 C6 09               LDAB #9
+  80C7 D7 52               STAB DECENA
+  80C9 A7 00               STAA $00,X
 .                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
 .                  $70
-  80E9 08                          INX
-  80EA C6 05                       LDAB #5
+  80CB 08                  INX
+  80CC 7E 80 0F            JMP CICLATE
+
+                   ERROR_1
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       7
+
+  80CF BD 84 82            JSR ERROR_ESCRITURA
+  80D2 7E 81 DA            JMP FIN
+
+                   CASOL
+  80D5 D6 20               LDAB BANDERAX
+  80D7 C1 00               CMPB #0
+  80D9 26 16               BNE CASOXL
+  80DB BD 84 C1            JSR V_ERROR
+  80DE D6 19               LDAB BANDERAL
+  80E0 5C                  INCB
+  80E1 D7 19               STAB BANDERAL
+  80E3 C1 02               CMPB #2
+  80E5 27 E8               BEQ ERROR_1
+.                  * VERIFICA  QUE NO LLEGUE MAS DE UNA L
+  80E7 A7 00               STAA $00,X
+.                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
+.                  $70
+  80E9 08                  INX
+  80EA C6 05               LDAB #5
   80EC D7 52               STAB DECENA
 
   80EE 7E 80 0F            JMP CICLATE
 
+
                    *PARA CUANDO LLEGA XL
                    CASOXL
-  80F1 C1 01                       CMPB #1
-  80F3 22 DA                       BHI ERROR_1                 * IDENTIFICA SI
-.                  HAY MAS DE UNA X
-  80F5 CB 05                       ADDB #5
-  80F7 D7 20                       STAB BANDERAX               * SUMA 5 A X
-  80F9 C6 04                       LDAB #4
-  80FB D7 52               STAB DECENA                 * CARGA 4 A LAS CENTENAS
-  80FD A7 00                       STAA $00,X                  * LO QUE MANDA EL
-.                  USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION $70
-  80FF 08                          INX
-  8100 7E 80 0F            JMP CICLATE
+  80F1 C1 01               CMPB #1
+  80F3 22 DA               BHI ERROR_1
+.                  * IDENTIFICA SI HAY MAS DE UNA X
+  80F5 CB 05               ADDB #5
+  80F7 D7 20               STAB BANDERAX
+.                  * SUMA 5 A X
+  80F9 C6 04               LDAB #4
+  80FB D7 52           STAB DECENA
+.                  * CARGA 4 A LAS CENTENAS
+  80FD A7 00               STAA $00,X
+.                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
+.                  $70
+  80FF 08                  INX
+  8100 7E 80 0F        JMP CICLATE
 
 
                    SALTOINTERMEDIO
-  8103 81 58                       CMPA #'X
-  8105 27 0B               BEQ CASOX
-  8107 81 56               CMPA #'V
-  8109 27 42               BEQ CASOV
-  810B 81 49               CMPA #'I
-  810D 27 78               BEQ CASOI
+  8103 81 58               CMPA #'X
+  8105 27 0B           BEQ CASOX
+  8107 81 56           CMPA #'V
+  8109 27 42           BEQ CASOV
+  810B 81 49           CMPA #'I
+  810D 27 78           BEQ CASOI
 
-  810F 7E 81 78                    JMP SALTOINTERMEDIO2
+  810F 7E 81 78            JMP SALTOINTERMEDIO2
 
                    CASOX
-  8112 BD 84 C1                    JSR V_ERROR
-  8115 D6 22                       LDAB BANDERAI
-  8117 C1 00                       CMPB #0                                *
-.                  VALIDA EL CASO DE NUEVE  (IX)
-  8119 26 20                       BNE CASOIX
-  811B D6 20                       LDAB BANDERAX
-  811D 5C                  INCB
-  811E D7 20               STAB BANDERAX
-  8120 C1 03                       CMPB #3
-  8122 22 AB                       BHI ERROR_1
-  8124 D6 21                       LDAB BANDERAV
-  8126 C1 00                       CMPB #0                                *
-.                  VALIDA QUE NO EXISTAN V's ANTES DE X
-  8128 26 A5                       BNE ERROR_1
-
-
-  812A A7 00                       STAA $00,X                                 *
-.                  LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
-.                  $70
-  812C 08                          INX
-  812D D6 52                       LDAB DECENA
-  812F 5C                          INCB
-  8130 D7 52                       STAB DECENA
-  8132 7E 80 0F            JMP CICLATE
-
-                   ERROR_2
-  8135 BD 84 82                    JSR ERROR_ESCRITURA
-  8138 7E 81 DA                    JMP FIN
-                   *CUANDO LLEGUE UN IX
+  8112 BD 84 C1            JSR V_ERROR
+  8115 D6 22               LDAB BANDERAI
+  8117 C1 00               CMPB #0
+.                  * VALIDA EL CASO DE NUEVE  (IX)
+  8119 26 20               BNE CASOIX
+  811B D6 20               LDAB BANDERAX
+  811D 5C              INCB
+  811E D7 20           STAB BANDERAX
+  8120 C1 03               CMPB #3
+  8122 22 AB               BHI ERROR_1
+  8124 D6 21               LDAB BANDERAV
+  8126 C1 00               CMPB #0
   ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       8
 
-                   CASOIX
-  813B C1 01                       CMPB #1
-  813D 22 90                       BHI ERROR_1
-  813F CB 06                       ADDB #6
-  8141 D7 22                       STAB BANDERAI
-  8143 C6 09                       LDAB #9
-  8145 D7 53                       STAB UNIDAD
-  8147 A7 00                       STAA $00,X                      * LO QUE
-.                  MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION $70
-  8149 08                          INX
-  814A 7E 80 0F                    JMP CICLATE
+.                  * VALIDA QUE NO EXISTAN V's ANTES DE X
+  8128 26 A5               BNE ERROR_1
 
-                   CASOV
-  814D D6 22                       LDAB BANDERAI
-  814F C1 00                       CMPB #0
-  8151 26 13                       BNE CASOIV
-  8153 D6 21                       LDAB BANDERAV
-  8155 5C                          INCB
-  8156 D7 21                       STAB BANDERAV
-  8158 C1 02                       CMPB #2
-  815A 27 D9                       BEQ ERROR_2                             *
-.                  VERIFICA QUE NO HAYA MAS DE DE UNA V
-  815C A7 00                       STAA $00,X
+
+  812A A7 00               STAA $00,X
 .                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
 .                  $70
-  815E 08                          INX
-  815F C6 05                       LDAB #5
-  8161 D7 53                       STAB UNIDAD
-  8163 7E 80 0F                    JMP CICLATE
+  812C 08                  INX
+  812D D6 52               LDAB DECENA
+  812F 5C                  INCB
+  8130 D7 52               STAB DECENA
+  8132 7E 80 0F        JMP CICLATE
+
+                   ERROR_2
+  8135 BD 84 82            JSR ERROR_ESCRITURA
+  8138 7E 81 DA            JMP FIN
+                   *CUANDO LLEGUE UN IX
+                   CASOIX
+  813B C1 01               CMPB #1
+  813D 22 90               BHI ERROR_1
+  813F CB 06               ADDB #6
+  8141 D7 22               STAB BANDERAI
+  8143 C6 09               LDAB #9
+  8145 D7 53               STAB UNIDAD
+  8147 A7 00               STAA $00,X
+.                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
+.                  $70
+  8149 08                  INX
+  814A 7E 80 0F            JMP CICLATE
+
+                   CASOV
+  814D D6 22               LDAB BANDERAI
+  814F C1 00               CMPB #0
+  8151 26 13               BNE CASOIV
+  8153 D6 21               LDAB BANDERAV
+  8155 5C                  INCB
+  8156 D7 21               STAB BANDERAV
+  8158 C1 02               CMPB #2
+  815A 27 D9               BEQ ERROR_2
+.                  * VERIFICA QUE NO HAYA MAS DE DE UNA V
+  815C A7 00               STAA $00,X
+.                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
+.                  $70
+  815E 08                  INX
+  815F C6 05               LDAB #5
+  8161 D7 53               STAB UNIDAD
+  8163 7E 80 0F            JMP CICLATE
 
                    *CUANDO LLEGUE UN IV
                    CASOIV
-  8166 C1 01                       CMPB #1
-  8168 22 CB                       BHI ERROR_2
-  816A CB 06                       ADDB #6
-  816C D7 22                       STAB BANDERAI
-  816E C6 04                       LDAB #4
-  8170 D7 53                       STAB UNIDAD
-  8172 A7 00                       STAA $00,X                       * LO QUE
-.                  MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION $70
-  8174 08                          INX
-  8175 7E 80 0F                    JMP CICLATE
-
-                   SALTOINTERMEDIO2
-  8178 81 4F               CMPA #'O                         * SI RECIBE UN OK
-  817A 27 1F               BEQ CASOO
-  817C 81 4B               CMPA #'K
-  817E 27 23               BEQ CASOOK
-  8180 81 3D                       CMPA #61                         * IDENTIFICA
-.                  EL FINAL DE LA CADENA UNA VEZ RECIBIDO EL =
-  8182 27 34                       BEQ ESCRIBECHAR
-  8184 7E 81 B5                    JMP SALTOINTERMEDIO1_ERROR
-
-                   CASOI
-
-  8187 D6 22                       LDAB BANDERAI
-  8189 5C                          INCB
-  818A D7 22                       STAB BANDERAI
-  818C C1 03                       CMPB #3
-  818E 22 A5                       BHI ERROR_2
-  8190 A7 00                       STAA $00,X
+  8166 C1 01               CMPB #1
+  8168 22 CB               BHI ERROR_2
+  816A CB 06               ADDB #6
+  816C D7 22               STAB BANDERAI
+  816E C6 04               LDAB #4
+  8170 D7 53               STAB UNIDAD
+  8172 A7 00               STAA $00,X
 .                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
 .                  $70
-  8192 08                          INX
-  8193 D6 53                       LDAB UNIDAD
+  8174 08                  INX
+  8175 7E 80 0F            JMP CICLATE
+
+                   SALTOINTERMEDIO2
+  8178 81 4F           CMPA #'O
+.                  * SI RECIBE UN OK
   ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE       9
 
-  8195 5C                          INCB
-  8196 D7 53                       STAB UNIDAD
-  8198 7E 80 0F                    JMP CICLATE
+  817A 27 1F           BEQ CASOO
+  817C 81 4B           CMPA #'K
+  817E 27 23           BEQ CASOOK
+  8180 81 3D               CMPA #61
+.                  * IDENTIFICA EL FINAL DE LA CADENA UNA VEZ RECIBIDO EL =
+  8182 27 34               BEQ ESCRIBECHAR
+  8184 7E 81 B5            JMP SALTOINTERMEDIO1_ERROR
+
+                   CASOI
+  8187 D6 22               LDAB BANDERAI
+  8189 5C                  INCB
+  818A D7 22               STAB BANDERAI
+  818C C1 03               CMPB #3
+  818E 22 A5               BHI ERROR_2
+  8190 A7 00               STAA $00,X
+.                  * LO QUE MANDA EL USUARIO SE ESCRIBE A PARTIR DE LA DIRECCION
+.                  $70
+  8192 08                  INX
+  8193 D6 53               LDAB UNIDAD
+  8195 5C                  INCB
+  8196 D7 53               STAB UNIDAD
+  8198 7E 80 0F            JMP CICLATE
 
                    CASOO
-  819B D6 23                       LDAB BANDERAOK
-  819D 5C                          INCB
-  819E D7 23                       STAB BANDERAOK
-  81A0 7E 81 DA                    JMP FIN
+  819B D6 23               LDAB BANDERAOK
+  819D 5C                  INCB
+  819E D7 23               STAB BANDERAOK
+  81A0 7E 81 DA            JMP FIN
 
                    CASOOK
-  81A3 D6 23                       LDAB BANDERAOK
-  81A5 C1 00                       CMPB #0
-  81A7 26 03                       BNE LIMPIEZA_SALTO
-  81A9 7E 81 EF                    JMP CICLATE1
+  81A3 D6 23               LDAB BANDERAOK
+  81A5 C1 00               CMPB #0
+  81A7 26 03               BNE LIMPIEZA_SALTO
+  81A9 7E 81 EF            JMP CICLATE1
                    LIMPIEZA_SALTO
-  81AC BD 84 D2                    JSR LIMPIEZA
-  81AF BD 82 8D                    JSR INICIALIZAR
-  81B2 7E 81 EF                    JMP CICLATE1
+  81AC BD 84 D2            JSR LIMPIEZA
+  81AF BD 82 8D            JSR INICIALIZAR
+  81B2 7E 81 EF            JMP CICLATE1
 
                    SALTOINTERMEDIO1_ERROR
-  81B5 7E 80 2A                    JMP ERROR1
+  81B5 7E 80 2A            JMP ERROR1
 
                    ESCRIBECHAR
-  81B8 D6 02                       LDAB BANDERAERROR
-  81BA C1 01                       CMPB #1
-  81BC 27 F7                       BEQ SALTOINTERMEDIO1_ERROR
-  81BE C6 30                       LDAB #48                                *
-.                  CDIGO ASCII DE 0
-  81C0 96 50                       LDAA MIL
-  81C2 1B                          ABA
-  81C3 97 50                       STAA MIL
-  81C5 96 51                       LDAA CENTENA
-  81C7 1B                          ABA
-  81C8 97 51                       STAA CENTENA
-  81CA 96 52                       LDAA DECENA
-  81CC 1B                          ABA
-  81CD 97 52                       STAA DECENA
-  81CF 96 53                       LDAA UNIDAD
-  81D1 1B                          ABA
-  81D2 97 53                       STAA UNIDAD
-  81D4 7E 85 3F                    JMP INSERTAR_TEXTO
-  81D7 7E 81 DA                    JMP FIN
+  81B8 D6 02               LDAB BANDERAERROR
+  81BA C1 01               CMPB #1
+  81BC 27 F7               BEQ SALTOINTERMEDIO1_ERROR
+  81BE C6 30               LDAB #48
+.                  * CDIGO ASCII DE 0
+  81C0 96 50               LDAA MIL
+  81C2 1B                  ABA
+  81C3 97 50               STAA MIL
+  81C5 96 51               LDAA CENTENA
+  81C7 1B                  ABA
+  81C8 97 51               STAA CENTENA
+  81CA 96 52               LDAA DECENA
+  81CC 1B                  ABA
+  81CD 97 52               STAA DECENA
+  81CF 96 53               LDAA UNIDAD
+  81D1 1B                  ABA
+  81D2 97 53               STAA UNIDAD
+  81D4 7E 85 3F            JMP INSERTAR_TEXTO
+  81D7 7E 81 DA            JMP FIN
 
                    FIN
-  81DA 86 3F                       LDAA    #'?
-  81DC 97 00                       STAA    ORDEN
-                   CICLO1
-  81DE 96 00                       LDAA    ORDEN
-  81E0 81 3F                       CMPA    #'?
+  81DA 86 3F               LDAA    #'?
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      10
 
-  81E2 27 FA                       BEQ     CICLO1
-  81E4 81 4F                       CMPA #'O
-  81E6 27 B3                       BEQ CASOO
-  81E8 81 4B                       CMPA #'K
-  81EA 27 B7                       BEQ CASOOK
-  81EC 7E 81 DA                    JMP FIN
+  81DC 97 00               STAA    ORDEN
+                   CICLO1
+  81DE 96 00               LDAA    ORDEN
+  81E0 81 3F               CMPA    #'?
+
+  81E2 27 FA               BEQ     CICLO1
+  81E4 81 4F               CMPA #'O
+  81E6 27 B3               BEQ CASOO
+  81E8 81 4B               CMPA #'K
+  81EA 27 B7               BEQ CASOOK
+  81EC 7E 81 DA            JMP FIN
 
                    *************************************************************
 .                  ****************************
@@ -600,510 +621,533 @@
                    *************************************************************
 .                  ****************************
                    CICLATE1
-  81EF 86 3F                       LDAA    #'?
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      10
-
-  81F1 97 00                       STAA    ORDEN
+  81EF 86 3F               LDAA    #'?
+  81F1 97 00               STAA    ORDEN
                    CICLO
-  81F3 96 00                       LDAA    ORDEN
-  81F5 81 3F                       CMPA    #'?
-  81F7 27 FA                       BEQ     CICLO
+  81F3 96 00               LDAA    ORDEN
+  81F5 81 3F               CMPA    #'?
+  81F7 27 FA               BEQ     CICLO
 
 
                    ENTRADA
-  81F9 81 3D               CMPA #61                       * IDENTIFICA EL FINAL
-.                  DE LA CADENA CON EL =
-  81FB 27 39                   BEQ TRADUCCION_A_ROMANO
+  81F9 81 3D           CMPA #61
+.                  * IDENTIFICA EL FINAL DE LA CADENA CON EL =
+  81FB 27 39               BEQ TRADUCCION_A_ROMANO
 
-  81FD 81 4F               CMPA #'O  *CASO EN QUE RECIBA OK
-  81FF 27 21               BEQ CASOO_DECIMAL
-  8201 81 4B               CMPA #'K
-  8203 27 25               BEQ CASOOK_DECIMAL             * RECIBE UNA K
+  81FD 81 4F           CMPA #'O  *CASO EN QUE RECIBA OK
+  81FF 27 21           BEQ CASOO_DECIMAL
+  8201 81 4B           CMPA #'K
+  8203 27 25           BEQ CASOOK_DECIMAL
+.                  * RECIBE UNA K
 
-  8205 BD 82 C2                    JSR VALIDACION_DECIMAL             * SI ES UN
-.                  NUMERO DECIMAL REGRESA UN 1
-  8208 C1 01                       CMPB #1
-  820A 26 0F                       BNE ENTRADA_INTERMEDIO_ROMANO
+  8205 BD 82 C2            JSR VALIDACION_DECIMAL
+.                  * SI ES UN NUMERO DECIMAL REGRESA UN 1
+  8208 C1 01               CMPB #1
+  820A 26 0F               BNE ENTRADA_INTERMEDIO_ROMANO
 
 
 
-  820C D6 10               LDAB    NUMCARAC
-  820E C1 03               CMPB    #3
-  8210 22 6E               BHI     ERROR_CANTIDAD         * HAY ERROR SI LLEGAN
-.                  MAS DE 4 CARACTERES
+  820C D6 10           LDAB    NUMCARAC
+  820E C1 03           CMPB    #3
+  8210 22 6E           BHI     ERROR_CANTIDAD
+.                  * HAY ERROR SI LLEGAN MAS DE 4 CARACTERES
 
-  8212 5C                  INCB
-  8213 D7 10               STAB NUMCARAC                          * SE
-.                  INCREMENTA EL NUMERO DE CARACTERES
+  8212 5C              INCB
+  8213 D7 10           STAB NUMCARAC
+.                  * SE INCREMENTA EL NUMERO DE CARACTERES
 
-  8215 A7 00               STAA $00,X
-  8217 08                  INX
+  8215 A7 00           STAA $00,X
+  8217 08              INX
 
-  8218 7E 81 EF            JMP CICLATE1
+  8218 7E 81 EF        JMP CICLATE1
 
                    ENTRADA_INTERMEDIO_ROMANO
-  821B C6 02                       LDAB #2
-  821D D7 24                       STAB BANDERA_TIPO_TRADUCCION
-  821F 7E 80 19                    JMP ENTRADA_ROMANO
+  821B C6 02               LDAB #2
+  821D D7 24               STAB BANDERA_TIPO_TRADUCCION
+  821F 7E 80 19            JMP ENTRADA_ROMANO
 
                    CASOO_DECIMAL
-  8222 D6 23                       LDAB BANDERAOK
-  8224 5C                          INCB
-  8225 D7 23                       STAB BANDERAOK
-  8227 7E 81 EF                    JMP CICLATE1
-
-                   CASOOK_DECIMAL
-  822A D6 23                       LDAB BANDERAOK
-  822C C1 00                       CMPB #0
-  822E 27 50                       BEQ ERROR_CANTIDAD
-  8230 BD 82 8D                    JSR INICIALIZAR
-                                   *JSR LIMPIEZA
-  8233 7E 81 EF            JMP CICLATE1
-
-                   TRADUCCION_A_ROMANO
-  8236 C6 01                       LDAB #1
-  8238 D7 24                       STAB BANDERA_TIPO_TRADUCCION
-
-  823A 96 11                       LDAA BANDERA_ERROR
-  823C 81 01                       CMPA #1
-  823E 27 AF                       BEQ CICLATE1
-  8240 18 CE 00 50                 LDY #DIRECCION_RESULTADO               *
+  8222 D6 23               LDAB BANDERAOK
   ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      11
 
-.                  DIRECCION EN MEMORIA PARA ESCRIBIR
-  8244 CE 00 30                    LDX #DIRECCION_INPUT                   *
-.                  DIRECCION EN MEMORIA DE LOS NUMEROS
-  8247 96 10                       LDAA NUMCARAC                          *
-.                  COMPARACION DE NUMERO DE CARACTERES
-  8249 81 01                       CMPA #1
-  824B 27 2A                       BEQ CASO_UNIDAD
-  824D 81 02                       CMPA #2
-  824F 27 22                       BEQ CASO_DECENA
-  8251 81 03                       CMPA #3
-  8253 27 1A                       BEQ CASO_CENTENA
-  8255 81 04                       CMPA #4
-  8257 27 03                       BEQ CASO_MILLAR
+  8224 5C                  INCB
+  8225 D7 23               STAB BANDERAOK
+  8227 7E 81 EF            JMP CICLATE1
 
-  8259 7E 81 EF                    JMP CICLATE1                           * EN
-.                  EL CASO DE QUE NO SE HAGA NIEN LA VALIDACION
+                   CASOOK_DECIMAL
+  822A D6 23               LDAB BANDERAOK
+  822C C1 00               CMPB #0
+  822E 27 50               BEQ ERROR_CANTIDAD
+  8230 BD 82 8D            JSR INICIALIZAR
+  8233 7E 81 EF        JMP CICLATE1
+
+                   TRADUCCION_A_ROMANO
+  8236 C6 01               LDAB #1
+  8238 D7 24               STAB BANDERA_TIPO_TRADUCCION
+
+  823A 96 11               LDAA BANDERA_ERROR
+  823C 81 01               CMPA #1
+  823E 27 AF               BEQ CICLATE1
+  8240 18 CE 00 50         LDY #DIRECCION_RESULTADO
+.                  * DIRECCION EN MEMORIA PARA ESCRIBIR
+  8244 CE 00 30            LDX #DIRECCION_INPUT
+.                  * DIRECCION EN MEMORIA DE LOS NUMEROS
+  8247 96 10               LDAA NUMCARAC
+.                  * COMPARACION DE NUMERO DE CARACTERES
+  8249 81 01               CMPA #1
+  824B 27 2A               BEQ CASO_UNIDAD
+  824D 81 02               CMPA #2
+  824F 27 22               BEQ CASO_DECENA
+  8251 81 03               CMPA #3
+  8253 27 1A               BEQ CASO_CENTENA
+  8255 81 04               CMPA #4
+  8257 27 03               BEQ CASO_MILLAR
+
+  8259 7E 81 EF            JMP CICLATE1
+.                  * EN EL CASO DE QUE NO SE HAGA NIEN LA VALIDACION
 
 
                    CASO_MILLAR
 
-  825C E6 00                       LDAB $00,X                             * EL
-.                  PRIMER CHAR SE PONE EN B
-  825E C1 31               CMPB #$31
-  8260 25 0D                       BLO CASO_CENTENA                       *
-.                  IDENTIFICA SI EL VALOR ES MAYOR A 0
+  825C E6 00               LDAB $00,X
+.                  * EL PRIMER CHAR SE PONE EN B
+  825E C1 31           CMPB #$31
+  8260 25 0D               BLO CASO_CENTENA
+.                  * IDENTIFICA SI EL VALOR ES MAYOR A 0
 
                    CASO_ESCRIBE_MILLAR
-  8262 86 4D                       LDAA #'M
+  8262 86 4D               LDAA #'M
 .                  * CARGA EN EL ACUMULADOR A UNA M
-  8264 18 A7 00                    STAA $00,Y                             *
-.                  ESCRIBE EN LA DIR DE Y
-  8267 18 08                       INY
+  8264 18 A7 00            STAA $00,Y
+.                  * ESCRIBE EN LA DIR DE Y
+  8267 18 08               INY
 .                  * INCREMENTAMOS Y PARA CONTINUAR ESCRIBIENDO
-  8269 5A                          DECB                                   * SE
-.                  DECREMENTAN B
-  826A C1 30                       CMPB #$30                              *
-.                  ASCII DE 0
-  826C 26 F4                       BNE CASO_ESCRIBE_MILLAR       * MIENTRAS NO
-.                  ENCONTREMOS UN PUNTO(.) SE REPITE
-  826E 08                          INX             * PASAMOS AL SIGUIENTE NUM
-.                  DIGITO
+  8269 5A                  DECB
+.                  * SE DECREMENTAN B
+  826A C1 30               CMPB #$30
+.                  * ASCII DE 0
+  826C 26 F4               BNE CASO_ESCRIBE_MILLAR
+.                  * EN CASO DE RECIBIR UN PUNTO(.) SE REPITE
+  826E 08                  INX
+.                  * SE PASA AL SIGUIENTE DIGITO
 
                    CASO_CENTENA
-  826F BD 82 E3                    JSR ESCRIBE_CENTENA
-  8272 08                          INX
+  826F BD 82 E3            JSR ESCRIBE_CENTENA
+  8272 08                  INX
                    CASO_DECENA
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      12
+
                            * GUARDA EN A, EL VALOR DE X
-  8273 BD 83 6E                    JSR ESCRIBE_DECENA
-  8276 08                          INX
+  8273 BD 83 6E            JSR ESCRIBE_DECENA
+  8276 08                  INX
                    CASO_UNIDAD
-  8277 BD 83 EA                    JSR ESCRIBE_UNIDAD
-  827A 7E 85 3F                    JMP INSERTAR_TEXTO
-  827D 7E 81 EF                    JMP CICLATE1
+  8277 BD 83 EA            JSR ESCRIBE_UNIDAD
+  827A 7E 85 3F            JMP INSERTAR_TEXTO
+  827D 7E 81 EF            JMP CICLATE1
 
                    ERROR_CANTIDAD
-  8280 CE 00 50                    LDX #DIRECCION_RESULTADO     * DIRECCION DEL
-.                  MENSAJE
-  8283 18 CE 30 3D                 LDY #MENSAJE_E_RANGO    * ORG DE LOS FCC
-  8287 BD 82 D2                    JSR ERROR
-  828A 7E 81 EF                    JMP CICLATE1
+  8280 CE 00 50            LDX #DIRECCION_RESULTADO
+.                  * DIRECCION EN MEMORIA DEL MENSAJE
+  8283 18 CE 30 3D         LDY #MENSAJE_E_RANGO
+.                  * ORG  FCC
+  8287 BD 82 D2            JSR ERROR
+  828A 7E 81 EF            JMP CICLATE1
 
 
                    INICIALIZAR
-  828D CE 00 30                    LDX #DIRECCION_INPUT
-  8290 18 CE 00 50                 LDY #DIRECCION_RESULTADO
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      12
-
-.                  *ES 50
-  8294 7F 00 24                    CLR BANDERA_TIPO_TRADUCCION
-  8297 7F 00 23                    CLR BANDERAOK
-  829A 7F 31 DE                    CLR UNO_R
-  829D 7F 00 10                    CLR NUMCARAC
-  82A0 7F 00 11                    CLR BANDERA_ERROR
+  828D CE 00 30            LDX #DIRECCION_INPUT
+  8290 18 CE 00 50         LDY #DIRECCION_RESULTADO
+.                  * ES LA DIRECCION $50
+  8294 7F 00 24            CLR BANDERA_TIPO_TRADUCCION
+  8297 7F 00 23            CLR BANDERAOK
+  829A 7F 31 DE            CLR UNO_R
+  829D 7F 00 10            CLR NUMCARAC
+  82A0 7F 00 11            CLR BANDERA_ERROR
                    LIM3
-  82A3 C6 00                       LDAB #00
-  82A5 18 E7 00                    STAB $00,Y
-  82A8 18 08                       INY
-  82AA 18 8C 00 C0                 CPY #$00C0
-  82AE 26 F3                       BNE LIM3
-  82B0 18 CE 00 30                 LDY #DIRECCION_INPUT  ** LA 30
+  82A3 C6 00               LDAB #00
+  82A5 18 E7 00            STAB $00,Y
+  82A8 18 08               INY
+  82AA 18 8C 00 C0         CPY #$00C0
+  82AE 26 F3               BNE LIM3
+  82B0 18 CE 00 30         LDY #DIRECCION_INPUT
+.                  * ES LA DIRECCION $30
                    LIM4
-  82B4 C6 00                       LDAB #00
-  82B6 18 E7 00                    STAB $00,Y
-  82B9 18 08                       INY
-  82BB 18 8C 00 40                 CPY #$0040
-  82BF 26 F3                       BNE LIM4
-  82C1 39                          RTS
+  82B4 C6 00               LDAB #00
+  82B6 18 E7 00            STAB $00,Y
+  82B9 18 08               INY
+  82BB 18 8C 00 40         CPY #$0040
+  82BF 26 F3               BNE LIM4
+  82C1 39                  RTS
 
                    VALIDACION_DECIMAL
-  82C2 81 30                       CMPA #$30               *Valor 0
-  82C4 25 07                       BLO ERROR_DECIMAL
-  82C6 81 3A                       CMPA #$3A               * Valor 9
-  82C8 22 03                       BHI ERROR_DECIMAL
-  82CA C6 01                       LDAB #1
+  82C2 81 30               CMPA #$30
+.                  * VALOR EN ASCCI DE 0
+  82C4 25 07               BLO ERROR_DECIMAL
+  82C6 81 3A               CMPA #$3A
+.                  * VALOR EN ASCII DE 9
+  82C8 22 03               BHI ERROR_DECIMAL
+  82CA C6 01               LDAB #1
                    FIN_VALIDACION_DECIMAL
-  82CC 39                          RTS
+  82CC 39                  RTS
 
                    ERROR_DECIMAL
-  82CD C6 04                       LDAB #4
-  82CF 7E 82 CC                    JMP FIN_VALIDACION_DECIMAL
-
+  82CD C6 04               LDAB #4
+  82CF 7E 82 CC            JMP FIN_VALIDACION_DECIMAL
 
 
                    ERROR
-  82D2 C6 01                       LDAB #1
-  82D4 D7 11                       STAB BANDERA_ERROR
+  82D2 C6 01               LDAB #1
+  82D4 D7 11               STAB BANDERA_ERROR
                    ERROR_CICLO1
-  82D6 18 E6 00                    LDAB $00,Y              *TOMA CARACTER DEL
-.                  FCC
-  82D9 E7 00                       STAB $00,X      *ESCRIBE EL CHAR EN LA DIR DE
-.                  X
-  82DB 08                          INX
-  82DC 18 08                       INY                     * INCREMENTAMOS X Y Y
-  82DE C1 2E                       CMPB #46        * ASCII DE PUNTO
-  82E0 26 F4                       BNE ERROR_CICLO1       * MIENTRAS NO
-.                  ENCONTREMOS UN PUNTO(.) SE REPITE
-  82E2 39                          RTS
-                   ESCRIBE_CENTENA
-  82E3 3C                          PSHX        * RESPALDA/COPIA EL VALOR DE X
-  82E4 A6 00                       LDAA $00,X  * GUARDA EN A, EL CARACTER DE X
-  82E6 80 30                       SUBA #$30       * RESTA 30 PARA VER QUE
-.                  NUMERO ES
-  82E8 81 01                       CMPA #1
-  82EA 27 22                       BEQ  NUM_1_CENTENA
-  82EC 81 02                       CMPA #2
-  82EE 27 27                       BEQ  NUM_2_CENTENA
-  82F0 81 03                       CMPA #3
-  82F2 27 2C                       BEQ  NUM_3_CENTENA
-  82F4 81 04                       CMPA #4
-  82F6 27 31                       BEQ  NUM_4_CENTENA
-  82F8 81 05                       CMPA #5
-  82FA 27 36                       BEQ  NUM_5_CENTENA
+  82D6 18 E6 00            LDAB $00,Y
+.                  * CARACTER DEL FCC
+  82D9 E7 00               STAB $00,X                                      * EN
   ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      13
 
-  82FC 81 06                       CMPA #6
-  82FE 27 3B                       BEQ  NUM_6_CENTENA
-  8300 81 07                       CMPA #7
-  8302 27 40                       BEQ  NUM_7_CENTENA
-  8304 81 08                       CMPA #8
-  8306 27 45                       BEQ  NUM_8_CENTENA
-  8308 81 09                       CMPA #9
-  830A 27 4A                       BEQ  NUM_9_CENTENA
+.                  LA DIRECCION DE X ESCRIBE EL CHAR
+  82DB 08                  INX                                             *
+.                  INCREMENTA X
+  82DC 18 08               INY
+.                  * INCREMENTA Y
+  82DE C1 2E               CMPB #46                                        *
+.                  VALOR EN ASCII DE PUNTO
+  82E0 26 F4               BNE ERROR_CICLO1                                * SE
+.                  CICLA HASTA ENCONTAR UN PUNTO(.)
+  82E2 39                  RTS
+                   ESCRIBE_CENTENA
+  82E3 3C                  PSHX                                            *
+.                  COPIA EL VALOR DE X
+  82E4 A6 00               LDAA $00,X                                      *
+.                  GUARDA X EN A
+  82E6 80 30               SUBA #$30
+.                  * RESTA 30
+  82E8 81 01               CMPA #1
+  82EA 27 22               BEQ  NUM_1_CENTENA
+  82EC 81 02               CMPA #2
+  82EE 27 27               BEQ  NUM_2_CENTENA
+  82F0 81 03               CMPA #3
+  82F2 27 2C               BEQ  NUM_3_CENTENA
+  82F4 81 04               CMPA #4
+  82F6 27 31               BEQ  NUM_4_CENTENA
+  82F8 81 05               CMPA #5
+  82FA 27 36               BEQ  NUM_5_CENTENA
+  82FC 81 06               CMPA #6
+  82FE 27 3B               BEQ  NUM_6_CENTENA
+  8300 81 07               CMPA #7
+  8302 27 40               BEQ  NUM_7_CENTENA
+  8304 81 08               CMPA #8
+  8306 27 45               BEQ  NUM_8_CENTENA
+  8308 81 09               CMPA #9
+  830A 27 4A               BEQ  NUM_9_CENTENA
                    FIN_CENTENA
-  830C 38                          PULX
-  830D 39                  RTS
+  830C 38                  PULX
+  830D 39              RTS
                    NUM_1_CENTENA
-  830E CE 31 A4                    LDX #CIEN_R     * DIRECCION DE MEMORIA DE 100
-                                   *LDY #CIEN_D
-  8311 BD 83 5F                    JSR CICLO_ESCRITURA
-  8314 7E 83 0C                    JMP FIN_CENTENA
+  830E CE 31 A4            LDX #CIEN_R                                     *
+.                  DIRECCION  DE CIEN
+  8311 BD 83 5F            JSR CICLO_ESCRITURA
+  8314 7E 83 0C            JMP FIN_CENTENA
                    NUM_2_CENTENA
-  8317 CE 31 A6                    LDX #DOSCIENTOS_R     * DIRECCION DE MEMORIA
-.                  DE 200
-                                   *LDY #DOS_L
-                                   *LDY #MIL_D
-  831A BD 83 5F                    JSR CICLO_ESCRITURA
-  831D 7E 83 0C                    JMP FIN_CENTENA
+  8317 CE 31 A6            LDX #DOSCIENTOS_R
+.                  * DIRECCION DE DOSCIENTOS
+  831A BD 83 5F            JSR CICLO_ESCRITURA
+  831D 7E 83 0C            JMP FIN_CENTENA
                    NUM_3_CENTENA
-  8320 CE 31 A9                    LDX #TRESCIENTOS_R     * DIRECCION DE MEMORIA
-.                  DE 300
-  8323 BD 83 5F                    JSR CICLO_ESCRITURA
-  8326 7E 83 0C                    JMP FIN_CENTENA
+  8320 CE 31 A9            LDX #TRESCIENTOS_R                              *
+.                  DIRECCION DE TRESCIENTOS
+  8323 BD 83 5F            JSR CICLO_ESCRITURA
+  8326 7E 83 0C            JMP FIN_CENTENA
                    NUM_4_CENTENA
-  8329 CE 31 AD                    LDX #CUATROCIENTOS_R     * DIRECCION DE
-.                  MEMORIA DE 400
-  832C BD 83 5F                    JSR CICLO_ESCRITURA
-  832F 7E 83 0C                    JMP FIN_CENTENA
+  8329 CE 31 AD            LDX #CUATROCIENTOS_R
+.                  * DIRECCION DE CUATROCIENTOS
+  832C BD 83 5F            JSR CICLO_ESCRITURA
+  832F 7E 83 0C            JMP FIN_CENTENA
                    NUM_5_CENTENA
-  8332 CE 31 B0                    LDX #QUINIENTOS_R     * DIRECCION DE MEMORIA
-.                  DE 500
-  8335 BD 83 5F                    JSR CICLO_ESCRITURA
-  8338 7E 83 0C                    JMP FIN_CENTENA
+  8332 CE 31 B0            LDX #QUINIENTOS_R                               *
+.                  DIRECCION DE QUINIENTOS
+  8335 BD 83 5F            JSR CICLO_ESCRITURA
+  8338 7E 83 0C            JMP FIN_CENTENA
                    NUM_6_CENTENA
-  833B CE 31 B2                    LDX #SEISCIENTOS_R     * DIRECCION DE MEMORIA
-.                  DE 600
-  833E BD 83 5F                    JSR CICLO_ESCRITURA
-  8341 7E 83 0C                    JMP FIN_CENTENA
-                   NUM_7_CENTENA
-  8344 CE 31 B5                    LDX #SETECIENTOS_R    * DIRECCION DE MEMORIA
-.                  DE 700
-  8347 BD 83 5F                    JSR CICLO_ESCRITURA
-  834A 7E 83 0C                    JMP FIN_CENTENA
-                   NUM_8_CENTENA
-  834D CE 31 B9                    LDX #OCHOCIENTOS_R     * DIRECCION DE MEMORIA
-.                  DE 800
-  8350 BD 83 5F                    JSR CICLO_ESCRITURA
-  8353 7E 83 0C                    JMP FIN_CENTENA
-                   NUM_9_CENTENA
-  8356 CE 31 BE                    LDX #NOVECIENTOS_R    * DIRECCION DE MEMORIA
-.                  DE 900
-  8359 BD 83 5F                    JSR CICLO_ESCRITURA
-  835C 7E 83 0C                    JMP FIN_CENTENA
-
-                   CICLO_ESCRITURA
-  835F E6 00               LDAB $00,X              * TOMA CARACTER DEL FCC
-  8361 18 E7 00                    STAB $00,Y      * ESCRIBE EL CHAR EN LA DIR
-.                  DE Y
-  8364 08                          INX
-  8365 18 08                       INY                     * INCREMENTAMOS X Y Y
+  833B CE 31 B2            LDX #SEISCIENTOS_R                              *
   ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      14
 
-  8367 C1 20                       CMPB #$20        * ASCII DE ESPACIO
-  8369 26 F4                       BNE CICLO_ESCRITURA   * MIENTRAS NO
-.                  ENCONTREMOS UN PUNTO(.) SE REPITE
-  836B 18 09                       DEY
-  836D 39                          RTS
+.                  DIRECCION DE SEISCIENTOS
+  833E BD 83 5F            JSR CICLO_ESCRITURA
+  8341 7E 83 0C            JMP FIN_CENTENA
+                   NUM_7_CENTENA
+  8344 CE 31 B5            LDX #SETECIENTOS_R
+.                  * DIRECCION DE SETECIENTOS
+  8347 BD 83 5F            JSR CICLO_ESCRITURA
+  834A 7E 83 0C            JMP FIN_CENTENA
+                   NUM_8_CENTENA
+  834D CE 31 B9            LDX #OCHOCIENTOS_R
+.                  * DIRECCION DE OCHOCIENTOS
+  8350 BD 83 5F            JSR CICLO_ESCRITURA
+  8353 7E 83 0C            JMP FIN_CENTENA
+                   NUM_9_CENTENA
+  8356 CE 31 BE            LDX #NOVECIENTOS_R
+.                  * DIRECCION  DE NOVSECIENTOS
+  8359 BD 83 5F            JSR CICLO_ESCRITURA
+  835C 7E 83 0C            JMP FIN_CENTENA
+
+                   CICLO_ESCRITURA
+  835F E6 00           LDAB $00,X                                              *
+.                  TOMA CARACTER DEL FCC
+  8361 18 E7 00            STAB $00,Y                                      *
+.                  ESCRIBE EN LA DIRECCION DE Y EL CHAR
+  8364 08                  INX
+  8365 18 08               INY
+  8367 C1 20               CMPB #$20                                       *
+.                  VALOR EN ASCII DEL ESPACIO
+  8369 26 F4               BNE CICLO_ESCRITURA
+.                  * SE REPITE HASTA QUE NO SE ENCUENTRE UN PUNTO(.)
+  836B 18 09               DEY
+  836D 39                  RTS
 
                    ESCRIBE_DECENA
-  836E 3C                          PSHX
-  836F A6 00                       LDAA $00,X
-  8371 80 30                       SUBA #$30
-  8373 81 01                       CMPA #1
-  8375 27 22                       BEQ  NUM_1_DECENA
-  8377 81 02                       CMPA #2
-  8379 27 27                       BEQ  NUM_2_DECENA
-  837B 81 03                       CMPA #3
-  837D 27 2C                       BEQ  NUM_3_DECENA
-  837F 81 04                       CMPA #4
-  8381 27 31                       BEQ  NUM_4_DECENA
-  8383 81 05                       CMPA #5
-  8385 27 36                       BEQ  NUM_5_DECENA
-  8387 81 06                       CMPA #6
-  8389 27 3B                       BEQ  NUM_6_DECENA
-  838B 81 07                       CMPA #7
-  838D 27 40                       BEQ  NUM_7_DECENA
-  838F 81 08                       CMPA #8
-  8391 27 45                       BEQ  NUM_8_DECENA
-  8393 81 09                       CMPA #9
-  8395 27 4A                       BEQ  NUM_9_DECENA
+  836E 3C                  PSHX
+  836F A6 00               LDAA $00,X
+  8371 80 30               SUBA #$30
+  8373 81 01               CMPA #1
+  8375 27 22               BEQ  NUM_1_DECENA
+  8377 81 02               CMPA #2
+  8379 27 27               BEQ  NUM_2_DECENA
+  837B 81 03               CMPA #3
+  837D 27 2C               BEQ  NUM_3_DECENA
+  837F 81 04               CMPA #4
+  8381 27 31               BEQ  NUM_4_DECENA
+  8383 81 05               CMPA #5
+  8385 27 36               BEQ  NUM_5_DECENA
+  8387 81 06               CMPA #6
+  8389 27 3B               BEQ  NUM_6_DECENA
+  838B 81 07               CMPA #7
+  838D 27 40               BEQ  NUM_7_DECENA
+  838F 81 08               CMPA #8
+  8391 27 45               BEQ  NUM_8_DECENA
+  8393 81 09               CMPA #9
+  8395 27 4A               BEQ  NUM_9_DECENA
                    FIN_DECENA
-  8397 38                          PULX
-  8398 39                  RTS
+  8397 38                  PULX
+  8398 39              RTS
 
                    NUM_1_DECENA
-  8399 CE 31 C1                    LDX #DIEZ_R     * DIRECCION DE MEMORIA DE 10
-  839C BD 83 5F                    JSR CICLO_ESCRITURA
-  839F 7E 83 97                    JMP FIN_DECENA
+  8399 CE 31 C1            LDX #DIEZ_R
+.                  * DIRECCION DE DIEZ
+  839C BD 83 5F            JSR CICLO_ESCRITURA
+  839F 7E 83 97            JMP FIN_DECENA
                    NUM_2_DECENA
-  83A2 CE 31 C3                    LDX #VEINTE_R      * DIRECCION DE MEMORIA DE
-.                  20
-  83A5 BD 83 5F                    JSR CICLO_ESCRITURA
-  83A8 7E 83 97                    JMP FIN_DECENA
-                   NUM_3_DECENA
-  83AB CE 31 C6                    LDX #TREINTA_R      * DIRECCION DE MEMORIA DE
-.                  30
-  83AE BD 83 5F                    JSR CICLO_ESCRITURA
-  83B1 7E 83 97                    JMP FIN_DECENA
-                   NUM_4_DECENA
-  83B4 CE 31 CA                    LDX #CUARENTA_R      * DIRECCION DE MEMORIA
-.                  DE 40
-  83B7 BD 83 5F                    JSR CICLO_ESCRITURA
-  83BA 7E 83 97                    JMP FIN_DECENA
-                   NUM_5_DECENA
-  83BD CE 31 CD                    LDX #CINCUENTA_R      * DIRECCION DE MEMORIA
-.                  DE 50
-  83C0 BD 83 5F                    JSR CICLO_ESCRITURA
-  83C3 7E 83 97                    JMP FIN_DECENA
-                   NUM_6_DECENA
-  83C6 CE 31 CF                    LDX #SESENTA_R      * DIRECCION DE MEMORIA DE
-.                  60
-  83C9 BD 83 5F                    JSR CICLO_ESCRITURA
-  83CC 7E 83 97                    JMP FIN_DECENA
-                   NUM_7_DECENA
-  83CF CE 31 D2                    LDX #SETENTA_R      * DIRECCION DE MEMORIA DE
-.                  70
-  83D2 BD 83 5F                    JSR CICLO_ESCRITURA
   ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      15
 
-  83D5 7E 83 97                    JMP FIN_DECENA
+  83A2 CE 31 C3            LDX #VEINTE_R
+.                  * DIRECCION DE VEINTE
+  83A5 BD 83 5F            JSR CICLO_ESCRITURA
+  83A8 7E 83 97            JMP FIN_DECENA
+                   NUM_3_DECENA
+  83AB CE 31 C6            LDX #TREINTA_R
+.                  * DIRECCION DE TREINTA
+  83AE BD 83 5F            JSR CICLO_ESCRITURA
+  83B1 7E 83 97            JMP FIN_DECENA
+                   NUM_4_DECENA
+  83B4 CE 31 CA            LDX #CUARENTA_R
+.                  * DIRECCION DE CUARENTA
+  83B7 BD 83 5F            JSR CICLO_ESCRITURA
+  83BA 7E 83 97            JMP FIN_DECENA
+                   NUM_5_DECENA
+  83BD CE 31 CD            LDX #CINCUENTA_R
+.                  * DIRECCION DE CINCUENTA
+  83C0 BD 83 5F            JSR CICLO_ESCRITURA
+  83C3 7E 83 97            JMP FIN_DECENA
+                   NUM_6_DECENA
+  83C6 CE 31 CF            LDX #SESENTA_R
+.                  * DIRECCION DE SESENTA
+  83C9 BD 83 5F            JSR CICLO_ESCRITURA
+  83CC 7E 83 97            JMP FIN_DECENA
+                   NUM_7_DECENA
+  83CF CE 31 D2            LDX #SETENTA_R
+.                  * DIRECCION DE SETENTA
+  83D2 BD 83 5F            JSR CICLO_ESCRITURA
+  83D5 7E 83 97            JMP FIN_DECENA
                    NUM_8_DECENA
-  83D8 CE 31 D6                    LDX #OCHENTA_R      * DIRECCION DE MEMORIA DE
-.                  80
-  83DB BD 83 5F                    JSR CICLO_ESCRITURA
-  83DE 7E 83 97                    JMP FIN_DECENA
+  83D8 CE 31 D6            LDX #OCHENTA_R
+.                  * DIRECCION DE OCHENTA
+  83DB BD 83 5F            JSR CICLO_ESCRITURA
+  83DE 7E 83 97            JMP FIN_DECENA
                    NUM_9_DECENA
-  83E1 CE 31 DB                    LDX #NOVENTA_R      * DIRECCION DE MEMORIA DE
-.                  90
-  83E4 BD 83 5F                    JSR CICLO_ESCRITURA
-  83E7 7E 83 97                    JMP FIN_DECENA
+  83E1 CE 31 DB            LDX #NOVENTA_R
+.                  * DIRECCION DE NOVENTA
+  83E4 BD 83 5F            JSR CICLO_ESCRITURA
+  83E7 7E 83 97            JMP FIN_DECENA
 
                    ESCRIBE_UNIDAD
-  83EA 3C                          PSHX
-  83EB A6 00                       LDAA $00,X
-  83ED 80 30                       SUBA #$30
-  83EF 81 01                       CMPA #1
-  83F1 27 22                       BEQ  NUM_1_UNIDAD
-  83F3 81 02                       CMPA #2
-  83F5 27 27                       BEQ  NUM_2_UNIDAD
-  83F7 81 03                       CMPA #3
-  83F9 27 2C                       BEQ  NUM_3_UNIDAD
-  83FB 81 04                       CMPA #4
-  83FD 27 31                       BEQ  NUM_4_UNIDAD
-  83FF 81 05                       CMPA #5
-  8401 27 36                       BEQ  NUM_5_UNIDAD
-  8403 81 06                       CMPA #6
-  8405 27 3B                       BEQ  NUM_6_UNIDAD
-  8407 81 07                       CMPA #7
-  8409 27 40                       BEQ  NUM_7_UNIDAD
-  840B 81 08                       CMPA #8
-  840D 27 45                       BEQ  NUM_8_UNIDAD
-  840F 81 09                       CMPA #9
-  8411 27 4A                       BEQ  NUM_9_UNIDAD
+  83EA 3C                  PSHX
+  83EB A6 00               LDAA $00,X
+  83ED 80 30               SUBA #$30
+  83EF 81 01               CMPA #1
+  83F1 27 22               BEQ  NUM_1_UNIDAD
+  83F3 81 02               CMPA #2
+  83F5 27 27               BEQ  NUM_2_UNIDAD
+  83F7 81 03               CMPA #3
+  83F9 27 2C               BEQ  NUM_3_UNIDAD
+  83FB 81 04               CMPA #4
+  83FD 27 31               BEQ  NUM_4_UNIDAD
+  83FF 81 05               CMPA #5
+  8401 27 36               BEQ  NUM_5_UNIDAD
+  8403 81 06               CMPA #6
+  8405 27 3B               BEQ  NUM_6_UNIDAD
+  8407 81 07               CMPA #7
+  8409 27 40               BEQ  NUM_7_UNIDAD
+  840B 81 08               CMPA #8
+  840D 27 45               BEQ  NUM_8_UNIDAD
+  840F 81 09               CMPA #9
+  8411 27 4A               BEQ  NUM_9_UNIDAD
                    FIN_UNIDAD
-  8413 38                          PULX
-  8414 39                  RTS
-
-                   NUM_1_UNIDAD
-  8415 CE 31 DE                    LDX #UNO_R     * DIRECCION DE MEMORIA DE 1
-
-  8418 BD 83 5F                    JSR CICLO_ESCRITURA
-  841B 7E 84 13                    JMP FIN_UNIDAD
-                   NUM_2_UNIDAD
-  841E CE 31 E0                    LDX #DOS_R     * DIRECCION DE MEMORIA DE 2
-  8421 BD 83 5F                    JSR CICLO_ESCRITURA
-  8424 7E 84 13                    JMP FIN_UNIDAD
-                   NUM_3_UNIDAD
-  8427 CE 31 E3                    LDX #TRES_R     * DIRECCION DE MEMORIA DE 3
-  842A BD 83 5F                    JSR CICLO_ESCRITURA
-  842D 7E 84 13                    JMP FIN_UNIDAD
-                   NUM_4_UNIDAD
-  8430 CE 31 E7                    LDX #CUATRO_R     * DIRECCION DE MEMORIA DE 4
-  8433 BD 83 5F                    JSR CICLO_ESCRITURA
-  8436 7E 84 13                    JMP FIN_UNIDAD
-                   NUM_5_UNIDAD
-  8439 CE 31 EA                    LDX #CINCO_R     * DIRECCION DE MEMORIA DE 5
-  843C BD 83 5F                    JSR CICLO_ESCRITURA
-  843F 7E 84 13                    JMP FIN_UNIDAD
-                   NUM_6_UNIDAD
-  8442 CE 31 EC                    LDX #SEIS_R     * DIRECCION DE MEMORIA DE 6
-  8445 BD 83 5F                    JSR CICLO_ESCRITURA
-  8448 7E 84 13                    JMP FIN_UNIDAD
-                   NUM_7_UNIDAD
-  844B CE 31 EF                    LDX #SIETE_R    * DIRECCION DE MEMORIA DE 7
+  8413 38                  PULX
+  8414 39              RTS
   ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      16
 
-  844E BD 83 5F                    JSR CICLO_ESCRITURA
-  8451 7E 84 13                    JMP FIN_UNIDAD
+
+                   NUM_1_UNIDAD
+  8415 CE 31 DE            LDX #UNO_R
+.                  * DIRECCION DE UNO
+
+  8418 BD 83 5F            JSR CICLO_ESCRITURA
+  841B 7E 84 13            JMP FIN_UNIDAD
+                   NUM_2_UNIDAD
+  841E CE 31 E0            LDX #DOS_R
+.                  * DIRECCION DE DOS
+  8421 BD 83 5F            JSR CICLO_ESCRITURA
+  8424 7E 84 13            JMP FIN_UNIDAD
+                   NUM_3_UNIDAD
+  8427 CE 31 E3            LDX #TRES_R
+.                  * DIRECCION DE TRES
+  842A BD 83 5F            JSR CICLO_ESCRITURA
+  842D 7E 84 13            JMP FIN_UNIDAD
+                   NUM_4_UNIDAD
+  8430 CE 31 E7            LDX #CUATRO_R
+.                  * DIRECCION DE CUATRO
+  8433 BD 83 5F            JSR CICLO_ESCRITURA
+  8436 7E 84 13            JMP FIN_UNIDAD
+                   NUM_5_UNIDAD
+  8439 CE 31 EA            LDX #CINCO_R
+.                  * DIRECCION DE CINCO
+  843C BD 83 5F            JSR CICLO_ESCRITURA
+  843F 7E 84 13            JMP FIN_UNIDAD
+                   NUM_6_UNIDAD
+  8442 CE 31 EC            LDX #SEIS_R
+.                  * DIRECCION DE SEIS
+  8445 BD 83 5F            JSR CICLO_ESCRITURA
+  8448 7E 84 13            JMP FIN_UNIDAD
+                   NUM_7_UNIDAD
+  844B CE 31 EF            LDX #SIETE_R
+.                  * DIRECCION DE SIETE
+  844E BD 83 5F            JSR CICLO_ESCRITURA
+  8451 7E 84 13            JMP FIN_UNIDAD
                    NUM_8_UNIDAD
-  8454 CE 31 F3                    LDX #OCHO_R     * DIRECCION DE MEMORIA DE 8
-  8457 BD 83 5F                    JSR CICLO_ESCRITURA
-  845A 7E 84 13                    JMP FIN_UNIDAD
+  8454 CE 31 F3            LDX #OCHO_R
+.                  * DIRECCION DE OCHO
+  8457 BD 83 5F            JSR CICLO_ESCRITURA
+  845A 7E 84 13            JMP FIN_UNIDAD
                    NUM_9_UNIDAD
-  845D CE 31 F8                    LDX #NUEVE_R     * DIRECCION DE MEMORIA DE 9
-  8460 BD 83 5F                    JSR CICLO_ESCRITURA
-  8463 7E 84 13                    JMP FIN_UNIDAD
+  845D CE 31 F8            LDX #NUEVE_R
+.                  * DIRECCION DE NUEVE
+  8460 BD 83 5F            JSR CICLO_ESCRITURA
+  8463 7E 84 13            JMP FIN_UNIDAD
 
 
                    *Configuracion del puerto serial
                    SERIAL
-  8466 CC 30 2C            LDD   #$302C  * CONFIGURA PUERTO SERIAL
-  8469 B7 10 2B            STAA  BAUD    * BAUD  9600  para cristal de 8MHz
-  846C F7 10 2D            STAB  SCCR2   * HABILITA  RX Y TX PERO INTERRUPCN
-.                  SOLO RX
-  846F 86 00               LDAA  #$00
-  8471 B7 10 2C            STAA  SCCR1   * 8 BITS
+  8466 CC 30 2C        LDD   #$302C
+.                  * CONFIGURA PUERTO SERIAL
+  8469 B7 10 2B        STAA  BAUD
+.                  * BAUD  9600  para cristal de 8MHz
+  846C F7 10 2D        STAB  SCCR2
+.                  * HABILITA  RX Y TX PERO INTERRUPCN SOLO RX
+  846F 86 00           LDAA  #$00
+  8471 B7 10 2C        STAA  SCCR1
+.                  * 8 BITS
 
-  8474 86 FE                   LDAA  #$FE    * CONFIG PUERTO D COMO SALIDAS
-.                  (EXCEPTO PD0)
-  8476 B7 10 09            STAA  DDRD    * SEA  ENABLE DEL DISPLAY  PD4  Y RS
-.                  PD3
+  8474 86 FE               LDAA  #$FE
+.                  * CONFIG PUERTO D COMO SALIDAS (EXCEPTO PD0)
+  8476 B7 10 09        STAA  DDRD
+.                  * SEA  ENABLE DEL DISPLAY  PD4  Y RS PD3
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      17
 
 
-  8479 86 04               LDAA  #$04
-  847B B7 10 3C            STAA  HPRIO
 
-  847E 86 00                       LDAA  #$00
-  8480 06                  TAP
-  8481 39                  RTS
+  8479 86 04           LDAA  #$04
+  847B B7 10 3C        STAA  HPRIO
+
+  847E 86 00               LDAA  #$00
+  8480 06              TAP
+  8481 39              RTS
 
                    ERROR_ESCRITURA
-  8482 D6 02                       LDAB BANDERAERROR
-  8484 5C                          INCB
-  8485 D7 02                       STAB BANDERAERROR
-  8487 CE 00 50                    LDX #DIRECCION_RESULTADO     * DIRECCION DEL
-.                  MENSAJE
-  848A 18 CE 30 00                 LDY #$3000     * ORG DE LOS FCC
+  8482 D6 02               LDAB BANDERAERROR
+  8484 5C                  INCB
+  8485 D7 02               STAB BANDERAERROR
+  8487 CE 00 50            LDX #DIRECCION_RESULTADO
+.                  * DIRECCION MENSAJE
+  848A 18 CE 30 00         LDY #$3000
+.                  * ORG FCC
                    ERROR_CICLO
-  848E 18 E6 00                    LDAB $00,Y
-  8491 E7 00                       STAB $00,X
-  8493 08                          INX
-  8494 18 08                       INY
-  8496 C1 2E                       CMPB #46        * ASCII DE PUNTO
-  8498 26 F4                       BNE ERROR_CICLO
-  849A 39                          RTS
+  848E 18 E6 00            LDAB $00,Y
+  8491 E7 00               STAB $00,X
+  8493 08                  INX
+  8494 18 08               INY
+  8496 C1 2E               CMPB #46
+.                  * VALOR DE ASCII DEL PUNTO
+  8498 26 F4               BNE ERROR_CICLO
+  849A 39                  RTS
 
 
                    ERROR_SALTO
-  849B BD 84 82                    JSR ERROR_ESCRITURA
-  849E 7E 84 D1                    JMP FIN_ERROR
+  849B BD 84 82            JSR ERROR_ESCRITURA
+  849E 7E 84 D1            JMP FIN_ERROR
 
                    D_ERROR
-  84A1 D6 17                       LDAB BANDERAD
-  84A3 C1 00                       CMPB #0                 *VALIDA QUE NO HAYA
-.                  D's ANTES DE LA M
-  84A5 26 F4                       BNE ERROR_SALTO
+  84A1 D6 17               LDAB BANDERAD
+  84A3 C1 00               CMPB #0
+.                  * VALIDA QUE ANTES DE LA M NO HAYA D's
+  84A5 26 F4               BNE ERROR_SALTO
 
-  84A7 81 4D                       CMPA #'M
-  84A9 27 06                       BEQ L_ERROR             * VALIDAR QUE M SI
-.                  PUEDE TENER UNA C ANTES
+  84A7 81 4D               CMPA #'M
+  84A9 27 06               BEQ L_ERROR
+.                  * IDENTIFICA SI M TIENE UNA C ANTES
                    C_ERROR
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      17
-
-  84AB D6 18                       LDAB BANDERAC
-  84AD C1 00                       CMPB #0                 *VALIDA QUE NO HAYA
-.                  D's ANTES DE LA M
-  84AF 26 EA                       BNE ERROR_SALTO
+  84AB D6 18               LDAB BANDERAC
+  84AD C1 00               CMPB #0
+.                  * VALIDA QUE ANTES DE LA M NO HAYA D's
+  84AF 26 EA               BNE ERROR_SALTO
                    L_ERROR
-  84B1 D6 19                       LDAB BANDERAL
-  84B3 C1 00                       CMPB #0                 *VALIDA QUE NO HAYA
-.                  L's ANTES DE LA M
-  84B5 26 E4                       BNE ERROR_SALTO
-  84B7 81 43                       CMPA #'C
-  84B9 27 06                       BEQ V_ERROR             * VALIDAR QUE C SI
-.                  PUEDE TENER UNA X ANTES
+  84B1 D6 19               LDAB BANDERAL
+  84B3 C1 00               CMPB #0
+.                  * VALIDA QUE ANTES DE LA M NO HAYA L's
+  84B5 26 E4               BNE ERROR_SALTO
+  84B7 81 43               CMPA #'C
+  84B9 27 06               BEQ V_ERROR
+.                  * VALIDAR QUE C SI PUEDE TENER UNA X ANTES
                    X_ERROR
-  84BB D6 20                       LDAB BANDERAX
-  84BD C1 00                       CMPB #0                 *VALIDA QUE NO HAYA
-.                  X's ANTES DE LA M
-  84BF 26 DA                       BNE ERROR_SALTO
+  84BB D6 20               LDAB BANDERAX
+  84BD C1 00               CMPB #0
+.                  * VALIDA QUE ANTES DE LA M NO HAYA X's
+  84BF 26 DA               BNE ERROR_SALTO
                    V_ERROR
-  84C1 D6 21                       LDAB BANDERAV
-  84C3 C1 00                       CMPB #0                 *VALIDA QUE NO HAYA
-.                  V's ANTES DE LA M
-  84C5 26 D4                       BNE ERROR_SALTO
-  84C7 81 58                       CMPA #'X
-  84C9 27 06                       BEQ FIN_ERROR           * VALIDAR QUE X SI
-.                  PUEDE TENER UNA I ANTES
+  84C1 D6 21               LDAB BANDERAV
+  84C3 C1 00               CMPB #0
+.                  * VALIDA QUE ANTES DE LA M NO HAYA V's
+  84C5 26 D4               BNE ERROR_SALTO
+  84C7 81 58               CMPA #'X
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      18
+
+  84C9 27 06               BEQ FIN_ERROR
+.                  * VALIDAR QUE X SI PUEDE TENER UNA I ANTES
                    I_ERROR
-  84CB D6 22                       LDAB BANDERAI
-  84CD C1 00                       CMPB #0                 *VALIDA QUE NO HAYA
-.                  I's ANTES DE LA M
-  84CF 26 CA                       BNE ERROR_SALTO
+  84CB D6 22               LDAB BANDERAI
+  84CD C1 00               CMPB #0
+.                  * VALIDA QUE ANTES DE LA M NO HAYA I's
+  84CF 26 CA               BNE ERROR_SALTO
                    FIN_ERROR
-  84D1 39                          RTS
+  84D1 39                  RTS
 
                    LIMPIEZA
   84D2 7F 00 16            CLR BANDERAM
@@ -1125,29 +1169,30 @@
   8502 18 CE 00 30         LDY #DIRECCION_INPUT
                    LIM
   8506 C6 00               LDAB #00
-  8508 18 E7 00            STAB $00,Y   ** EMPIEZA EN LA $50
+  8508 18 E7 00            STAB $00,Y
+.                  * EMPIEZA EN LA $50
   850B 18 08               INY
-  850D 18 8C 00 C0         CPY #$00C0   ** TERMINA EN LA 70
+  850D 18 8C 00 C0         CPY #$00C0
+.                  * TERMINA EN LA $70
   8511 26 F3               BNE LIM
-  8513 18 CE 00 30         LDY #DIRECCION_INPUT  ** EMPIEZA EN LA 30
+  8513 18 CE 00 30         LDY #DIRECCION_INPUT
+.                  * EMPIEZA EN LA $30
                    LIM2
   8517 C6 00               LDAB #00
   8519 18 E7 00            STAB $00,Y
   851C 18 08               INY
-  851E 18 8C 00 40         CPY #$0040     ** TERMINA EN LA 40
+  851E 18 8C 00 40         CPY #$0040
+.                  * TERMINA EN LA $40
   8522 26 F3               BNE LIM2
   8524 39                  RTS
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      18
-
-
-
 
                    ORIGEN_DECIMAL
                            * JSR DESPLAZA_DECIMALS
-  8525 18 CE 00 30         LDY #DIRECCION_INPUT       ** EL INPUT
+  8525 18 CE 00 30         LDY #DIRECCION_INPUT
   8529 7E 85 49            JMP ESCRIBE_INSERTAR_TEXTO
                    ORIGEN_ROMANO
-  852C 18 CE 00 50         LDY #DIRECCION_RESULTADO         ** LA TRADUCCION
+  852C 18 CE 00 50         LDY #DIRECCION_RESULTADO
+.                  * LA TRADUCCION
   8530 18 A6 00            LDAA $00,Y
   8533 7E 85 5C            JMP ENTRADA_MILES
 
@@ -1159,6 +1204,8 @@
   853C 7E 85 ED            JMP ENTRADA_CENTENAS
 
                    **SUBRUTINA PARA ESCRIBIR LOS NUMEROS TEXTUALES
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      19
+
                    INSERTAR_TEXTO
   853F D6 24               LDAB BANDERA_TIPO_TRADUCCION
   8541 C1 01               CMPB #1
@@ -1177,7 +1224,7 @@
   855A 27 E0               BEQ ENTRADA_INTERMEDIA_CENTENAS
                    ENTRADA_MILES
   855C CE 00 70            LDX #DIRECCION_TEXTUAL
-  855F 18 E6 00            LDAB $00,Y                              ** CARACTER
+  855F 18 E6 00            LDAB $00,Y
   8562 18 3C               PSHY
   8564 C1 30               CMPB #'0
   8566 27 24               BEQ ESCRIBE_MIL_FIN
@@ -1204,8 +1251,6 @@
   858C 18 38               PULY
   858E 18 08               INY
   8590 7E 85 ED            JMP ENTRADA_CENTENAS
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      19
-
 
                    ESCRIBE_MIL
   8593 18 CE 31 A0         LDY #MIL_D
@@ -1226,6 +1271,8 @@
   85B1 18 CE 30 68         LDY #CUATRO_D
   85B5 BD 89 88            JSR CICLO_INSERTAR_TEXTO
   85B8 7E 85 93            JMP ESCRIBE_MIL
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      20
+
 
                    ESCRIBE_CINCO_MIL
   85BB 18 CE 30 6F         LDY #CINCO_D
@@ -1253,7 +1300,7 @@
   85EA 7E 85 93            JMP ESCRIBE_MIL
 
                    ENTRADA_CENTENAS
-  85ED 18 E6 00            LDAB $00,Y                              ** CARACTER
+  85ED 18 E6 00            LDAB $00,Y
   85F0 18 3C               PSHY
   85F2 C1 30               CMPB #'0
   85F4 27 1E               BEQ  ESCRIBE_CIENTOS_FIN
@@ -1271,8 +1318,6 @@
                    ESCRIBE_CIENTOS
   860D 18 CE 31 75         LDY #CIENTOS_D
   8611 BD 89 88            JSR CICLO_INSERTAR_TEXTO
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      20
-
                    ESCRIBE_CIENTOS_FIN
   8614 18 38               PULY
   8616 18 08               INY
@@ -1293,6 +1338,8 @@
   862E 18 08               INY
   8630 18 E6 00            LDAB $00,Y
   8633 C1 30               CMPB #'0
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      21
+
   8635 26 17               BNE ESCRIBE_CIENTO_UNI
   8637 18 09               DEY
   8639 18 09               DEY
@@ -1338,8 +1385,6 @@
   8686 BD 89 88            JSR CICLO_INSERTAR_TEXTO
   8689 7E 86 14            JMP ESCRIBE_CIENTOS_FIN
 
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      21
-
                    OTRAS_CENTENAS
   868C C1 36               CMPB #'6
   868E 27 0F               BEQ ESCRIBE_SEIS_CIENTOS
@@ -1360,6 +1405,8 @@
                    ESCRIBE_SIETE_CIENTOS
   86AA 18 CE 31 88         LDY #SETECIENTOS_D
   86AE BD 89 88            JSR CICLO_INSERTAR_TEXTO
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      22
+
   86B1 7E 86 14            JMP ESCRIBE_CIENTOS_FIN
 
                    ESCRIBE_OCHO_CIENTOS
@@ -1374,7 +1421,7 @@
   86C6 7E 86 14            JMP ESCRIBE_CIENTOS_FIN
 
                    ENTRADA_DECENAS
-  86C9 18 E6 00            LDAB $00,Y                              ** CARACTER
+  86C9 18 E6 00            LDAB $00,Y
   86CC 18 3C               PSHY
   86CE C1 30               CMPB #'0
   86D0 27 0B               BEQ FIN_ENTRADA_DECENAS
@@ -1405,8 +1452,6 @@
   86FC 27 2A               BEQ ESCRIBE_DOCE
   86FE C1 33               CMPB #'3
   8700 27 30               BEQ ESCRIBE_TRECE
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      22
-
   8702 C1 34               CMPB #'4
   8704 27 36               BEQ ESCRIBE_CATORCE
   8706 C1 35               CMPB #'5
@@ -1427,6 +1472,8 @@
                    ESCRIBE_DOCE
   8728 18 CE 30 9B         LDY #DOCE_D
   872C BD 89 88            JSR CICLO_INSERTAR_TEXTO
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      23
+
   872F 7E 89 85            JMP FIN_INSERTAR_TEXTO
                    ESCRIBE_TRECE
   8732 18 CE 30 A0         LDY #TRECE_D
@@ -1451,9 +1498,9 @@
   8762 7E 89 85            JMP FIN_INSERTAR_TEXTO
 
                    ESCRIBE_VEINTI
-  8765 18 38               PULY            **ESTO SE VE MEDIO RARO
+  8765 18 38               PULY
   8767 18 08               INY
-  8769 18 E6 00            LDAB $00,Y                              ** CARACTER
+  8769 18 E6 00            LDAB $00,Y
   876C 18 3C               PSHY
   876E C1 30               CMPB #'0
   8770 27 27               BEQ ESCRIBE_VEINTE
@@ -1472,12 +1519,11 @@
   878A C1 37               CMPB #'7
   878C 27 51               BEQ ESCRIBE_VEINTISIETE
   878E C1 38               CMPB #'8
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      23
-
   8790 27 57               BEQ ESCRIBE_VEINTIOCHO
   8792 C1 39               CMPB #'9
   8794 27 5D               BEQ ESCRIBE_VEINTINUEVE
-  8796 7E 89 85            JMP FIN_INSERTAR_TEXTO          **SE IRIA AL FIN
+  8796 7E 89 85            JMP FIN_INSERTAR_TEXTO
+.                  * SE VA AL FIN
 
                    *VEINTES
 
@@ -1493,6 +1539,8 @@
   87AD 18 CE 30 D0         LDY #VEINTIDOS_D
   87B1 BD 89 88            JSR CICLO_INSERTAR_TEXTO
   87B4 7E 89 85            JMP FIN_INSERTAR_TEXTO
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      24
+
                    ESCRIBE_VEINTITRES
   87B7 18 CE 30 DA         LDY #VEINTITRES_D
   87BB BD 89 88            JSR CICLO_INSERTAR_TEXTO
@@ -1539,8 +1587,6 @@
 
                    ESCRIBE_TREINTA
   8810 18 CE 31 2E         LDY #TREINTA_D
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      24
-
   8814 BD 89 88            JSR CICLO_INSERTAR_TEXTO
 
   8817 18 38               PULY
@@ -1560,6 +1606,8 @@
                    **CUARENTAS
                    ESCRIBE_CUARENTA
   8830 18 CE 31 36         LDY #CUARENTA_D
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      25
+
   8834 BD 89 88            JSR CICLO_INSERTAR_TEXTO
 
   8837 18 38               PULY
@@ -1606,8 +1654,6 @@
   8882 C1 30               CMPB #'0
   8884 27 07               BEQ FIN_ESCRIBE_SESENTA
 
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      25
-
   8886 18 CE 31 2C         LDY #Y_D
   888A BD 89 88            JSR CICLO_INSERTAR_TEXTO
                    FIN_ESCRIBE_SESENTA
@@ -1627,6 +1673,8 @@
                    ESCRIBE_SETENTA
   889F 18 CE 31 51         LDY #SETENTA_D
   88A3 BD 89 88            JSR CICLO_INSERTAR_TEXTO
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      26
+
 
   88A6 18 38               PULY
   88A8 18 08               INY
@@ -1673,15 +1721,13 @@
   88F1 C1 30               CMPB #'0
   88F3 27 07               BEQ FIN_ESCRIBE_NOVENTA
 
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      26
-
   88F5 18 CE 31 2C         LDY #Y_D
   88F9 BD 89 88            JSR CICLO_INSERTAR_TEXTO
                    FIN_ESCRIBE_NOVENTA
   88FC 7E 86 DD            JMP FIN_ENTRADA_DECENAS
 
                    ENTRADA_UNIDADES
-  88FF 18 E6 00            LDAB $00,Y                              ** CARACTER
+  88FF 18 E6 00            LDAB $00,Y
   8902 18 3C               PSHY
   8904 C1 31               CMPB #'1
   8906 27 23               BEQ ESCRIBE_UNO
@@ -1694,6 +1740,8 @@
   8914 C1 35               CMPB #'5
   8916 27 3B               BEQ ESCRIBE_CINCO
   8918 C1 36               CMPB #'6
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      27
+
   891A 27 41               BEQ ESCRIBE_SEIS
   891C C1 37               CMPB #'7
   891E 27 47               BEQ ESCRIBE_SIETE
@@ -1740,8 +1788,6 @@
 
                    ESCRIBE_OCHO
   8971 18 CE 30 80         LDY #OCHO_D
-  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      27
-
   8975 BD 89 88            JSR CICLO_INSERTAR_TEXTO
   8978 7E 89 85            JMP FIN_INSERTAR_TEXTO
 
@@ -1753,19 +1799,25 @@
                    *************************************************
 
                    FIN_INSERTAR_TEXTO
-  8985 7E 81 DA                    JMP FIN
+  8985 7E 81 DA            JMP FIN
 
                    CICLO_INSERTAR_TEXTO
-  8988 18 E6 00            LDAB $00,Y              * TOMA CARACTER DEL FCC
-  898B E7 00                       STAB $00,X      * ESCRIBE EL CHAR EN LA DIR
-.                  DE X
-  898D 08                          INX
-  898E 18 08                       INY                     * INCREMENTAMOS X Y Y
-  8990 C1 20                       CMPB #$20        * ASCII DE ESPACIO
-  8992 26 F4                       BNE CICLO_INSERTAR_TEXTO   * MIENTRAS NO
-.                  ENCONTREMOS UN PUNTO(.) SE REPITE
-  8994 18 09                       DEY
-  8996 39                          RTS
+  8988 18 E6 00        LDAB $00,Y
+.                  * TOMA CARACTER DEL FCC
+  898B E7 00               STAB $00,X
+.                  * ESCRIBE EN X EL CHAR
+  898D 08                  INX
+  ADDR B1 B2 B3 B4 C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      28
+
+.                  * INCREMENTA X
+  898E 18 08               INY
+.                  * INCREMENTA Y
+  8990 C1 20               CMPB #$20
+.                  * VALOR EN ASCII DE ESPACIO
+  8992 26 F4               BNE CICLO_INSERTAR_TEXTO
+.                  * SE REPITE MIENTRAS NO SE ENCUENTR UN PUNTO(.)
+  8994 18 09               DEY
+  8996 39                  RTS
 
 
 
@@ -1807,8 +1859,6 @@
   ESCRIBE_CUATRO     8949
   BANDERAC           0018
   VEINTICINCO_D      30F2
-  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      28
-
   BANDERAD           0017
   FIN_DECENA         8397
   BANDERAI           0022
@@ -1824,6 +1874,8 @@
   ESCRIBE_DIECI_L    8750
   S_ESCRIBE_VEINTI   86E4
   NUM_4_DECENA       83B4
+  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      29
+
   BANDERAV           0021
   BANDERAX           0020
   FIN_ESCRIBE_NOVENTA 88FC
@@ -1874,8 +1926,6 @@
   D_ERROR            84A1
   TRESCIENTOS_R      31A9
   SCCR1              102C
-  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      29
-
   CICLATE1           81EF
   SCCR2              102D
   CATORCE_D          30A6
@@ -1891,6 +1941,8 @@
   NUM_6_CENTENA      833B
   ENTRADA_CENTENAS   85ED
   CICLO              81F3
+  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      30
+
   ENTRADA_UNIDADES   88FF
   ESCRIBE_CIENTOS_FIN 8614
   CICLO1             81DE
@@ -1941,8 +1993,6 @@
   ESCRIBE_TREINTA    8810
   NUM_8_CENTENA      834D
   UNIDAD             0053
-  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      30
-
   ORIGEN_ROMANO      852C
   ERROR_1            80CF
   NUM_3_DECENA       83AB
@@ -1958,6 +2008,8 @@
   DOSCIENTOS_R       31A6
   ESCRIBE_CENTENA    82E3
   NUM_5_DECENA       83BD
+  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      31
+
   ERROR_CICLO        848E
   TREINTA_D          312E
   ERROR_CICLO1       82D6
@@ -2008,8 +2060,6 @@
   TRADUCCION_A_ROMANO 8236
   OCHENTA_R          31D6
   CICLO_INSERTAR_TEXTO 8988
-  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      31
-
   ESCRIBE_CINCO_MIL  85BB
   BANDERA_TRADUCCION 0012
   NUM_5_UNIDAD       8439
@@ -2025,6 +2075,8 @@
   V_ERROR            84C1
   ESCRIBE_CIENTO_DEC 8647
   LIM2               8517
+  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      32
+
   LIM3               82A3
   NOVECIENTOS_R      31BE
   DDRD               1009
@@ -2075,8 +2127,6 @@
   CASOX              8112
   CUARENTA_R         31CA
   NUM_2_CENTENA      8317
-  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      32
-
   SPCR               1028
   VEINTIOCHO_D       3115
   ESCRIBE_CINCUENTA  8850
@@ -2092,6 +2142,8 @@
   SALTOINTERMEDIO    8103
   ENTRADA_INTERMEDIA_DECENAS 8539
   CINCO_R            31EA
+  Symbol Table     C:\Users\spiqu\Documents\Escuela\Estructura_     PAGE      33
+
   ESCRIBE_SIETE_MIL  85CF
   ESCRIBE_TRES_CIENTOS 866C
   DOCE_D             309B
