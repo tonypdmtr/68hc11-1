@@ -1,1557 +1,1603 @@
-* PROYECTO 2
+                    #MaxLabel 20
+; PROYECTO 2
 
-*DECLARACION CONSTANTES
+; *DECLARACION CONSTANTES
 
-SCDR   EQU   $102F
-SCCR2  EQU   $102D
-SCSR   EQU   $102E
-SCCR1  EQU   $102C
-BAUD   EQU   $102B
-HPRIO  EQU   $103C
-SPCR   EQU   $1028
-CSCTL  EQU   $105D
-OPT2   EQU   $1038
-DDRD   EQU   $1009
+SCDR                equ       $102F
+SCCR2               equ       $102D
+SCSR                equ       $102E
+SCCR1               equ       $102C
+BAUD                equ       $102B
+HPRIO               equ       $103C
+SPCR                equ       $1028
+CSCTL               equ       $105D
+OPT2                equ       $1038
+DDRD                equ       $1009
 
-*DECLARACION DE VARIABLES PARA NUMEROS ROMANOS
-ORDEN 					EQU $0000
-M   					EQU $0016  *BANDERA DE LETRAS M
-D   					EQU $0017  *BANDERA DE LETRA D
-C   					EQU $0018  *BANDERA DE LETRA C
-L   					EQU $0019  *BANDERA DE LETRA L
-XB  					EQU $0020  *BANDERA DE LETRA X
-V   					EQU $0021  *BANDERA DE LETRA U
-I   					EQU $0022  *BANDERA DE LETRA I
-O   					EQU $0023  *BANDERA DEL OK
-A						EQU $0001  *BANDERA FIN DE CADENA
-BERROR 					EQU $0002   * BANDERA DE ERROR
-UNIDAD 					EQU $0053   * DIRECCION PARA ESCRIBIR UNIDADES
-DECENA 					EQU $0052   * DIRECCION PARA ESCRIBIR DECENAS
-CENTENA 				EQU $0051  * DIRECCION PARA ESCRIBIR CENTENA
-MIL 					EQU $0050      * DIRECCION PARA ESCRIBIR UNIDADES DE MILLAR
+; *DECLARACION DE VARIABLES PARA NUMEROS ROMANOS
+ORDEN               equ       $0000
+M                   equ       $0016               ; *BANDERA DE LETRAS M
+D                   equ       $0017               ; *BANDERA DE LETRA D
+C                   equ       $0018               ; *BANDERA DE LETRA C
+L                   equ       $0019               ; *BANDERA DE LETRA L
+XB                  equ       $0020               ; *BANDERA DE LETRA X
+V                   equ       $0021               ; *BANDERA DE LETRA U
+I                   equ       $0022               ; *BANDERA DE LETRA I
+O                   equ       $0023               ; *BANDERA DEL OK
+A                   equ       $0001               ; *BANDERA FIN DE CADENA
+BERROR              equ       $0002               ; BANDERA DE ERROR
+UNIDAD              equ       $0053               ; DIRECCION PARA ESCRIBIR UNIDADES
+DECENA              equ       $0052               ; DIRECCION PARA ESCRIBIR DECENAS
+CENTENA             equ       $0051               ; DIRECCION PARA ESCRIBIR CENTENA
+MIL                 equ       $0050               ; DIRECCION PARA ESCRIBIR UNIDADES DE MILLAR
 
-*DECLARACION DE VARIABLES PARA NUMEROS ARABIGOS
-DIR_RESULTADO   		EQU $0050
-DIR_INPUT     			EQU $0030
-DIR_TEXTUAL				EQU $0070
-BANDERA_TIPO_TRADUCCION EQU $0024
+; *DECLARACION DE VARIABLES PARA NUMEROS ARABIGOS
+DIR_RESULTADO       equ       $0050
+DIR_INPUT           equ       $0030
+DIR_TEXTUAL         equ       $0070
+BANDERA_TIPO_TRADUCCION equ       $0024
 
-NUMCARAC 				EQU $0010
-BERROR2 				EQU $0003  		      * ESTA CREO QUE NO SE USA...
-BANDERA_ERROR 			EQU $0011      * BANDERA DE ERROR PARA ARABIGOS
-BANDERA_TRADUCCION 		EQU $0012  * BANDERA PARA SABER QUE TRADUCCION ES
-CONTADOR 				EQU $0028
-CONTADOR_EXT 			EQU $0010
-			*--------------------------------------
-			*  ESPACIO PARA LAS CADENAS A MOSTRAR
-			*--------------------------------------
-			ORG $3000
-MENSAJE_E_ROMANO	FCC "ERROR, NUMERO ROMANO INVALIDO."   *29 CARACTERES
-MENSAJE_E_ARABIGO	FCC "ERROR, NUMERO ARABIGO INVALIDO."  *30
-MENSAJE_E_RANGO		FCC "ERROR, NUMERO FUERA DE RANGO."    *28
-			*--------------------------------------
-			* FCC PARA LA TRADUCCION A LETRAS   
-			*--------------------------------------
-UNO_L				FCC "uno  "
-DOS_L				FCC "dos "
-TRES_L				FCC	"tres "
-CUATRO_L			FCC	"cuatro "
-CINCO_L				FCC	"cinco "
-SEIS_L				FCC	"seis "
-SIETE_L				FCC	"siete "
-OCHO_L				FCC	"ocho "
-NUEVE_L				FCC	"nueve "
-DIECI_L				FCC "dieci "
-DIEZ_L				FCC	"diez "
-ONCE_L				FCC "once "
-DOCE_L 				FCC "doce "
-TRECE_L				FCC "trece "
-CATORCE_L			FCC "catorce "
-QUINCE_L			FCC "quince "
-DIECISEIS_L			FCC "diecisEis "
-DIECISIETE_L		FCC "diecisiete "
-DIECIOCHO_L			FCC "dieciocho "
-DIECINUEVE_L		FCC "diecinueve "
-VEINTE_L			FCC "veinte "
-VEINTIUNO_L			FCC "veintiuno "
-VEINTIDOS_L			FCC "veintidOs"
-VEINTITRES_L		FCC "veintitrEs"
-VEINTICUATRO_L		FCC "veinticuatro "
-VEINTICINCO_L		FCC "veinticinco "
-VEINTISEIS_L		FCC "veintisEis "
-VEINTISIETE_L		FCC "veintisiete "
-VEINTIOCHO_L		FCC "veintiocho "
-VEINTINUEVE_L		FCC "veintinueve "
-Y_L					FCC "y "
-TREINTA_L			FCC "treinta "
-CUARENTA_L			FCC "cuarenta "
-CINCUENTA_L			FCC "cincuenta "
-SESENTA_L			FCC "sesenta "
-SETENTA_L			FCC "setenta "
-OCHENTA_L			FCC "ochenta "
-NOVENTA_L			FCC "noventa "
-CIEN_L				FCC "cien "
-CIENTO_L			FCC "ciento "
-CIENTOS_L			FCC "cientos "
-QUINIENTOS_L		FCC "quinientos "
-SETECIENTOS_L		FCC "setecientos "
-NOVECIENTOS_L 		FCC "novecientos "
-MIL_L				FCC "mil "
-				*--------------------------------------
-				*  FCC PARA LA TRADUCCION ARABIGO - ROMANO
-				*--------------------------------------
-CIEN				FCC "C "      		*100
-DOSCIENTOS          FCC "CC "      		*200
-TRESCIENTOS         FCC "CCC "      	*300
-CUATROCIENTOS       FCC "CD "      		*400
-QUINIENTOS          FCC "D "     		*500
-SEISCIENTOS         FCC "DC "      		*600
-SETECIENTOS        	FCC "DCC "      	*700
-OCHOCIENTOS        	FCC "DCCC "  		*800
-NOVECIENTOS       	FCC "CM "    		*900
-DIEZ        		FCC "X "            *10  
-VEINTE              FCC "XX "           *20   
-TREINTA       		FCC "XXX "          *30 
-CUARENTA            FCC "XL "           *40
-CINCUENTA           FCC "L "            *50
-SESENTA				FCC "LX "           *60
-SETENTA				FCC "LXX "          *70
-OCHENTA				FCC "LXXX "         *80
-NOVENTA				FCC "XC "       	*90
-UNO					FCC "I "      		*1
-DOS					FCC "II "      		*2
-TRES				FCC "III "      	*3
-CUATRO				FCC "IV "      		*4
-CINCO				FCC "V "      		*5
-SEIS				FCC "VI "      		*6
-SIETE				FCC "VII "      	*7
-OCHO				FCC "VIII "         *8
-NUEVE				FCC "IX "           *9
+NUMCARAC            equ       $0010
+BERROR2             equ       $0003               ; ESTA CREO QUE NO SE USA...
+BANDERA_ERROR       equ       $0011               ; BANDERA DE ERROR PARA ARABIGOS
+BANDERA_TRADUCCION  equ       $0012               ; BANDERA PARA SABER QUE TRADUCCION ES
+CONTADOR            equ       $0028
+CONTADOR_EXT        equ       $0010
+; *--------------------------------------
+;  ESPACIO PARA LAS CADENAS A MOSTRAR
+; *--------------------------------------
+                    org       $3000
+MENSAJE_E_ROMANO    fcc       'ERROR, NUMERO ROMANO INVALIDO.'  ; *29 CARACTERES
+MENSAJE_E_ARABIGO   fcc       'ERROR, NUMERO ARABIGO INVALIDO.'  ; *30
+MENSAJE_E_RANGO     fcc       'ERROR, NUMERO FUERA DE RANGO.'  ; *28
+; *--------------------------------------
+; FCC PARA LA TRADUCCION A LETRAS
+; *--------------------------------------
+UNO_L               fcc       'uno  '
+DOS_L               fcc       'dos '
+TRES_L              fcc       'tres '
+CUATRO_L            fcc       'cuatro '
+CINCO_L             fcc       'cinco '
+SEIS_L              fcc       'seis '
+SIETE_L             fcc       'siete '
+OCHO_L              fcc       'ocho '
+NUEVE_L             fcc       'nueve '
+DIECI_L             fcc       'dieci '
+DIEZ_L              fcc       'diez '
+ONCE_L              fcc       'once '
+DOCE_L              fcc       'doce '
+TRECE_L             fcc       'trece '
+CATORCE_L           fcc       'catorce '
+QUINCE_L            fcc       'quince '
+DIECISEIS_L         fcc       'diecisEis '
+DIECISIETE_L        fcc       'diecisiete '
+DIECIOCHO_L         fcc       'dieciocho '
+DIECINUEVE_L        fcc       'diecinueve '
+VEINTE_L            fcc       'veinte '
+VEINTIUNO_L         fcc       'veintiuno '
+VEINTIDOS_L         fcc       'veintidOs'
+VEINTITRES_L        fcc       'veintitrEs'
+VEINTICUATRO_L      fcc       'veinticuatro '
+VEINTICINCO_L       fcc       'veinticinco '
+VEINTISEIS_L        fcc       'veintisEis '
+VEINTISIETE_L       fcc       'veintisiete '
+VEINTIOCHO_L        fcc       'veintiocho '
+VEINTINUEVE_L       fcc       'veintinueve '
+Y_L                 fcc       'y '
+TREINTA_L           fcc       'treinta '
+CUARENTA_L          fcc       'cuarenta '
+CINCUENTA_L         fcc       'cincuenta '
+SESENTA_L           fcc       'sesenta '
+SETENTA_L           fcc       'setenta '
+OCHENTA_L           fcc       'ochenta '
+NOVENTA_L           fcc       'noventa '
+CIEN_L              fcc       'cien '
+CIENTO_L            fcc       'ciento '
+CIENTOS_L           fcc       'cientos '
+QUINIENTOS_L        fcc       'quinientos '
+SETECIENTOS_L       fcc       'setecientos '
+NOVECIENTOS_L       fcc       'novecientos '
+MIL_L               fcc       'mil '
+; *--------------------------------------
+;  FCC PARA LA TRADUCCION ARABIGO - ROMANO
+; *--------------------------------------
+CIEN                fcc       'C '                ; *100
+DOSCIENTOS          fcc       'CC '               ; *200
+TRESCIENTOS         fcc       'CCC '              ; *300
+CUATROCIENTOS       fcc       'CD '               ; *400
+QUINIENTOS          fcc       'D '                ; *500
+SEISCIENTOS         fcc       'DC '               ; *600
+SETECIENTOS         fcc       'DCC '              ; *700
+OCHOCIENTOS         fcc       'DCCC '             ; *800
+NOVECIENTOS         fcc       'CM '               ; *900
+DIEZ                fcc       'X '                ; *10
+VEINTE              fcc       'XX '               ; *20
+TREINTA             fcc       'XXX '              ; *30
+CUARENTA            fcc       'XL '               ; *40
+CINCUENTA           fcc       'L '                ; *50
+SESENTA             fcc       'LX '               ; *60
+SETENTA             fcc       'LXX '              ; *70
+OCHENTA             fcc       'LXXX '             ; *80
+NOVENTA             fcc       'XC '               ; *90
+UNO                 fcc       'I '                ; *1
+DOS                 fcc       'II '               ; *2
+TRES                fcc       'III '              ; *3
+CUATRO              fcc       'IV '               ; *4
+CINCO               fcc       'V '                ; *5
+SEIS                fcc       'VI '               ; *6
+SIETE               fcc       'VII '              ; *7
+OCHO                fcc       'VIII '             ; *8
+NUEVE               fcc       'IX '               ; *9
 
-		
-		ORG $8000
+                    org       $8000
 INICIO
-		LDS #$00FF 		* Configuracion del puerto serial
-		JSR SERIAL 		* SUBRUTINA PARA CONFIG EL PUERTO SERIAL
-		JSR LIMPIEZA
-		JSR INICIALIZAR
+                    lds       #$00FF              ; Configuracion del puerto serial
+                    jsr       SERIAL              ; SUBRUTINA PARA CONFIG EL PUERTO SERIAL
+                    jsr       LIMPIEZA
+                    jsr       INICIALIZAR
 
 CICLATE1
-		LDAA	#'?
-		STAA	ORDEN
+                    lda       #'?'
+                    sta       ORDEN
 CICLO
-		LDAA	ORDEN
-		CMPA	#'?
-		BEQ	CICLO
+                    lda       ORDEN
+                    cmpa      #'?'
+                    beq       CICLO
 
-		
 ENTRADA
-        CMPA #61            *Valida que le llegue un = para saber que es fin de la cadena que mete el usuario
-	    BEQ TRADUCCION_A_ROMANO
-        
-        CMPA #'O  *CASO EN QUE RECIBA OK
-        BEQ CASOO_ARABIGO
-        CMPA #'K
-        BEQ CASOOK_ARABIGO  *CASO EN QUE RECIBA UNA K
+                    cmpa      #61                 ; *Valida que le llegue un = para saber que es fin de la cadena que mete el usuario
+                    beq       TRADUCCION_A_ROMANO
 
-		JSR VALIDACION_ARABIGO		*REGRESA UN 1 EN B SI ES ARABIGO
-		CMPB #1			
-		BNE ENTRADA_INTERMEDIO_ROMANO
+                    cmpa      #'O'                ; *CASO EN QUE RECIBA OK
+                    beq       CASOO_ARABIGO
+                    cmpa      #'K'
+                    beq       CASOOK_ARABIGO      ; *CASO EN QUE RECIBA UNA K
 
+                    jsr       VALIDACION_ARABIGO  ; *REGRESA UN 1 EN B SI ES ARABIGO
+                    cmpb      #1
+                    bne       ENTRADA_INTERMEDIO_ROMANO
 
-		
-        LDAB    NUMCARAC    
-        CMPB    #3
-        BHI     ERROR_CANTIDAD       *POR SI YA LLEGARON LOS 4 CARACTERES ES UN ERROR                       
+                    ldb       NUMCARAC
+                    cmpb      #3
+                    bhi       ERROR_CANTIDAD      ; *POR SI YA LLEGARON LOS 4 CARACTERES ES UN ERROR
 
-      	INCB 			
-      	STAB NUMCARAC		 	    *INCREMENTAMOS EL DE CARACTERES
-             
-        STAA $00,X
-        INX                         *CAMBIAMOS EL CONTADOR DE LA SIGUIENTE MEMORIA A ESCRIBIR
+                    incb
+                    stb       NUMCARAC            ; *INCREMENTAMOS EL DE CARACTERES
 
-        JMP CICLATE1
+                    sta       ,x
+                    inx                           ; *CAMBIAMOS EL CONTADOR DE LA SIGUIENTE MEMORIA A ESCRIBIR
+
+                    bra       CICLATE1
 
 ENTRADA_INTERMEDIO_ROMANO
-		LDAB #2
-		STAB BANDERA_TIPO_TRADUCCION
-		JMP ENTRADA_ROMANO
-		
-CASOO_ARABIGO
-		LDAB O 
-		INCB
-		STAB O
-		JMP CICLATE1
 
-CASOOK_ARABIGO	
-		LDAB O
-		CMPB #0
-		BEQ ERROR_CANTIDAD
-		JSR INICIALIZAR
-		*JSR LIMPIEZA
-        JMP CICLATE1
+                    ldb       #2
+                    stb       BANDERA_TIPO_TRADUCCION
+                    jmp       ENTRADA_ROMANO
+
+CASOO_ARABIGO
+                    ldb       O
+                    incb
+                    stb       O
+                    bra       CICLATE1
+
+CASOOK_ARABIGO
+                    ldb       O
+                    cmpb      #0
+                    beq       ERROR_CANTIDAD
+                    bsr       INICIALIZAR
+; *JSR LIMPIEZA
+                    bra       CICLATE1
 
 TRADUCCION_A_ROMANO
-		LDAB #1
-		STAB BANDERA_TIPO_TRADUCCION  
+                    ldb       #1
+                    stb       BANDERA_TIPO_TRADUCCION
 
-		LDAA BANDERA_ERROR
-		CMPA #1
-		BEQ CICLATE1
-		LDY #DIR_RESULTADO      *DIRECCION DE ESCRITURA
-		LDX #DIR_INPUT      *DIRECCION DE NUMS
-		LDAA NUMCARAC       *COMPARAMOS EL NUMERO DE CARACTERES
-		CMPA #1
-		BEQ CASO_UNIDAD     
-		CMPA #2
-		BEQ CASO_DECENA
-		CMPA #3
-		BEQ CASO_CENTENA
-		CMPA #4
-		BEQ CASO_MILLAR	
-		
-		JMP CICLATE1	      *POR SI NO SE VALIDA BIEN
-    
+                    lda       BANDERA_ERROR
+                    cmpa      #1
+                    beq       CICLATE1
+                    ldy       #DIR_RESULTADO      ; *DIRECCION DE ESCRITURA
+                    ldx       #DIR_INPUT          ; *DIRECCION DE NUMS
+                    lda       NUMCARAC            ; *COMPARAMOS EL NUMERO DE CARACTERES
+                    cmpa      #1
+                    beq       CASO_UNIDAD
+                    cmpa      #2
+                    beq       CASO_DECENA
+                    cmpa      #3
+                    beq       CASO_CENTENA
+                    cmpa      #4
+                    beq       CASO_MILLAR
+
+                    bra       CICLATE1            ; *POR SI NO SE VALIDA BIEN
 
 CASO_MILLAR
-		
-		LDAB $00,X      *TOMAR EL PRIMER NUM CHAR Y PONERLO EN B
-        CMPB #$31       *
-		BLO CASO_CENTENA * VALIDA QUE SEA MAYOR A 0 EN ASCII
+
+                    ldb       ,x                  ; *TOMAR EL PRIMER NUM CHAR Y PONERLO EN B
+                    cmpb      #$31                ;
+                    blo       CASO_CENTENA        ; VALIDA QUE SEA MAYOR A 0 EN ASCII
 
 CASO_ESCRIBE_MILLAR
-		LDAA #'M		* CARGA UNA M EN EL ACUMULADOR A
-		STAA $00,Y      * ESCRIBE EN LA DIR DE Y   
-		INY 			* INCREMENTAMOS Y PARA CONTINUAR ESCRIBIENDO 
-		DECB            * DECREMENTAMOS B
-		CMPB #$30       * ASCII DE 0 
-		BNE CASO_ESCRIBE_MILLAR       * MIENTRAS NO ENCONTREMOS UN PUNTO(.) SE REPITE
-		INX             * PASAMOS AL SIGUIENTE NUM DIGITO       
- 
+                    lda       #'M'                ; CARGA UNA M EN EL ACUMULADOR A
+                    sta       ,y                  ; ESCRIBE EN LA DIR DE Y
+                    iny                           ; INCREMENTAMOS Y PARA CONTINUAR ESCRIBIENDO
+                    decb                          ; DECREMENTAMOS B
+                    cmpb      #$30                ; ASCII DE 0
+                    bne       CASO_ESCRIBE_MILLAR  ; MIENTRAS NO ENCONTREMOS UN PUNTO(.) SE REPITE
+                    inx                           ; PASAMOS AL SIGUIENTE NUM DIGITO
+
 CASO_CENTENA
-		JSR ESCRIBE_CENTENA
-		INX        
-CASO_DECENA  
-	* GUARDA EN A, EL VALOR DE X
-		JSR ESCRIBE_DECENA
-		INX
+                    bsr       ESCRIBE_CENTENA
+                    inx
+CASO_DECENA
+; GUARDA EN A, EL VALOR DE X
+                    jsr       ESCRIBE_DECENA
+                    inx
 CASO_UNIDAD
-		JSR ESCRIBE_UNIDAD
-		JMP MUCHO_TEXTO
-		JMP CICLATE1
+                    jsr       ESCRIBE_UNIDAD
+                    jmp       MUCHO_TEXTO
+
+                    jmp       CICLATE1
 
 ERROR_CANTIDAD
-		LDX #DIR_RESULTADO     * DIRECCION DEL MENSAJE
-		LDY #MENSAJE_E_RANGO    * ORG DE LOS FCC
-		JSR ERROR      
-		JMP CICLATE1
-        
+                    ldx       #DIR_RESULTADO      ; DIRECCION DEL MENSAJE
+                    ldy       #MENSAJE_E_RANGO    ; ORG DE LOS FCC
+                    bsr       ERROR
+                    jmp       CICLATE1
 
 INICIALIZAR
-		LDX #DIR_INPUT
-		LDY #DIR_RESULTADO			*ES 50
-		CLR BANDERA_TIPO_TRADUCCION
-		CLR O
-		CLR UNO
-		CLR BERROR2	*DEJA EN CERO LAS VARIABLES
-		CLR NUMCARAC
-		CLR BANDERA_ERROR
+                    ldx       #DIR_INPUT
+                    ldy       #DIR_RESULTADO      ; *ES 50
+                    clr       BANDERA_TIPO_TRADUCCION
+                    clr       O
+                    clr       UNO
+                    clr       BERROR2             ; *DEJA EN CERO LAS VARIABLES
+                    clr       NUMCARAC
+                    clr       BANDERA_ERROR
 LIMONES
-		LDAB #00
-		STAB $00,Y
-		INY
-		CPY #$00C0
-		BNE LIMONES
-		LDY #DIR_INPUT  ** LA 30
+                    ldb       #00
+                    stb       ,y
+                    iny
+                    cpy       #$00C0
+                    bne       LIMONES
+                    ldy       #DIR_INPUT          ;** LA 30
 LIMAS
-		LDAB #00
-		STAB $00,Y
-		INY
-		CPY #$0040
-		BNE LIMAS
-		RTS
-		
+                    ldb       #00
+                    stb       ,y
+                    iny
+                    cpy       #$0040
+                    bne       LIMAS
+                    rts
+
 VALIDACION_ARABIGO
-		CMPA #$30 		*Valor 0
-		BLO ERROR_ARABIGO
-		CMPA #$3A 		* Valor 9
-		BHI ERROR_ARABIGO
-		LDAB #1
+                    cmpa      #$30                ; *Valor 0
+                    blo       ERROR_ARABIGO
+                    cmpa      #$3A                ; Valor 9
+                    bhi       ERROR_ARABIGO
+                    ldb       #1
 FIN_VALIDACION_ARABIGO
-		RTS
+
+                    rts
 
 ERROR_ARABIGO
-		LDAB #4
-		JMP FIN_VALIDACION_ARABIGO
-
-
+                    ldb       #4
+                    bra       FIN_VALIDACION_ARABIGO
 
 ERROR
-		LDAB #1
-		STAB BANDERA_ERROR
+                    ldb       #1
+                    stb       BANDERA_ERROR
 ERROR_CICLO1
-		LDAB $00,Y		*TOMA CARACTER DEL FCC
-		STAB $00,X      *ESCRIBE EL CHAR EN LA DIR DE X
-		INX             
-		INY 			* INCREMENTAMOS X Y Y
-		CMPB #46        * ASCII DE PUNTO
-		BNE ERROR_CICLO1       * MIENTRAS NO ENCONTREMOS UN PUNTO(.) SE REPITE
-		RTS
+                    ldb       ,y                  ; *TOMA CARACTER DEL FCC
+                    stb       ,x                  ; *ESCRIBE EL CHAR EN LA DIR DE X
+                    inx
+                    iny                           ; INCREMENTAMOS X Y Y
+                    cmpb      #46                 ; ASCII DE PUNTO
+                    bne       ERROR_CICLO1        ; MIENTRAS NO ENCONTREMOS UN PUNTO(.) SE REPITE
+                    rts
+
 ESCRIBE_CENTENA
-		PSHX        * RESPALDA/COPIA EL VALOR DE X
-		LDAA $00,X  * GUARDA EN A, EL CARACTER DE X
-		SUBA #$30	* RESTA 30 PARA VER QUE NUMERO ES
-		CMPA #1
-		BEQ  NUM_1_CENTENA
-		CMPA #2
-		BEQ  NUM_2_CENTENA
-		CMPA #3
-		BEQ  NUM_3_CENTENA
-		CMPA #4
-		BEQ  NUM_4_CENTENA
-		CMPA #5
-		BEQ  NUM_5_CENTENA
-		CMPA #6
-		BEQ  NUM_6_CENTENA
-		CMPA #7
-		BEQ  NUM_7_CENTENA
-		CMPA #8
-		BEQ  NUM_8_CENTENA
-		CMPA #9
-		BEQ  NUM_9_CENTENA
+                    pshx      *                   ; RESPALDA/COPIA EL VALOR DE X
+                    lda       ,x                  ; GUARDA EN A, EL CARACTER DE X
+                    suba      #$30                ; RESTA 30 PARA VER QUE NUMERO ES
+                    cmpa      #1
+                    beq       NUM_1_CENTENA
+                    cmpa      #2
+                    beq       NUM_2_CENTENA
+                    cmpa      #3
+                    beq       NUM_3_CENTENA
+                    cmpa      #4
+                    beq       NUM_4_CENTENA
+                    cmpa      #5
+                    beq       NUM_5_CENTENA
+                    cmpa      #6
+                    beq       NUM_6_CENTENA
+                    cmpa      #7
+                    beq       NUM_7_CENTENA
+                    cmpa      #8
+                    beq       NUM_8_CENTENA
+                    cmpa      #9
+                    beq       NUM_9_CENTENA
 FIN_CENTENA
-		PULX
-        RTS
+                    pulx
+                    rts
+
 NUM_1_CENTENA
-		LDX #CIEN     * DIRECCION DE MEMORIA DE 100
-		*LDY #CIEN_L
-		JSR CICLO_ESCRITURA
-		JMP FIN_CENTENA
+                    ldx       #CIEN               ; DIRECCION DE MEMORIA DE 100
+; *LDY #CIEN_L
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_CENTENA
+
 NUM_2_CENTENA
-		LDX #DOSCIENTOS     * DIRECCION DE MEMORIA DE 200
-		*LDY #DOS_L
-		*LDY #MIL_L
-		JSR CICLO_ESCRITURA
-		JMP FIN_CENTENA
+                    ldx       #DOSCIENTOS         ; DIRECCION DE MEMORIA DE 200
+; *LDY #DOS_L
+; *LDY #MIL_L
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_CENTENA
+
 NUM_3_CENTENA
-		LDX #TRESCIENTOS     * DIRECCION DE MEMORIA DE 300
-		JSR CICLO_ESCRITURA
-		JMP FIN_CENTENA
+                    ldx       #TRESCIENTOS        ; DIRECCION DE MEMORIA DE 300
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_CENTENA
+
 NUM_4_CENTENA
-		LDX #CUATROCIENTOS     * DIRECCION DE MEMORIA DE 400
-		JSR CICLO_ESCRITURA
-		JMP FIN_CENTENA
+                    ldx       #CUATROCIENTOS      ; DIRECCION DE MEMORIA DE 400
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_CENTENA
+
 NUM_5_CENTENA
-		LDX #QUINIENTOS     * DIRECCION DE MEMORIA DE 500
-		JSR CICLO_ESCRITURA
-		JMP FIN_CENTENA
+                    ldx       #QUINIENTOS         ; DIRECCION DE MEMORIA DE 500
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_CENTENA
+
 NUM_6_CENTENA
-		LDX #SEISCIENTOS     * DIRECCION DE MEMORIA DE 600
-		JSR CICLO_ESCRITURA
-		JMP FIN_CENTENA
+                    ldx       #SEISCIENTOS        ; DIRECCION DE MEMORIA DE 600
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_CENTENA
+
 NUM_7_CENTENA
-		LDX #SETECIENTOS     * DIRECCION DE MEMORIA DE 700
-		JSR CICLO_ESCRITURA
-		JMP FIN_CENTENA
+                    ldx       #SETECIENTOS        ; DIRECCION DE MEMORIA DE 700
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_CENTENA
+
 NUM_8_CENTENA
-		LDX #OCHOCIENTOS     * DIRECCION DE MEMORIA DE 800
-		JSR CICLO_ESCRITURA
-		JMP FIN_CENTENA
+                    ldx       #OCHOCIENTOS        ; DIRECCION DE MEMORIA DE 800
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_CENTENA
+
 NUM_9_CENTENA
-		LDX #NOVECIENTOS    * DIRECCION DE MEMORIA DE 900
-		JSR CICLO_ESCRITURA
-		JMP FIN_CENTENA
+                    ldx       #NOVECIENTOS        ; DIRECCION DE MEMORIA DE 900
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_CENTENA
 
 CICLO_ESCRITURA
-        LDAB $00,X		* TOMA CARACTER DEL FCC
-		STAB $00,Y      * ESCRIBE EL CHAR EN LA DIR DE Y
-		INX             
-		INY 			* INCREMENTAMOS X Y Y
-		CMPB #$20        * ASCII DE ESPACIO
-		BNE CICLO_ESCRITURA   * MIENTRAS NO ENCONTREMOS UN PUNTO(.) SE REPITE
-		DEY
-		RTS
+                    ldb       ,x                  ; TOMA CARACTER DEL FCC
+                    stb       ,y                  ; ESCRIBE EL CHAR EN LA DIR DE Y
+                    inx
+                    iny                           ; INCREMENTAMOS X Y Y
+                    cmpb      #$20                ; ASCII DE ESPACIO
+                    bne       CICLO_ESCRITURA     ; MIENTRAS NO ENCONTREMOS UN PUNTO(.) SE REPITE
+                    dey
+                    rts
 
 ESCRIBE_DECENA
-		PSHX
-		LDAA $00,X
-		SUBA #$30
-		CMPA #1
-		BEQ  NUM_1_DECENA
-		CMPA #2
-		BEQ  NUM_2_DECENA
-		CMPA #3
-		BEQ  NUM_3_DECENA
-		CMPA #4
-		BEQ  NUM_4_DECENA
-		CMPA #5
-		BEQ  NUM_5_DECENA
-		CMPA #6
-		BEQ  NUM_6_DECENA
-		CMPA #7
-		BEQ  NUM_7_DECENA
-		CMPA #8
-		BEQ  NUM_8_DECENA
-		CMPA #9
-		BEQ  NUM_9_DECENA
+                    pshx
+                    lda       ,x
+                    suba      #$30
+                    cmpa      #1
+                    beq       NUM_1_DECENA
+                    cmpa      #2
+                    beq       NUM_2_DECENA
+                    cmpa      #3
+                    beq       NUM_3_DECENA
+                    cmpa      #4
+                    beq       NUM_4_DECENA
+                    cmpa      #5
+                    beq       NUM_5_DECENA
+                    cmpa      #6
+                    beq       NUM_6_DECENA
+                    cmpa      #7
+                    beq       NUM_7_DECENA
+                    cmpa      #8
+                    beq       NUM_8_DECENA
+                    cmpa      #9
+                    beq       NUM_9_DECENA
 FIN_DECENA
-		PULX
-        RTS
-        
+                    pulx
+                    rts
+
 NUM_1_DECENA
-		LDX #DIEZ     * DIRECCION DE MEMORIA DE 10
-		JSR CICLO_ESCRITURA
-		JMP FIN_DECENA
+                    ldx       #DIEZ               ; DIRECCION DE MEMORIA DE 10
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_DECENA
+
 NUM_2_DECENA
-		LDX #VEINTE     * DIRECCION DE MEMORIA DE 20
-		JSR CICLO_ESCRITURA
-		JMP FIN_DECENA
+                    ldx       #VEINTE             ; DIRECCION DE MEMORIA DE 20
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_DECENA
+
 NUM_3_DECENA
-		LDX #TREINTA     * DIRECCION DE MEMORIA DE 30
-		JSR CICLO_ESCRITURA
-		JMP FIN_DECENA
+                    ldx       #TREINTA            ; DIRECCION DE MEMORIA DE 30
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_DECENA
+
 NUM_4_DECENA
-		LDX #CUARENTA     * DIRECCION DE MEMORIA DE 40
-		JSR CICLO_ESCRITURA
-		JMP FIN_DECENA
+                    ldx       #CUARENTA           ; DIRECCION DE MEMORIA DE 40
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_DECENA
+
 NUM_5_DECENA
-		LDX #CINCUENTA     * DIRECCION DE MEMORIA DE 50
-		JSR CICLO_ESCRITURA
-		JMP FIN_DECENA
+                    ldx       #CINCUENTA          ; DIRECCION DE MEMORIA DE 50
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_DECENA
+
 NUM_6_DECENA
-		LDX #SESENTA     * DIRECCION DE MEMORIA DE 60
-		JSR CICLO_ESCRITURA
-		JMP FIN_DECENA
+                    ldx       #SESENTA            ; DIRECCION DE MEMORIA DE 60
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_DECENA
+
 NUM_7_DECENA
-		LDX #SETENTA     * DIRECCION DE MEMORIA DE 70
-		JSR CICLO_ESCRITURA
-		JMP FIN_DECENA
+                    ldx       #SETENTA            ; DIRECCION DE MEMORIA DE 70
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_DECENA
+
 NUM_8_DECENA
-		LDX #OCHENTA     * DIRECCION DE MEMORIA DE 80
-		JSR CICLO_ESCRITURA
-		JMP FIN_DECENA
+                    ldx       #OCHENTA            ; DIRECCION DE MEMORIA DE 80
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_DECENA
+
 NUM_9_DECENA
-		LDX #NOVENTA     * DIRECCION DE MEMORIA DE 90
-		JSR CICLO_ESCRITURA
-		JMP FIN_DECENA
+                    ldx       #NOVENTA            ; DIRECCION DE MEMORIA DE 90
+                    bsr       CICLO_ESCRITURA
+                    bra       FIN_DECENA
 
 ESCRIBE_UNIDAD
-		PSHX
-		LDAA $00,X
-		SUBA #$30
-		CMPA #1
-		BEQ  NUM_1_UNIDAD
-		CMPA #2
-		BEQ  NUM_2_UNIDAD
-		CMPA #3
-		BEQ  NUM_3_UNIDAD
-		CMPA #4
-		BEQ  NUM_4_UNIDAD
-		CMPA #5
-		BEQ  NUM_5_UNIDAD
-		CMPA #6
-		BEQ  NUM_6_UNIDAD
-		CMPA #7
-		BEQ  NUM_7_UNIDAD
-		CMPA #8
-		BEQ  NUM_8_UNIDAD
-		CMPA #9
-		BEQ  NUM_9_UNIDAD
+                    pshx
+                    lda       ,x
+                    suba      #$30
+                    cmpa      #1
+                    beq       NUM_1_UNIDAD
+                    cmpa      #2
+                    beq       NUM_2_UNIDAD
+                    cmpa      #3
+                    beq       NUM_3_UNIDAD
+                    cmpa      #4
+                    beq       NUM_4_UNIDAD
+                    cmpa      #5
+                    beq       NUM_5_UNIDAD
+                    cmpa      #6
+                    beq       NUM_6_UNIDAD
+                    cmpa      #7
+                    beq       NUM_7_UNIDAD
+                    cmpa      #8
+                    beq       NUM_8_UNIDAD
+                    cmpa      #9
+                    beq       NUM_9_UNIDAD
 FIN_UNIDAD
-		PULX
-        RTS
-        
-NUM_1_UNIDAD
-		LDX #UNO     * DIRECCION DE MEMORIA DE 1
-		JSR CICLO_ESCRITURA
-		JMP FIN_UNIDAD
-NUM_2_UNIDAD
-		LDX #DOS     * DIRECCION DE MEMORIA DE 2
-		JSR CICLO_ESCRITURA
-		JMP FIN_UNIDAD
-NUM_3_UNIDAD
-		LDX #TRES     * DIRECCION DE MEMORIA DE 3
-		JSR CICLO_ESCRITURA
-		JMP FIN_UNIDAD
-NUM_4_UNIDAD
-		LDX #CUATRO     * DIRECCION DE MEMORIA DE 4
-		JSR CICLO_ESCRITURA
-		JMP FIN_UNIDAD
-NUM_5_UNIDAD
-		LDX #CINCO     * DIRECCION DE MEMORIA DE 5
-		JSR CICLO_ESCRITURA
-		JMP FIN_UNIDAD
-NUM_6_UNIDAD
-		LDX #SEIS     * DIRECCION DE MEMORIA DE 6
-		JSR CICLO_ESCRITURA
-		JMP FIN_UNIDAD
-NUM_7_UNIDAD
-		LDX #SIETE     * DIRECCION DE MEMORIA DE 7
-		JSR CICLO_ESCRITURA
-		JMP FIN_UNIDAD
-NUM_8_UNIDAD
-		LDX #OCHO     * DIRECCION DE MEMORIA DE 8
-		JSR CICLO_ESCRITURA
-		JMP FIN_UNIDAD
-NUM_9_UNIDAD
-		LDX #NUEVE     * DIRECCION DE MEMORIA DE 9
-		JSR CICLO_ESCRITURA
-		JMP FIN_UNIDAD
+                    pulx
+                    rts
 
-***********************************************************************************
-***********************************************************************************
-***********************************************************************************
-***********************************************************************************
-*                   TRADUCCION DE ROMANO
-***********************************************************************************
-***********************************************************************************
-***********************************************************************************
-***********************************************************************************
+NUM_1_UNIDAD
+                    ldx       #UNO                ; DIRECCION DE MEMORIA DE 1
+                    jsr       CICLO_ESCRITURA
+                    bra       FIN_UNIDAD
+
+NUM_2_UNIDAD
+                    ldx       #DOS                ; DIRECCION DE MEMORIA DE 2
+                    jsr       CICLO_ESCRITURA
+                    bra       FIN_UNIDAD
+
+NUM_3_UNIDAD
+                    ldx       #TRES               ; DIRECCION DE MEMORIA DE 3
+                    jsr       CICLO_ESCRITURA
+                    bra       FIN_UNIDAD
+
+NUM_4_UNIDAD
+                    ldx       #CUATRO             ; DIRECCION DE MEMORIA DE 4
+                    jsr       CICLO_ESCRITURA
+                    bra       FIN_UNIDAD
+
+NUM_5_UNIDAD
+                    ldx       #CINCO              ; DIRECCION DE MEMORIA DE 5
+                    jsr       CICLO_ESCRITURA
+                    bra       FIN_UNIDAD
+
+NUM_6_UNIDAD
+                    ldx       #SEIS               ; DIRECCION DE MEMORIA DE 6
+                    jsr       CICLO_ESCRITURA
+                    bra       FIN_UNIDAD
+
+NUM_7_UNIDAD
+                    ldx       #SIETE              ; DIRECCION DE MEMORIA DE 7
+                    jsr       CICLO_ESCRITURA
+                    bra       FIN_UNIDAD
+
+NUM_8_UNIDAD
+                    ldx       #OCHO               ; DIRECCION DE MEMORIA DE 8
+                    jsr       CICLO_ESCRITURA
+                    bra       FIN_UNIDAD
+
+NUM_9_UNIDAD
+                    ldx       #NUEVE              ; DIRECCION DE MEMORIA DE 9
+                    jsr       CICLO_ESCRITURA
+                    bra       FIN_UNIDAD
+
+;***********************************************************************************
+;***********************************************************************************
+;***********************************************************************************
+;***********************************************************************************
+;                   TRADUCCION DE ROMANO
+;***********************************************************************************
+;***********************************************************************************
+;***********************************************************************************
+;***********************************************************************************
 
 CICLATE
-		LDAA	#'?
-		STAA	ORDEN
+                    lda       #'?'
+                    sta       ORDEN
 CUENTA
-        LDAA    ORDEN
-        CMPA    #'?
-        BEQ     CUENTA
+                    lda       ORDEN
+                    cmpa      #'?'
+                    beq       CUENTA
 
 ENTRADA_ROMANO
-		LDAB NUMCARAC
-		CMPB #0
-		BNE ERROR1
-        CMPA #'M
-        BEQ CASOM
-        CMPA #'D
-        BEQ CASOD
-        JMP SALTOINTERMEDIO1
+                    ldb       NUMCARAC
+                    cmpb      #0
+                    bne       ERROR1
+                    cmpa      #'M'
+                    beq       CASOM
+                    cmpa      #'D'
+                    beq       CASOD
+                    bra       SALTOINTERMEDIO1
 
 ERROR1
-		JSR ERROR_ESCRITURA
-		JMP FIN
+                    jsr       ERROR_ESCRITURA
+                    jmp       FIN
 
-CASOM	
-		LDAB C			*Verifica que le haya llegado una C ANTES para el caso de CM
-      	CMPB #0
-      	BNE CASOM1
+CASOM
+                    ldb       C                   ; *Verifica que le haya llegado una C ANTES para el caso de CM
+                    cmpb      #0
+                    bne       CASOM1
 
-	
-		LDAB M
-		CMPB #8         *Verifica que no sean más de 9 M's 
-		BHI ERROR1
-		
-		JSR D_ERROR
-		
-		STAA $00,X  	*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX
-      	LDAB M
-      	INCB 
-      	STAB M		 
-      	LDAB MIL
-      	INCB 
-      	STAB MIL
-      	JMP CICLATE
+                    ldb       M
+                    cmpb      #8                  ; *Verifica que no sean más de 9 M's
+                    bhi       ERROR1
 
-*CASO DONDE LLEGUE CM
-CASOM1                  
-		CMPB #1         *Compara si hay una segunda C
-		BHI ERROR1 
-		ADDB #5         
-		STAB C          *Carga en C el valor de 5           
-		LDAB #9         
-      	STAB CENTENA    *Carga en las centenas el valor de 9
-		STAA $00,X  	*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX             *Aumenta la X en 1
-      	JMP CICLATE     *Regresa a esperar
+                    jsr       D_ERROR
+
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx
+                    ldb       M
+                    incb
+                    stb       M
+                    ldb       MIL
+                    incb
+                    stb       MIL
+                    bra       CICLATE
+
+; *CASO DONDE LLEGUE CM
+CASOM1
+                    cmpb      #1                  ; *Compara si hay una segunda C
+                    bhi       ERROR1
+                    addb      #5
+                    stb       C                   ; *Carga en C el valor de 5
+                    ldb       #9
+                    stb       CENTENA             ; *Carga en las centenas el valor de 9
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx                           ; *Aumenta la X en 1
+                    bra       CICLATE             ; *Regresa a esperar
 
 CASOD
-		
-		JSR L_ERROR
-		LDAB D
-      	INCB 
-      	STAB D
-		CMPB #2
-		BEQ ERROR1 					*VALIDA QUE NO LLEGUEN 2 O MÁS D's
-		STAA $00,X 					*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX
-      	LDAB C
-      	CMPB #0
-      	BNE CASOD1
-      	LDAB #5
-      	STAB CENTENA
-      	JMP CICLATE
-CASOD1  
-***** CASO CD
-		CMPB #1         
-		BHI ERROR_1     *Compara si hay más de una C
-		ADDB #5                   
-		STAB C          *Carga en C el valor de 5, ¿porque? ####
-		LDAB #4         
-      	STAB CENTENA    *Carga en las centenas el valor de 4
-		STAA $00,X  	*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX             *Aumenta la X en 1
-      	JMP CICLATE     *Regresa a esperar
 
+                    jsr       L_ERROR
+                    ldb       D
+                    incb
+                    stb       D
+                    cmpb      #2
+                    beq       ERROR1              ; *VALIDA QUE NO LLEGUEN 2 O MÁS D's
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx
+                    ldb       C
+                    cmpb      #0
+                    bne       CASOD1
+                    ldb       #5
+                    stb       CENTENA
+                    bra       CICLATE
+
+CASOD1
+;***** CASO CD
+                    cmpb      #1
+                    bhi       ERROR_1             ; *Compara si hay más de una C
+                    addb      #5
+                    stb       C                   ; *Carga en C el valor de 5, ¿porque? ####
+                    ldb       #4
+                    stb       CENTENA             ; *Carga en las centenas el valor de 4
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx                           ; *Aumenta la X en 1
+                    bra       CICLATE             ; *Regresa a esperar
 
 SALTOINTERMEDIO1
-		CMPA #'C
-        BEQ CASOC
-		CMPA #'L
-        BEQ CASOL
-		JMP SALTOINTERMEDIO
+                    cmpa      #'C'
+                    beq       CASOC
+                    cmpa      #'L'
+                    beq       CASOL
+                    bra       SALTOINTERMEDIO
 
-*C ES UNA BANDERA A FUTURO PARA ERRORES
+; *C ES UNA BANDERA A FUTURO PARA ERRORES
 CASOC
-		LDAB XB							*VERIFICA QUE LLEGUE UN XC
-		CMPB #0
-		BNE CASOC1
-		LDAB C
-		CMPB #4
-		BHI ERROR_1
-		
-		JSR L_ERROR
+                    ldb       XB                  ; *VERIFICA QUE LLEGUE UN XC
+                    cmpb      #0
+                    bne       CASOC1
+                    ldb       C
+                    cmpb      #4
+                    bhi       ERROR_1
 
-		LDAB C
-     	INCB 
-      	STAB C
-		CMPB #4			
-		BEQ ERROR_1		*VALIDA QUE NO LLEGUEN 4 O MÁS C's
-		STAA $00,X						*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX
-		LDAB CENTENA
-     	INCB 
-      	STAB CENTENA
-      	JMP CICLATE
+                    jsr       L_ERROR
 
-*CASO POR SI LLEGA UN XC
+                    ldb       C
+                    incb
+                    stb       C
+                    cmpb      #4
+                    beq       ERROR_1             ; *VALIDA QUE NO LLEGUEN 4 O MÁS C's
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx
+                    ldb       CENTENA
+                    incb
+                    stb       CENTENA
+                    jmp       CICLATE
+
+; *CASO POR SI LLEGA UN XC
 CASOC1
-		CMPB #1                   
-		BHI ERROR_1  * SI ES HAY MÁS DE UNA C ES ERROR
-		ADDB #5          *PARA FUTURO ERROR XCX
-		STAB XB
-		LDAB #9
-		STAB DECENA
-		STAA $00,X  	*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX
-		JMP CICLATE
+                    cmpb      #1
+                    bhi       ERROR_1             ; SI ES HAY MÁS DE UNA C ES ERROR
+                    addb      #5                  ; *PARA FUTURO ERROR XCX
+                    stb       XB
+                    ldb       #9
+                    stb       DECENA
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx
+                    jmp       CICLATE
 
 ERROR_1
-		JSR ERROR_ESCRITURA
-		JMP FIN
+                    jsr       ERROR_ESCRITURA
+                    jmp       FIN
 
 CASOL
-		LDAB XB
-		CMPB #0
-		BNE CASOL1
-		JSR V_ERROR
-		LDAB L
-      	INCB 
-      	STAB L
-		CMPB #2			
-		BEQ ERROR_1		*VALIDA QUE NO LLEGUEN 2 O MÁS L's
-		STAA $00,X						*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX
-		LDAB #5
-      	STAB DECENA
-		
-      	JMP CICLATE
+                    ldb       XB
+                    cmpb      #0
+                    bne       CASOL1
+                    jsr       V_ERROR
+                    ldb       L
+                    incb
+                    stb       L
+                    cmpb      #2
+                    beq       ERROR_1             ; *VALIDA QUE NO LLEGUEN 2 O MÁS L's
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx
+                    ldb       #5
+                    stb       DECENA
 
-*PARA CUANDO LLEGA XL
+                    jmp       CICLATE
+
+; *PARA CUANDO LLEGA XL
 CASOL1
-		CMPB #1         
-		BHI ERROR_1     *Compara si hay más de una X
-		ADDB #5                   
-		STAB XB          *Suma en X el valor de 5, ¿porque? ####
-		LDAB #4         
-      	STAB DECENA     *Carga en las centenas el valor de 4
-		STAA $00,X  	*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX             *Siguiente Direccion de escritura
-      	JMP CICLATE     *Regresa a esperar
+                    cmpb      #1
+                    bhi       ERROR_1             ; *Compara si hay más de una X
+                    addb      #5
+                    stb       XB                  ; *Suma en X el valor de 5, ¿porque? ####
+                    ldb       #4
+                    stb       DECENA              ; *Carga en las centenas el valor de 4
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx                           ; *Siguiente Direccion de escritura
+                    jmp       CICLATE             ; *Regresa a esperar
 
-                          **********SALTO INTERMEDIO
+;**********SALTO INTERMEDIO
 SALTOINTERMEDIO
-		CMPA #'X
-        BEQ CASOX
-        CMPA #'V
-        BEQ CASOV
-        CMPA #'I
-        BEQ CASOI
+                    cmpa      #'X'
+                    beq       CASOX
+                    cmpa      #'V'
+                    beq       CASOV
+                    cmpa      #'I'
+                    beq       CASOI
 
-		JMP SALTOINTERMEDIO2
+                    bra       SALTOINTERMEDIO2
 
 CASOX
-		JSR V_ERROR
-		LDAB I
-		CMPB #0			*VALIDA EL CASO IX
-		BNE CASOX1
-		LDAB XB
-      	INCB 
-      	STAB XB
-		CMPB #3
-		BHI ERROR_1
-		LDAB V
-		CMPB #0			*VALIDA QUE NO HAYA V's ANTES DE LA X 
-		BNE ERROR_1
-		
+                    jsr       V_ERROR
+                    ldb       I
+                    cmpb      #0                  ; *VALIDA EL CASO IX
+                    bne       CASOX1
+                    ldb       XB
+                    incb
+                    stb       XB
+                    cmpb      #3
+                    bhi       ERROR_1
+                    ldb       V
+                    cmpb      #0                  ; *VALIDA QUE NO HAYA V's ANTES DE LA X
+                    bne       ERROR_1
 
-		STAA $00,X			*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX
-		LDAB DECENA
-		INCB
-		STAB DECENA
-      	JMP CICLATE
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx
+                    ldb       DECENA
+                    incb
+                    stb       DECENA
+                    jmp       CICLATE
 
 ERROR_2
-		JSR ERROR_ESCRITURA
-		JMP FIN
-*CUANDO LLEGUE UN IX	
+                    jsr       ERROR_ESCRITURA
+                    jmp       FIN
+
+; *CUANDO LLEGUE UN IX
 CASOX1
-		CMPB #1
-		BHI ERROR_1
-		ADDB #6
-		STAB I
-		LDAB #9
-		STAB UNIDAD
-		STAA $00,X  	*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX
-		JMP CICLATE
+                    cmpb      #1
+                    bhi       ERROR_1
+                    addb      #6
+                    stb       I
+                    ldb       #9
+                    stb       UNIDAD
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx
+                    jmp       CICLATE
 
 CASOV
-		LDAB I
-		CMPB #0
-		BNE CASOV1
-		LDAB V
-		INCB 
-		STAB V
-		CMPB #2
-		BEQ ERROR_2		*VALIDA QUE NO LLEGUEN 2 O MÁS V's	_2
-		STAA $00,X						*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX
-		LDAB #5
-		STAB UNIDAD
-		JMP CICLATE
+                    ldb       I
+                    cmpb      #0
+                    bne       CASOV1
+                    ldb       V
+                    incb
+                    stb       V
+                    cmpb      #2
+                    beq       ERROR_2             ; *VALIDA QUE NO LLEGUEN 2 O MÁS V's     _2
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx
+                    ldb       #5
+                    stb       UNIDAD
+                    jmp       CICLATE
 
-*CUANDO LLEGUE UN IV
-CASOV1 
-		CMPB #1
-		BHI ERROR_2
-		ADDB #6
-		STAB I
-		LDAB #4
-		STAB UNIDAD
-		STAA $00,X  	*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX
-		JMP CICLATE
+; *CUANDO LLEGUE UN IV
+CASOV1
+                    cmpb      #1
+                    bhi       ERROR_2
+                    addb      #6
+                    stb       I
+                    ldb       #4
+                    stb       UNIDAD
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx
+                    jmp       CICLATE
 
 SALTOINTERMEDIO2
-        CMPA #'O  *CASO EN QUE RECIBA OK
-        BEQ CASOO
-        CMPA #'K
-        BEQ CASOOK
-		CMPA #61            *Valida que le llegue un = para saber que es fin de la cadena que mete el usuario
-		BEQ ESCRIBECHAR
-		JMP SALTOINTERMEDIO1_ERROR
+                    cmpa      #'O'                ; *CASO EN QUE RECIBA OK
+                    beq       CASOO
+                    cmpa      #'K'
+                    beq       CASOOK
+                    cmpa      #61                 ; *Valida que le llegue un = para saber que es fin de la cadena que mete el usuario
+                    beq       ESCRIBECHAR
+                    bra       SALTOINTERMEDIO1_ERROR
 
 CASOI
-		
-		LDAB I
-		INCB 
-		STAB I
-		CMPB #3
-		BHI ERROR_2
-		STAA $00,X						*Escribir a partir de la memoria $70 lo que le mande el usuario
-		INX
-		LDAB UNIDAD
-		INCB
-		STAB UNIDAD
-		JMP CICLATE
+
+                    ldb       I
+                    incb
+                    stb       I
+                    cmpb      #3
+                    bhi       ERROR_2
+                    sta       ,x                  ; *Escribir a partir de la memoria $70 lo que le mande el usuario
+                    inx
+                    ldb       UNIDAD
+                    incb
+                    stb       UNIDAD
+                    jmp       CICLATE
 
 CASOO
-		LDAB O
-		INCB
-		STAB O
-		JMP FIN
+                    ldb       O
+                    incb
+                    stb       O
+                    bra       FIN
 
 CASOOK
-		LDAB O
-		CMPB #0
-		BNE LIMPIEZA_SALTO      * Si existe una O
-		JMP CICLATE1
+                    ldb       O
+                    cmpb      #0
+                    bne       LIMPIEZA_SALTO      ; Si existe una O
+                    jmp       CICLATE1
+
 LIMPIEZA_SALTO
-		JSR LIMPIEZA
-		JSR INICIALIZAR
-		JMP CICLATE1
+                    jsr       LIMPIEZA
+                    jsr       INICIALIZAR
+                    jmp       CICLATE1
 
 SALTOINTERMEDIO1_ERROR
-		JMP ERROR1
+
+                    jmp       ERROR1
 
 ESCRIBECHAR
-		LDAB BERROR
-		CMPB #1
-		BEQ SALTOINTERMEDIO1_ERROR
-		LDAB #48  * Es el ascii de 0 en decimal 
-		LDAA MIL
-		ABA
-		STAA MIL
-		LDAA CENTENA
-		ABA
-		STAA CENTENA
-		LDAA DECENA
-		ABA
-		STAA DECENA
-		LDAA UNIDAD
-		ABA
-		STAA UNIDAD
-		JMP MUCHO_TEXTO
-		JMP FIN
+                    ldb       BERROR
+                    cmpb      #1
+                    beq       SALTOINTERMEDIO1_ERROR
+                    ldb       #48                 ; Es el ascii de 0 en decimal
+                    lda       MIL
+                    aba
+                    sta       MIL
+                    lda       CENTENA
+                    aba
+                    sta       CENTENA
+                    lda       DECENA
+                    aba
+                    sta       DECENA
+                    lda       UNIDAD
+                    aba
+                    sta       UNIDAD
+                    jmp       MUCHO_TEXTO
 
-FIN 
-		LDAA	#'?
-		STAA	ORDEN
+FIN
+                    lda       #'?'
+                    sta       ORDEN
 CICLO1
-		LDAA	ORDEN
-		CMPA	#'?
+                    lda       ORDEN
+                    cmpa      #'?'
 
-		BEQ	CICLO1
-		CMPA #'O
-		BEQ CASOO
-		CMPA #'K
-		BEQ CASOOK
-		JMP FIN
+                    beq       CICLO1
+                    cmpa      #'O'
+                    beq       CASOO
+                    cmpa      #'K'
+                    beq       CASOOK
+                    bra       FIN
 
-*Configuracion del puerto serial
-SERIAL 
-       	LDD   #$302C  * CONFIGURA PUERTO SERIAL
-       	STAA  BAUD    * BAUD  9600  para cristal de 8MHz
-       	STAB  SCCR2   * HABILITA  RX Y TX PERO INTERRUPCN SOLO RX
-       	LDAA  #$00
-       	STAA  SCCR1   * 8 BITS
+; *Configuracion del puerto serial
+SERIAL
+                    ldd       #$302C              ; CONFIGURA PUERTO SERIAL
+                    sta       BAUD                ; BAUD 9600 para cristal de 8MHz
+                    stb       SCCR2               ; HABILITA RX Y TX PERO INTERRUPCN SOLO RX
+                    lda       #$00
+                    sta       SCCR1               ; 8 BITS
 
-	    LDAA  #$FE    * CONFIG PUERTO D COMO SALIDAS (EXCEPTO PD0)
-    	STAA  DDRD    * SEA  ENABLE DEL DISPLAY  PD4  Y RS PD3
-                     
-      
-        LDAA  #$04
-       	STAA  HPRIO
+                    lda       #$FE                ; CONFIG PUERTO D COMO SALIDAS (EXCEPTO PD0)
+                    sta       DDRD                ; SEA ENABLE DEL DISPLAY PD4 Y RS PD3
 
-	 	LDAA  #$00
-     	TAP
-      	RTS
+                    lda       #$04
+                    sta       HPRIO
+
+                    lda       #$00
+                    tap
+                    rts
 
 ERROR_ESCRITURA
-		LDAB BERROR
-		INCB 
-		STAB BERROR
-		LDX #DIR_RESULTADO     * DIRECCION DEL MENSAJE
-		LDY #$3000     * ORG DE LOS FCC
+                    ldb       BERROR
+                    incb
+                    stb       BERROR
+                    ldx       #DIR_RESULTADO      ; DIRECCION DEL MENSAJE
+                    ldy       #$3000              ; ORG DE LOS FCC
 ERROR_CICLO
-		LDAB $00,Y		
-		STAB $00,X
-		INX 
-		INY
-		CMPB #46        * ASCII DE PUNTO
-		BNE ERROR_CICLO
-		RTS
-
+                    ldb       ,y
+                    stb       ,x
+                    inx
+                    iny
+                    cmpb      #46                 ; ASCII DE PUNTO
+                    bne       ERROR_CICLO
+                    rts
 
 ERROR_SALTO
-		JSR ERROR_ESCRITURA
-		JMP FIN_ERROR
+                    bsr       ERROR_ESCRITURA
+                    bra       FIN_ERROR
 
-D_ERROR 
-		LDAB D
-		CMPB #0			*VALIDA QUE NO HAYA D's ANTES DE LA M 
-		BNE ERROR_SALTO
-		
-		CMPA #'M
-		BEQ L_ERROR		* VALIDAR QUE M SI PUEDE TENER UNA C ANTES
+D_ERROR
+                    ldb       D
+                    cmpb      #0                  ; *VALIDA QUE NO HAYA D's ANTES DE LA M
+                    bne       ERROR_SALTO
+
+                    cmpa      #'M'
+                    beq       L_ERROR             ; VALIDAR QUE M SI PUEDE TENER UNA C ANTES
 C_ERROR
-		LDAB C
-		CMPB #0			*VALIDA QUE NO HAYA D's ANTES DE LA M 
-		BNE ERROR_SALTO
+                    ldb       C
+                    cmpb      #0                  ; *VALIDA QUE NO HAYA D's ANTES DE LA M
+                    bne       ERROR_SALTO
 L_ERROR
-		LDAB L
-		CMPB #0			*VALIDA QUE NO HAYA L's ANTES DE LA M 
-		BNE ERROR_SALTO
-		CMPA #'C
-		BEQ V_ERROR		* VALIDAR QUE C SI PUEDE TENER UNA X ANTES
+                    ldb       L
+                    cmpb      #0                  ; *VALIDA QUE NO HAYA L's ANTES DE LA M
+                    bne       ERROR_SALTO
+                    cmpa      #'C'
+                    beq       V_ERROR             ; VALIDAR QUE C SI PUEDE TENER UNA X ANTES
 X_ERROR
-		LDAB XB
-		CMPB #0			*VALIDA QUE NO HAYA X's ANTES DE LA M 
-		BNE ERROR_SALTO
+                    ldb       XB
+                    cmpb      #0                  ; *VALIDA QUE NO HAYA X's ANTES DE LA M
+                    bne       ERROR_SALTO
 V_ERROR
-		LDAB V
-		CMPB #0			*VALIDA QUE NO HAYA V's ANTES DE LA M 
-		BNE ERROR_SALTO
-		CMPA #'X
-		BEQ FIN_ERROR		* VALIDAR QUE X SI PUEDE TENER UNA I ANTES
+                    ldb       V
+                    cmpb      #0                  ; *VALIDA QUE NO HAYA V's ANTES DE LA M
+                    bne       ERROR_SALTO
+                    cmpa      #'X'
+                    beq       FIN_ERROR           ; VALIDAR QUE X SI PUEDE TENER UNA I ANTES
 I_ERROR
-		LDAB I
-		CMPB #0			*VALIDA QUE NO HAYA I's ANTES DE LA M 
-		BNE ERROR_SALTO
+                    ldb       I
+                    cmpb      #0                  ; *VALIDA QUE NO HAYA I's ANTES DE LA M
+                    bne       ERROR_SALTO
 FIN_ERROR
-		RTS
+                    rts
 
 LIMPIEZA
-	CLR M
-	CLR D
-	CLR C
-	CLR L 
-	CLR XB
-	CLR V
-	CLR I
-	CLR A
-	CLR NUMCARAC
-	CLR BANDERA_TIPO_TRADUCCION
-	CLR BERROR
-	CLR UNIDAD
-	CLR DECENA
-	CLR CENTENA
-	CLR MIL
-	CLR BANDERA_TRADUCCION
-	LDX #DIR_RESULTADO
-	LDY #DIR_INPUT
+                    clr       M
+                    clr       D
+                    clr       C
+                    clr       L
+                    clr       XB
+                    clr       V
+                    clr       I
+                    clr       A
+                    clr       NUMCARAC
+                    clr       BANDERA_TIPO_TRADUCCION
+                    clr       BERROR
+                    clr       UNIDAD
+                    clr       DECENA
+                    clr       CENTENA
+                    clr       MIL
+                    clr       BANDERA_TRADUCCION
+                    ldx       #DIR_RESULTADO
+                    ldy       #DIR_INPUT
 LIM
-	LDAB #00
-	STAB $00,Y   ** EMPIEZA EN LA $50
-	INY
-	CPY #$00C0   ** TERMINA EN LA 70
-	BNE LIM
-	LDY #DIR_INPUT  ** EMPIEZA EN LA 30
+                    ldb       #00
+                    stb       ,y                  ;** EMPIEZA EN LA $50
+                    iny
+                    cpy       #$00C0              ;** TERMINA EN LA 70
+                    bne       LIM
+                    ldy       #DIR_INPUT          ;** EMPIEZA EN LA 30
 LIM2
-	LDAB #00
-	STAB $00,Y
-	INY
-	CPY #$0040     ** TERMINA EN LA 40
-	BNE LIM2
-	RTS
-
-
+                    ldb       #00
+                    stb       ,y
+                    iny
+                    cpy       #$0040              ;** TERMINA EN LA 40
+                    bne       LIM2
+                    rts
 
 ORIGEN_ARABIGO
-	* JSR DESPLAZA_ARABIGOS
-	LDY #DIR_INPUT       ** EL INPUT 
-	JMP ESCRIBE_MUCHO_TEXTO
+; JSR DESPLAZA_ARABIGOS
+                    ldy       #DIR_INPUT          ;** EL INPUT
+                    bra       ESCRIBE_MUCHO_TEXTO
+
 ORIGEN_ROMANO
-	LDY #DIR_RESULTADO	 ** LA TRADUCCION
-	LDAA $00,Y
-	JMP ENTRADA_MILES
+                    ldy       #DIR_RESULTADO      ;** LA TRADUCCION
+                    lda       ,y
+                    bra       ENTRADA_MILES
 
 ENTRADA_INTERMEDIA_UNIDADES
-	JMP ENTRADA_UNIDADES
-ENTRADA_INTERMEDIA_DECENAS
-	JMP ENTRADA_DECENAS
-ENTRADA_INTERMEDIA_CENTENAS
-	JMP ENTRADA_CENTENAS
 
-**SUBRUTINA PARA ESCRIBIR LOS NUMEROS TEXTUALES	
+                    jmp       ENTRADA_UNIDADES
+
+ENTRADA_INTERMEDIA_DECENAS
+
+                    jmp       ENTRADA_DECENAS
+
+ENTRADA_INTERMEDIA_CENTENAS
+
+                    jmp       ENTRADA_CENTENAS
+
+;**SUBRUTINA PARA ESCRIBIR LOS NUMEROS TEXTUALES
 MUCHO_TEXTO
-	LDAB BANDERA_TIPO_TRADUCCION
-	CMPB #1
-	BEQ ORIGEN_ARABIGO
-	CMPB #2
-	BEQ ORIGEN_ROMANO
+                    ldb       BANDERA_TIPO_TRADUCCION
+                    cmpb      #1
+                    beq       ORIGEN_ARABIGO
+                    cmpb      #2
+                    beq       ORIGEN_ROMANO
 ESCRIBE_MUCHO_TEXTO
-	LDX #DIR_TEXTUAL
-	LDAB NUMCARAC
-	STAB $00A0
-	CMPB #1
-	BEQ ENTRADA_INTERMEDIA_UNIDADES
-	CMPB #2
-	BEQ ENTRADA_INTERMEDIA_DECENAS
-	CMPB #3
-	BEQ ENTRADA_INTERMEDIA_CENTENAS
+                    ldx       #DIR_TEXTUAL
+                    ldb       NUMCARAC
+                    stb       $00A0
+                    cmpb      #1
+                    beq       ENTRADA_INTERMEDIA_UNIDADES
+                    cmpb      #2
+                    beq       ENTRADA_INTERMEDIA_DECENAS
+                    cmpb      #3
+                    beq       ENTRADA_INTERMEDIA_CENTENAS
 ENTRADA_MILES
-	LDX #DIR_TEXTUAL
-	LDAB $00,Y         			** CARACTER
-	PSHY
-	CMPB #'0
-	BEQ ESCRIBE_MIL_FIN
-	CMPB #'1
-	BEQ ESCRIBE_MIL
-	CMPB #'2
-	BEQ ESCRIBE_DOS_MIL
-	CMPB #'3
-	BEQ ESCRIBE_TRES_MIL
-	CMPB #'4
-	BEQ ESCRIBE_CUATRO_MIL
-	CMPB #'5
-	BEQ ESCRIBE_CINCO_MIL
-	CMPB #'6
-	BEQ ESCRIBE_SEIS_MIL
-	CMPB #'7
-	BEQ ESCRIBE_SIETE_MIL
-	CMPB #'8
-	BEQ ESCRIBE_OCHO_MIL
-	CMPB #'9
-	BEQ ESCRIBE_NUEVE_MIL
-	
+                    ldx       #DIR_TEXTUAL
+                    ldb       ,y                  ;** CARACTER
+                    pshy
+                    cmpb      #'0'
+                    beq       ESCRIBE_MIL_FIN
+                    cmpb      #'1'
+                    beq       ESCRIBE_MIL
+                    cmpb      #'2'
+                    beq       ESCRIBE_DOS_MIL
+                    cmpb      #'3'
+                    beq       ESCRIBE_TRES_MIL
+                    cmpb      #'4'
+                    beq       ESCRIBE_CUATRO_MIL
+                    cmpb      #'5'
+                    beq       ESCRIBE_CINCO_MIL
+                    cmpb      #'6'
+                    beq       ESCRIBE_SEIS_MIL
+                    cmpb      #'7'
+                    beq       ESCRIBE_SIETE_MIL
+                    cmpb      #'8'
+                    beq       ESCRIBE_OCHO_MIL
+                    cmpb      #'9'
+                    beq       ESCRIBE_NUEVE_MIL
+
 ESCRIBE_MIL_FIN
-	PULY
-	INY
-	JMP ENTRADA_CENTENAS
+                    puly
+                    iny
+                    bra       ENTRADA_CENTENAS
 
 ESCRIBE_MIL
-	LDY #MIL_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_MIL_FIN
+                    ldy       #MIL_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    bra       ESCRIBE_MIL_FIN
 
 ESCRIBE_DOS_MIL
-	LDY #DOS_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_MIL
-	
+                    ldy       #DOS_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    bra       ESCRIBE_MIL
+
 ESCRIBE_TRES_MIL
-	LDY #TRES_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_MIL
-	
+                    ldy       #TRES_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    bra       ESCRIBE_MIL
+
 ESCRIBE_CUATRO_MIL
-	LDY #CUATRO_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_MIL
-	
+                    ldy       #CUATRO_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    bra       ESCRIBE_MIL
+
 ESCRIBE_CINCO_MIL
-	LDY #CINCO_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_MIL
-	
+                    ldy       #CINCO_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    bra       ESCRIBE_MIL
+
 ESCRIBE_SEIS_MIL
-	LDY #SEIS_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_MIL
-	
+                    ldy       #SEIS_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    bra       ESCRIBE_MIL
+
 ESCRIBE_SIETE_MIL
-	LDY #SIETE_L
-	 JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_MIL
+                    ldy       #SIETE_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    bra       ESCRIBE_MIL
 
 ESCRIBE_OCHO_MIL
-	LDY #OCHO_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_MIL
-	
+                    ldy       #OCHO_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    bra       ESCRIBE_MIL
+
 ESCRIBE_NUEVE_MIL
-	LDY #NUEVE_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_MIL
-	
+                    ldy       #NUEVE_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    bra       ESCRIBE_MIL
+
 ENTRADA_CENTENAS
-	LDAB $00,Y         			** CARACTER
-	PSHY
-	CMPB #'0
-	BEQ  ESCRIBE_CIENTOS_FIN
-	CMPB #'1
-	BEQ ESCRIBE_CIEN
-	CMPB #'2
-	BEQ ESCRIBE_DOS_CIENTOS
-	CMPB #'3
-	BEQ ESCRIBE_TRES_CIENTOS
-	CMPB #'4
-	BEQ ESCRIBE_CUATRO_CIENTOS
-	CMPB #'5
-	BEQ ESCRIBE_CINCO_CIENTOS
-	JMP OTRAS_CENTENAS
+                    ldb       ,y                  ;** CARACTER
+                    pshy
+                    cmpb      #'0'
+                    beq       ESCRIBE_CIENTOS_FIN
+                    cmpb      #'1'
+                    beq       ESCRIBE_CIEN
+                    cmpb      #'2'
+                    beq       ESCRIBE_DOS_CIENTOS
+                    cmpb      #'3'
+                    beq       ESCRIBE_TRES_CIENTOS
+                    cmpb      #'4'
+                    beq       ESCRIBE_CUATRO_CIENTOS
+                    cmpb      #'5'
+                    beq       ESCRIBE_CINCO_CIENTOS
+                    bra       OTRAS_CENTENAS
+
 ESCRIBE_CIENTOS
-	LDY #CIENTOS_L
-	JSR CICLO_MUCHO_TEXTO
+                    ldy       #CIENTOS_L
+                    jsr       CICLO_MUCHO_TEXTO
 ESCRIBE_CIENTOS_FIN
-	PULY
-	INY
-	JMP ENTRADA_DECENAS
+                    puly
+                    iny
+                    jmp       ENTRADA_DECENAS
 
 ESCRIBE_CIEN
-	*CHECAMOS DECENAS
-	PULY
-	INY
-	LDAB $00,Y
-	CMPB #'0
-	BNE ESCRIBE_CIENTO_DEC
-	DEY
-	PSHY
-	* CHECAMOS UNIDADES
-	PULY
-	INY
-	INY
-	LDAB $00,Y
-	CMPB #'0
-	BNE ESCRIBE_CIENTO_UNI
-	DEY
-	DEY
-	PSHY
-	LDY #CIEN_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_CIENTOS_FIN
+; *CHECAMOS DECENAS
+                    puly
+                    iny
+                    ldb       ,y
+                    cmpb      #'0'
+                    bne       ESCRIBE_CIENTO_DEC
+                    dey
+                    pshy
+; CHECAMOS UNIDADES
+                    puly
+                    iny
+                    iny
+                    ldb       ,y
+                    cmpb      #'0'
+                    bne       ESCRIBE_CIENTO_UNI
+                    dey
+                    dey
+                    pshy
+                    ldy       #CIEN_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    bra       ESCRIBE_CIENTOS_FIN
+
 ESCRIBE_CIENTO_DEC
-	DEY
-	PSHY
-	JMP ESCRIBE_CIENTO	
+                    dey
+                    pshy
+                    bra       ESCRIBE_CIENTO
+
 ESCRIBE_CIENTO_UNI
-	DEY
-	DEY
-	PSHY
-	JMP ESCRIBE_CIENTO
+                    dey
+                    dey
+                    pshy
 
 ESCRIBE_CIENTO
-	LDY #CIENTO_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_CIENTOS_FIN
+                    ldy       #CIENTO_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    bra       ESCRIBE_CIENTOS_FIN
 
 ESCRIBE_DOS_CIENTOS
-	LDY #DOS_L
-	JSR CICLO_MUCHO_TEXTO
-	DEX
-	JMP ESCRIBE_CIENTOS
-	
+                    ldy       #DOS_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    dex
+                    bra       ESCRIBE_CIENTOS
+
 ESCRIBE_TRES_CIENTOS
-	LDY #TRES_L
-	JSR CICLO_MUCHO_TEXTO
-	DEX
-	JMP ESCRIBE_CIENTOS
-	
+
+                    ldy       #TRES_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    dex
+                    bra       ESCRIBE_CIENTOS
+
 ESCRIBE_CUATRO_CIENTOS
-	LDY #CUATRO_L
-	JSR CICLO_MUCHO_TEXTO
-	DEX
-	JMP ESCRIBE_CIENTOS
-	
+
+                    ldy       #CUATRO_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    dex
+                    bra       ESCRIBE_CIENTOS
+
 ESCRIBE_CINCO_CIENTOS
-	LDY #QUINIENTOS_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_CIENTOS_FIN
+
+                    ldy       #QUINIENTOS_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    bra       ESCRIBE_CIENTOS_FIN
 
 OTRAS_CENTENAS
-	CMPB #'6
-	BEQ ESCRIBE_SEIS_CIENTOS
-	CMPB #'7
-	BEQ ESCRIBE_SIETE_CIENTOS
-	CMPB #'8
-	BEQ ESCRIBE_OCHO_CIENTOS
-	CMPB #'9
-	BEQ ESCRIBE_NUEVE_CIENTOS
-	JMP ESCRIBE_CIENTOS	
+                    cmpb      #'6'
+                    beq       ESCRIBE_SEIS_CIENTOS
+                    cmpb      #'7'
+                    beq       ESCRIBE_SIETE_CIENTOS
+                    cmpb      #'8'
+                    beq       ESCRIBE_OCHO_CIENTOS
+                    cmpb      #'9'
+                    beq       ESCRIBE_NUEVE_CIENTOS
+                    jmp       ESCRIBE_CIENTOS
 
 ESCRIBE_SEIS_CIENTOS
-	LDY #SEIS_L
-	JSR CICLO_MUCHO_TEXTO
-	DEX
-	JMP ESCRIBE_CIENTOS
-	
+
+                    ldy       #SEIS_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    dex
+                    jmp       ESCRIBE_CIENTOS
+
 ESCRIBE_SIETE_CIENTOS
-	LDY #SETECIENTOS_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_CIENTOS_FIN
+
+                    ldy       #SETECIENTOS_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       ESCRIBE_CIENTOS_FIN
 
 ESCRIBE_OCHO_CIENTOS
-	LDY #OCHO_L
-	JSR CICLO_MUCHO_TEXTO
-	DEX
-	JMP ESCRIBE_CIENTOS
-	
+
+                    ldy       #OCHO_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    dex
+                    jmp       ESCRIBE_CIENTOS
+
 ESCRIBE_NUEVE_CIENTOS
-	LDY #NOVECIENTOS_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP ESCRIBE_CIENTOS_FIN
-	
+
+                    ldy       #NOVECIENTOS_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       ESCRIBE_CIENTOS_FIN
+
 ENTRADA_DECENAS
-	LDAB $00,Y         			** CARACTER
-	PSHY
-	CMPB #'0
-	BEQ FIN_ENTRADA_DECENAS
-	CMPB #'1
-	BEQ ESCRIBE_DIECI
-	CMPB #'2
-	BEQ ESCRIBE_VEINTI
-	JMP COMPARA_TANTOS
+                    ldb       ,y                  ;** CARACTER
+                    pshy
+                    cmpb      #'0'
+                    beq       FIN_ENTRADA_DECENAS
+                    cmpb      #'1'
+                    beq       ESCRIBE_DIECI
+                    cmpb      #'2'
+                    beq       ESCRIBE_VEINTI
+                    jmp       COMPARA_TANTOS
+
 FIN_ENTRADA_DECENAS
-	PULY
-	INY
-	JMP ENTRADA_UNIDADES
+                    puly
+                    iny
+                    jmp       ENTRADA_UNIDADES
 
 ESCRIBE_DIECI
-	PULY
-	INY
-	LDAB $00,Y
-	DEY 
-	PSHY
-	CMPB #'0
-	BEQ ESCRIBE_DIEZ
-	CMPB #'1
-	BEQ ESCRIBE_ONCE
-	CMPB #'2
-	BEQ ESCRIBE_DOCE
-	CMPB #'3
-	BEQ ESCRIBE_TRECE
-	CMPB #'4
-	BEQ ESCRIBE_CATORCE
-	CMPB #'5
-	BEQ ESCRIBE_QUINCE
-	JMP ESCRIBE_DIECI_L
-	JMP FIN_MUCHO_TEXTO
+                    puly
+                    iny
+                    ldb       ,y
+                    dey
+                    pshy
+                    cmpb      #'0'
+                    beq       ESCRIBE_DIEZ
+                    cmpb      #'1'
+                    beq       ESCRIBE_ONCE
+                    cmpb      #'2'
+                    beq       ESCRIBE_DOCE
+                    cmpb      #'3'
+                    beq       ESCRIBE_TRECE
+                    cmpb      #'4'
+                    beq       ESCRIBE_CATORCE
+                    cmpb      #'5'
+                    beq       ESCRIBE_QUINCE
+                    bra       ESCRIBE_DIECI_L
+
+                    jmp       FIN_MUCHO_TEXTO
 
 ESCRIBE_DIEZ
-	LDY #DIEZ_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #DIEZ_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
 ESCRIBE_ONCE
-	LDY #ONCE_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #ONCE_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
 ESCRIBE_DOCE
-	LDY #DOCE_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #DOCE_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
 ESCRIBE_TRECE
-	LDY #TRECE_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #TRECE_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
 ESCRIBE_CATORCE
-	LDY #CATORCE_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #CATORCE_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
 ESCRIBE_QUINCE
-	LDY #QUINCE_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #QUINCE_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
 ESCRIBE_DIECI_L
-	LDY #DIECI_L
-	JSR CICLO_MUCHO_TEXTO
-	DEX
-	JMP FIN_ENTRADA_DECENAS
+                    ldy       #DIECI_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    dex
+                    bra       FIN_ENTRADA_DECENAS
 
 ESCRIBE_VEINTI
-	PULY		**ESTO SE VE MEDIO RARO
-	INY
-	LDAB $00,Y         			** CARACTER
-	PSHY
-	CMPB #'0
-	BEQ ESCRIBE_VEINTE
-	CMPB #'1
-	BEQ ESCRIBE_VEINTIUNO
-	CMPB #'2
-	BEQ ESCRIBE_VEINTIDOS
-	CMPB #'3
-	BEQ ESCRIBE_VEINTITRES
-	CMPB #'4
-	BEQ ESCRIBE_VEINTICUATRO
-	CMPB #'5
-	BEQ ESCRIBE_VEINTICINCO
-	CMPB #'6
-	BEQ ESCRIBE_VEINTISEIS
-	CMPB #'7
-	BEQ ESCRIBE_VEINTISIETE
-	CMPB #'8
-	BEQ ESCRIBE_VEINTIOCHO
-	CMPB #'9
-	BEQ ESCRIBE_VEINTINUEVE
-	JMP FIN_MUCHO_TEXTO		**SE IRIA AL FIN
+                    puly                          ;**ESTO SE VE MEDIO RARO
+                    iny
+                    ldb       ,y                  ;** CARACTER
+                    pshy
+                    cmpb      #'0'
+                    beq       ESCRIBE_VEINTE
+                    cmpb      #'1'
+                    beq       ESCRIBE_VEINTIUNO
+                    cmpb      #'2'
+                    beq       ESCRIBE_VEINTIDOS
+                    cmpb      #'3'
+                    beq       ESCRIBE_VEINTITRES
+                    cmpb      #'4'
+                    beq       ESCRIBE_VEINTICUATRO
+                    cmpb      #'5'
+                    beq       ESCRIBE_VEINTICINCO
+                    cmpb      #'6'
+                    beq       ESCRIBE_VEINTISEIS
+                    cmpb      #'7'
+                    beq       ESCRIBE_VEINTISIETE
+                    cmpb      #'8'
+                    beq       ESCRIBE_VEINTIOCHO
+                    cmpb      #'9'
+                    beq       ESCRIBE_VEINTINUEVE
+                    jmp       FIN_MUCHO_TEXTO     ;**SE IRIA AL FIN
 
-*VEINTES
+; *VEINTES
 
 ESCRIBE_VEINTE
-	LDY #VEINTE_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
-ESCRIBE_VEINTIUNO
-	LDY #VEINTIUNO_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO	
-ESCRIBE_VEINTIDOS
-	LDY #VEINTIDOS_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO	
-ESCRIBE_VEINTITRES
-	LDY #VEINTITRES_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO	
-ESCRIBE_VEINTICUATRO
-	LDY #VEINTICUATRO_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO	
-ESCRIBE_VEINTICINCO
-	LDY #VEINTICINCO_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO	
-ESCRIBE_VEINTISEIS
-	LDY #VEINTISEIS_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO	
-ESCRIBE_VEINTISIETE
-	LDY #VEINTISIETE_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO	
-ESCRIBE_VEINTIOCHO
-	LDY #VEINTIOCHO_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO	
-ESCRIBE_VEINTINUEVE
-	LDY #VEINTINUEVE_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO	
+                    ldy       #VEINTE_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
 
+ESCRIBE_VEINTIUNO
+                    ldy       #VEINTIUNO_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
+ESCRIBE_VEINTIDOS
+                    ldy       #VEINTIDOS_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
+ESCRIBE_VEINTITRES
+                    ldy       #VEINTITRES_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
+ESCRIBE_VEINTICUATRO
+
+                    ldy       #VEINTICUATRO_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
+ESCRIBE_VEINTICINCO
+                    ldy       #VEINTICINCO_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
+ESCRIBE_VEINTISEIS
+                    ldy       #VEINTISEIS_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
+ESCRIBE_VEINTISIETE
+                    ldy       #VEINTISIETE_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
+ESCRIBE_VEINTIOCHO
+                    ldy       #VEINTIOCHO_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
+
+ESCRIBE_VEINTINUEVE
+                    ldy       #VEINTINUEVE_L
+                    jsr       CICLO_MUCHO_TEXTO
+                    jmp       FIN_MUCHO_TEXTO
 
 COMPARA_TANTOS
-	CMPB #'3
-	BEQ ESCRIBE_TREINTA
-	CMPB #'4
-	BEQ ESCRIBE_CUARENTA
-	CMPB #'5
-	BEQ ESCRIBE_CINCUENTA
-	CMPB #'6
-	BEQ ESCRIBE_SESENTA
-	JMP COMPARA_OTROS_TANTOS
+                    cmpb      #'3'
+                    beq       ESCRIBE_TREINTA
+                    cmpb      #'4'
+                    beq       ESCRIBE_CUARENTA
+                    cmpb      #'5'
+                    beq       ESCRIBE_CINCUENTA
+                    cmpb      #'6'
+                    beq       ESCRIBE_SESENTA
+                    jmp       COMPARA_OTROS_TANTOS
 
-
-***TREINTAS
+;***TREINTAS
 
 ESCRIBE_TREINTA
-	LDY #TREINTA_L
-	JSR CICLO_MUCHO_TEXTO
-	
-	PULY
-	INY
-	LDAB $00,Y
-	DEY
-	PSHY
-	CMPB #'0
-	BEQ FIN_ESCRIBE_TREINTA
-	
-	LDY #Y_L
-	JSR CICLO_MUCHO_TEXTO
+                    ldy       #TREINTA_L
+                    jsr       CICLO_MUCHO_TEXTO
+
+                    puly
+                    iny
+                    ldb       ,y
+                    dey
+                    pshy
+                    cmpb      #'0'
+                    beq       FIN_ESCRIBE_TREINTA
+
+                    ldy       #Y_L
+                    jsr       CICLO_MUCHO_TEXTO
 FIN_ESCRIBE_TREINTA
-	JMP FIN_ENTRADA_DECENAS
-	
-	
-**CUARENTAS
+                    jmp       FIN_ENTRADA_DECENAS
+
+;**CUARENTAS
 ESCRIBE_CUARENTA
-	LDY #CUARENTA_L
-	JSR CICLO_MUCHO_TEXTO
-	
-	PULY
-	INY
-	LDAB $00,Y
-	DEY
-	PSHY
-	CMPB #'0
-	BEQ FIN_ESCRIBE_CUARENTA
-	
-	LDY #Y_L
-	JSR CICLO_MUCHO_TEXTO
+                    ldy       #CUARENTA_L
+                    jsr       CICLO_MUCHO_TEXTO
+
+                    puly
+                    iny
+                    ldb       ,y
+                    dey
+                    pshy
+                    cmpb      #'0'
+                    beq       FIN_ESCRIBE_CUARENTA
+
+                    ldy       #Y_L
+                    jsr       CICLO_MUCHO_TEXTO
 FIN_ESCRIBE_CUARENTA
-	JMP FIN_ENTRADA_DECENAS
 
-**CINCUENTAS
+                    jmp       FIN_ENTRADA_DECENAS
+
+;**CINCUENTAS
 ESCRIBE_CINCUENTA
-	LDY #CINCUENTA_L
-	JSR CICLO_MUCHO_TEXTO
-	
-	PULY
-	INY
-	LDAB $00,Y
-	DEY
-	PSHY
-	CMPB #'0
-	BEQ FIN_ESCRIBE_CINCUENTA
-	
-	LDY #Y_L
-	JSR CICLO_MUCHO_TEXTO
-FIN_ESCRIBE_CINCUENTA
-	JMP FIN_ENTRADA_DECENAS
+                    ldy       #CINCUENTA_L
+                    jsr       CICLO_MUCHO_TEXTO
 
-**SESENTAS
+                    puly
+                    iny
+                    ldb       ,y
+                    dey
+                    pshy
+                    cmpb      #'0'
+                    beq       FIN_ESCRIBE_CINCUENTA
+
+                    ldy       #Y_L
+                    jsr       CICLO_MUCHO_TEXTO
+FIN_ESCRIBE_CINCUENTA
+
+                    jmp       FIN_ENTRADA_DECENAS
+
+;**SESENTAS
 ESCRIBE_SESENTA
-	LDY #SESENTA_L
-	JSR CICLO_MUCHO_TEXTO
-	
-	PULY
-	INY
-	LDAB $00,Y
-	DEY
-	PSHY
-	CMPB #'0
-	BEQ FIN_ESCRIBE_SESENTA
-	
-	LDY #Y_L
-	JSR CICLO_MUCHO_TEXTO
+                    ldy       #SESENTA_L
+                    jsr       CICLO_MUCHO_TEXTO
+
+                    puly
+                    iny
+                    ldb       ,y
+                    dey
+                    pshy
+                    cmpb      #'0'
+                    beq       FIN_ESCRIBE_SESENTA
+
+                    ldy       #Y_L
+                    jsr       CICLO_MUCHO_TEXTO
 FIN_ESCRIBE_SESENTA
-	JMP FIN_ENTRADA_DECENAS
+                    jmp       FIN_ENTRADA_DECENAS
 
 COMPARA_OTROS_TANTOS
-	CMPB #'7
-	BEQ ESCRIBE_SETENTA
-	CMPB #'8
-	BEQ ESCRIBE_OCHENTA
-	CMPB #'9
-	BEQ ESCRIBE_NOVENTA
-	JMP FIN_ENTRADA_DECENAS
 
+                    cmpb      #'7'
+                    beq       ESCRIBE_SETENTA
+                    cmpb      #'8'
+                    beq       ESCRIBE_OCHENTA
+                    cmpb      #'9'
+                    beq       ESCRIBE_NOVENTA
+                    jmp       FIN_ENTRADA_DECENAS
 
-*SETENTAS
+; *SETENTAS
 ESCRIBE_SETENTA
-	LDY #SETENTA_L
-	JSR CICLO_MUCHO_TEXTO
-	
-	PULY
-	INY
-	LDAB $00,Y
-	DEY
-	PSHY
-	CMPB #'0
-	BEQ FIN_ESCRIBE_SETENTA
-	
-	LDY #Y_L
-	JSR CICLO_MUCHO_TEXTO
+                    ldy       #SETENTA_L
+                    jsr       CICLO_MUCHO_TEXTO
+
+                    puly
+                    iny
+                    ldb       ,y
+                    dey
+                    pshy
+                    cmpb      #'0'
+                    beq       FIN_ESCRIBE_SETENTA
+
+                    ldy       #Y_L
+                    jsr       CICLO_MUCHO_TEXTO
 FIN_ESCRIBE_SETENTA
-	JMP FIN_ENTRADA_DECENAS
+                    jmp       FIN_ENTRADA_DECENAS
 
-*OCHENTAS	
+; *OCHENTAS
 ESCRIBE_OCHENTA
-	LDY #OCHENTA_L
-	JSR CICLO_MUCHO_TEXTO
-	
-	
-	PULY
-	INY
-	LDAB $00,Y
-	DEY
-	PSHY
-	CMPB #'0
-	BEQ FIN_ESCRIBE_OCHENTA
+                    ldy       #OCHENTA_L
+                    jsr       CICLO_MUCHO_TEXTO
 
-	LDY #Y_L
-	JSR CICLO_MUCHO_TEXTO
+                    puly
+                    iny
+                    ldb       ,y
+                    dey
+                    pshy
+                    cmpb      #'0'
+                    beq       FIN_ESCRIBE_OCHENTA
+
+                    ldy       #Y_L
+                    jsr       CICLO_MUCHO_TEXTO
 FIN_ESCRIBE_OCHENTA
-	JMP FIN_ENTRADA_DECENAS
+                    jmp       FIN_ENTRADA_DECENAS
 
-*NOVENTAS	
+; *NOVENTAS
 ESCRIBE_NOVENTA
-	LDY #NOVENTA_L
-	JSR CICLO_MUCHO_TEXTO
-	
-	PULY
-	INY
-	LDAB $00,Y
-	DEY
-	PSHY
-	CMPB #'0
-	BEQ FIN_ESCRIBE_NOVENTA
-	
-	LDY #Y_L
-	JSR CICLO_MUCHO_TEXTO
-FIN_ESCRIBE_NOVENTA
-	JMP FIN_ENTRADA_DECENAS
-	
-ENTRADA_UNIDADES
-	LDAB $00,Y         			** CARACTER
-	PSHY
-*	CMPB #'0
-*	BEQ CICLO_MUCHO_TEXTO
-	CMPB #'1
-	BEQ ESCRIBE_UNO
-	CMPB #'2
-	BEQ ESCRIBE_DOS
-	CMPB #'3
-	BEQ ESCRIBE_TRES
-	CMPB #'4
-	BEQ ESCRIBE_CUATRO
-	CMPB #'5
-	BEQ ESCRIBE_CINCO
-	CMPB #'6
-	BEQ ESCRIBE_SEIS
-	CMPB #'7
-	BEQ ESCRIBE_SIETE
-	CMPB #'8
-	BEQ ESCRIBE_OCHO
-	CMPB #'9
-	BEQ ESCRIBE_NUEVE
+                    ldy       #NOVENTA_L
+                    jsr       CICLO_MUCHO_TEXTO
 
-	JMP FIN_MUCHO_TEXTO
+                    puly
+                    iny
+                    ldb       ,y
+                    dey
+                    pshy
+                    cmpb      #'0'
+                    beq       FIN_ESCRIBE_NOVENTA
+
+                    ldy       #Y_L
+                    bsr       CICLO_MUCHO_TEXTO
+FIN_ESCRIBE_NOVENTA
+                    jmp       FIN_ENTRADA_DECENAS
+
+ENTRADA_UNIDADES
+                    ldb       ,y                  ;** CARACTER
+                    pshy
+;       CMPB #'0'
+;       BEQ CICLO_MUCHO_TEXTO
+                    cmpb      #'1'
+                    beq       ESCRIBE_UNO
+                    cmpb      #'2'
+                    beq       ESCRIBE_DOS
+                    cmpb      #'3'
+                    beq       ESCRIBE_TRES
+                    cmpb      #'4'
+                    beq       ESCRIBE_CUATRO
+                    cmpb      #'5'
+                    beq       ESCRIBE_CINCO
+                    cmpb      #'6'
+                    beq       ESCRIBE_SEIS
+                    cmpb      #'7'
+                    beq       ESCRIBE_SIETE
+                    cmpb      #'8'
+                    beq       ESCRIBE_OCHO
+                    cmpb      #'9'
+                    beq       ESCRIBE_NUEVE
+
+                    bra       FIN_MUCHO_TEXTO
+
 ESCRIBE_UNO
-	LDY #UNO_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #UNO_L
+                    bsr       CICLO_MUCHO_TEXTO
+                    bra       FIN_MUCHO_TEXTO
 
 ESCRIBE_DOS
-	LDY #DOS_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #DOS_L
+                    bsr       CICLO_MUCHO_TEXTO
+                    bra       FIN_MUCHO_TEXTO
 
 ESCRIBE_TRES
-	LDY #TRES_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #TRES_L
+                    bsr       CICLO_MUCHO_TEXTO
+                    bra       FIN_MUCHO_TEXTO
 
 ESCRIBE_CUATRO
-	LDY #CUATRO_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #CUATRO_L
+                    bsr       CICLO_MUCHO_TEXTO
+                    bra       FIN_MUCHO_TEXTO
 
 ESCRIBE_CINCO
-	LDY #CINCO_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #CINCO_L
+                    bsr       CICLO_MUCHO_TEXTO
+                    bra       FIN_MUCHO_TEXTO
 
 ESCRIBE_SEIS
-	LDY #SEIS_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #SEIS_L
+                    bsr       CICLO_MUCHO_TEXTO
+                    bra       FIN_MUCHO_TEXTO
 
 ESCRIBE_SIETE
-	LDY #SIETE_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #SIETE_L
+                    bsr       CICLO_MUCHO_TEXTO
+                    bra       FIN_MUCHO_TEXTO
 
 ESCRIBE_OCHO
-	LDY #OCHO_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #OCHO_L
+                    bsr       CICLO_MUCHO_TEXTO
+                    bra       FIN_MUCHO_TEXTO
 
 ESCRIBE_NUEVE
-	LDY #NUEVE_L
-	JSR CICLO_MUCHO_TEXTO
-	JMP FIN_MUCHO_TEXTO
+                    ldy       #NUEVE_L
+                    bsr       CICLO_MUCHO_TEXTO
+;                   bra       FIN_MUCHO_TEXTO
 
-*************************************************
+;*************************************************
 
 FIN_MUCHO_TEXTO
-		JMP CICLATE1
+                    jmp       CICLATE1
 
 YA_MATE_ME_POR_FA_T_T
 
 CICLO_MUCHO_TEXTO
-        LDAB $00,Y		* TOMA CARACTER DEL FCC
-		STAB $00,X      * ESCRIBE EL CHAR EN LA DIR DE X
-		INX             
-		INY 			* INCREMENTAMOS X Y Y
-		CMPB #$20        * ASCII DE ESPACIO
-		BNE CICLO_MUCHO_TEXTO   * MIENTRAS NO ENCONTREMOS UN PUNTO(.) SE REPITE
-		DEY
-		RTS
+                    ldb       ,y                  ; TOMA CARACTER DEL FCC
+                    stb       ,x                  ; ESCRIBE EL CHAR EN LA DIR DE X
+                    inx
+                    iny                           ; INCREMENTAMOS X Y Y
+                    cmpb      #$20                ; ASCII DE ESPACIO
+                    bne       CICLO_MUCHO_TEXTO   ; MIENTRAS NO ENCONTREMOS UN PUNTO(.) SE REPITE
+                    dey
+                    rts
 
+;***********************************
+; ATENCION A INTERRUPCION SERIAL
+;***********************************
+                    org       $F100
+                    lda       SCSR
+                    lda       SCDR
+                    sta       ORDEN
+                    rti
 
+;***********************************
+; VECTOR INTERRUPCION SERIAL
+;***********************************
+                    org       $FFD6
+                    fcb       $F1,$00
 
+;***********************************
+; *RESET
+;***********************************
+                    org       $FFFE
+RESET               fcb       $80,$00
+;***********************************
 
-***********************************
-* ATENCION A INTERRUPCION SERIAL
-***********************************
-	ORG	$F100
-	LDAA	SCSR
-	LDAA	SCDR
-	STAA	ORDEN 
-	RTI
-
-***********************************
-* VECTOR INTERRUPCION SERIAL
-***********************************
-	ORG	$FFD6
-	FCB	$F1,$00       
-
-
-***********************************
-*RESET
-***********************************
-	ORG	$FFFE
-RESET	FCB	$80,$00
-***********************************
-
-	END	$8000
+                    end       $8000
