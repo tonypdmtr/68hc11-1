@@ -1,11 +1,11 @@
-# Traductor entre Romano y decimal con ensamblador
+# Translator between Roman and decimal with assembler
 
-El programa traduce de Romano a decimal y al revés enviando el dato a traducir por puerto serial al compilador de motorola 68HC11, y el resultado se muestra en la memoria 0x50 y 0x70 
+The program translates from Romano to decimal and vice versa sending the data to be translated via serial port to the motorola 68HC11 compiler, and the result is displayed in memory 0x50 and 0x70
 
-## Requerimientos de uso
+## Requirements for use
 
-- Se necesita un emulador del compilador de motorola 68HC11
-- SO Windows
-- Establecer mapas de memoria en las direcciones.
-    * 8000
-    * 3000s
+- A motorola 68HC11 compiler emulator is required
+- Windows OS
+- Establish memory maps in addresses.
+     * 8000
+     * 3000s
